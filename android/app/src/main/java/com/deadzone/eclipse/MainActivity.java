@@ -118,7 +118,8 @@ public final class MainActivity extends Activity {
                 final int latest = v.optInt("versionCode", 1);
                 final String apk = v.optString("apkUrl", "");
                 final String note = v.optString("message", "Nueva versión de Android disponible.");
-                if (latest > 1 && apk.startsWith("https://")) {
+                int installed = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+                if (latest > installed && apk.startsWith("https://")) {
                     runOnUiThread(() -> new AlertDialog.Builder(this)
                         .setTitle("Actualización disponible")
                         .setMessage(note + "\n\nAndroid solicitará tu autorización para instalar la nueva APK.")
