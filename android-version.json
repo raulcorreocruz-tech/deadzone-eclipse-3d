@@ -1,6 +1,6 @@
 {
-  "versionCode": 1,
-  "versionName": "1.0.0",
-  "apkUrl": "https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/01dbaf3b-7c2f-4a93-a63d-f5d2fae398e9-DeadZone-Eclipse-Android-v1.0.apk",
-  "message": "Hay una nueva versión de DEAD ZONE para Android. Descárgala e instálala para actualizar el contenedor; los cambios del juego se cargan automáticamente desde Render."
+  "versionCode": 25,
+  "versionName": "2.5.0",
+  "apkUrl": "https://github.com/raulcorreocruz-tech/deadzone-eclipse-3d/releases/download/android-v2.5.0/DeadZone-Eclipse-Android-v2.5.apk",
+  "message": "DEAD ZONE Android v2.5 incluye el juego y controles personalizables. Si Android no deja instalar sobre v1.0 por firma diferente, guarda tus ajustes si puedes, desinstala v1.0 e instala esta APK. La reinstalación borra los datos locales de la app."
 }
