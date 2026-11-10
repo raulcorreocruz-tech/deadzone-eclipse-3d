@@ -2,7 +2,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
-const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/fc643406-6e3c-4296-8889-9f97929eccef-deadzone-v3.3.zip';
+const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/7cdaee2e-55d5-4fcb-8a58-4ff14bdbe404-deadzone-v3.4-mobile.zip';
 (async()=>{
  const r=await fetch(URL,{signal:AbortSignal.timeout(120000)});
  if(!r.ok)throw Error('No se puede descargar el juego: HTTP '+r.status);
