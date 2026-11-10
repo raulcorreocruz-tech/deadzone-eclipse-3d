@@ -1,6 +1,6 @@
 {
   "versionCode": 1,
   "versionName": "1.0.0",
-  "apkUrl": "",
-  "message": "Actualización del instalador Android disponible."
+  "apkUrl": "https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/01dbaf3b-7c2f-4a93-a63d-f5d2fae398e9-DeadZone-Eclipse-Android-v1.0.apk",
+  "message": "Hay una nueva versión de DEAD ZONE para Android. Descárgala e instálala para actualizar el contenedor; los cambios del juego se cargan automáticamente desde Render."
 }
