@@ -1,8 +1,8 @@
-/* Dead Zone v3.3 build: download game assets and the multiplayer server. */
+/* Dead Zone v3.8 build: download game assets and the multiplayer server. */
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
-const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/60612e0b-496f-4d88-bb64-4b0b9720a8d7-deadzone-v3.7-mobile-stable-final.zip';
+const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/deadzone-v3.8-aim-physics-coop.zip';
 (async()=>{
  const r=await fetch(URL,{signal:AbortSignal.timeout(120000)});
  if(!r.ok)throw Error('No se puede descargar el juego: HTTP '+r.status);
