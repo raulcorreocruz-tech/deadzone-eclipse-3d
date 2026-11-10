@@ -1,0 +1,29 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.deadzone.eclipse'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.deadzone.eclipse'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (System.getenv("DEADZONE_KEYSTORE_FILE")) {
+                signingConfig signingConfigs.create("deadzone") {
+                    storeFile file(System.getenv("DEADZONE_KEYSTORE_FILE"))
+                    storePassword System.getenv("DEADZONE_KEYSTORE_PASS")
+                    keyAlias System.getenv("DEADZONE_KEY_ALIAS")
+                    keyPassword System.getenv("DEADZONE_KEY_PASS")
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
