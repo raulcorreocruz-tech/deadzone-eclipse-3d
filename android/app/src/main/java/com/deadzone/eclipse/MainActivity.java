@@ -23,7 +23,9 @@ import java.net.HttpURLConnection;
 import java.io.ByteArrayOutputStream;
 
 public final class MainActivity extends Activity {
-    private static final String GAME = "https://deadzone-eclipse-coop.onrender.com/";
+    private static final String GAME = "https://raulcorreocruz-tech.github.io/deadzone-eclipse-3d/";
+    private static final String LOCAL = "https://appassets.androidplatform.net/index.html";
+    private boolean localFallback = false;
     private static final String VERSION = "https://raw.githubusercontent.com/raulcorreocruz-tech/deadzone-eclipse-3d/main/android-version.json";
     private FrameLayout root;
     private WebView web;
@@ -71,9 +73,29 @@ public final class MainActivity extends Activity {
         settings.setBuiltInZoomControls(false);
         web.setWebChromeClient(new WebChromeClient());
         web.setWebViewClient(new WebViewClient() {
+            @Override public android.webkit.WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                Uri uri = request.getUrl();
+                if ("appassets.androidplatform.net".equalsIgnoreCase(uri.getHost()) && ("/index.html".equals(uri.getPath()) || "/".equals(uri.getPath()))) {
+                    try { return new android.webkit.WebResourceResponse("text/html", "UTF-8", getAssets().open("index.html")); }
+                    catch (Exception ignored) { return null; }
+                }
+                return super.shouldInterceptRequest(view, request);
+            }
+            private void switchToLocal() {
+                if (localFallback) return;
+                localFallback = true;
+                runOnUiThread(() -> {
+                    status.setVisibility(View.VISIBLE);
+                    status.setText("Cargando versión incluida 2.5...");
+                    web.loadUrl(LOCAL);
+                });
+            }
+            @Override public void onReceivedHttpError(WebView view, WebResourceRequest req, android.webkit.WebResourceResponse response) {
+                if (req.isForMainFrame() && response.getStatusCode() >= 400) switchToLocal();
+            }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest req) {
                 Uri u = req.getUrl();
-                if ("deadzone-eclipse-coop.onrender.com".equalsIgnoreCase(u.getHost())) return false;
+                if ("raulcorreocruz-tech.github.io".equalsIgnoreCase(u.getHost()) || "appassets.androidplatform.net".equalsIgnoreCase(u.getHost())) return false;
                 Intent open = new Intent(Intent.ACTION_VIEW, u);
                 try { startActivity(open); } catch(Exception ignored) {}
                 return true;
@@ -83,9 +105,12 @@ public final class MainActivity extends Activity {
             }
             @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
                 if (!req.isForMainFrame()) return;
-                status.setVisibility(View.VISIBLE);
-                status.setText("Sin conexión al servidor.\n\nToca aquí para reintentar.");
-                status.setOnClickListener(v -> loadGame());
+                if (!localFallback) switchToLocal();
+                else {
+                    status.setVisibility(View.VISIBLE);
+                    status.setText("No se ha podido iniciar. Comprueba tu conexión a Internet y toca aquí.");
+                    status.setOnClickListener(v -> loadGame());
+                }
             }
         });
         root.addView(web, new FrameLayout.LayoutParams(-1, -1));
@@ -96,7 +121,8 @@ public final class MainActivity extends Activity {
     private void loadGame() {
         status.setVisibility(View.VISIBLE);
         status.setText("DEAD ZONE: ECLIPSE\n\nCargando juego online…");
-        // A fresh URL for each launch means game updates go live without changing the APK.
+        // The live site updates automatically; an embedded v2.5 is available if the site is offline.
+        localFallback = false;
         web.loadUrl(GAME + "?android=1&fresh=" + System.currentTimeMillis());
     }
 
