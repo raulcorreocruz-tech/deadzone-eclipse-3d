@@ -1,49 +1,52 @@
-name: Build DEAD ZONE Android APK v2.5
+name: Build DEAD ZONE Android APK v3.8
 on:
   workflow_dispatch:
   push:
     paths:
-      - "android/**"
-      - ".github/workflows/android-apk.yml"
+      - "android/app/build.gradle"
 permissions:
   contents: write
 jobs:
   build:
-    name: Compile Android 2.5 APK
+    name: Compilar Android 3.8
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
-      - name: Locate Android SDK
+      - name: Android SDK
         run: |
           echo "ANDROID_HOME=${ANDROID_HOME:-$ANDROID_SDK_ROOT}" >> "$GITHUB_ENV"
           echo "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.10.2"
-      - name: Install Android 35 platform
+      - name: Android 35
         run: |
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKMANAGER" --licenses >/dev/null || true
           "$SDKMANAGER" --install "platforms;android-35" "build-tools;35.0.0"
-      - name: Compile installable debug APK
+      - name: Compilar APK debug instalable
         run: gradle -p android :app:assembleDebug --stacktrace --no-daemon
-      - name: Preparar APK v2.5
+      - name: Preparar APK v3.8
         run: |
           mkdir -p dist
-          cp android/app/build/outputs/apk/debug/app-debug.apk dist/DeadZone-Eclipse-Android-v2.5.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/DeadZone-Eclipse-Android-v3.8.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: DeadZone-Eclipse-Android-v2.5
-          path: dist/DeadZone-Eclipse-Android-v2.5.apk
+          name: DeadZone-Eclipse-Android-v3.8
+          path: dist/DeadZone-Eclipse-Android-v3.8.apk
           retention-days: 30
           if-no-files-found: error
-      - name: Publicar APK v2.5
+      - name: Publicar APK v3.8
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create android-v2.5.0 dist/DeadZone-Eclipse-Android-v2.5.apk --title "DEAD ZONE ECLIPSE · Android v2.5" --notes "Incluye el juego v2.5 como respaldo y actualizaciones web cuando estén disponibles. APK de prueba firmada con clave debug: la actualización sobre v1.0 puede requerir reinstalación si las firmas difieren." --target "${{ github.sha }}"
+          if gh release view android-v3.8.0 >/dev/null 2>&1; then
+            gh release upload android-v3.8.0 dist/DeadZone-Eclipse-Android-v3.8.apk --clobber
+          else
+            gh release create android-v3.8.0 dist/DeadZone-Eclipse-Android-v3.8.apk --title "DEAD ZONE ECLIPSE · Android v3.8" --notes "Joysticks separados, físicas arcade y cooperativo online. APK debug de pruebas: firma distinta puede requerir desinstalación."
+          fi
