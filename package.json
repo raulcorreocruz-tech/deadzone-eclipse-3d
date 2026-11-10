@@ -1,0 +1,15 @@
+{
+  "name": "deadzone-eclipse-3d",
+  "version": "3.3.0",
+  "private": true,
+  "scripts": {
+    "build": "node setup.cjs",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  }
+}
