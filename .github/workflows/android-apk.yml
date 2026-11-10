@@ -1,4 +1,4 @@
-name: Build DEAD ZONE Android APK
+name: Build DEAD ZONE Android APK v2.5
 on:
   workflow_dispatch:
   push:
@@ -6,10 +6,10 @@ on:
       - "android/**"
       - ".github/workflows/android-apk.yml"
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
-    name: Compile Android 1.0 APK
+    name: Compile Android 2.5 APK
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -32,9 +32,18 @@ jobs:
           "$SDKMANAGER" --install "platforms;android-35" "build-tools;35.0.0"
       - name: Compile installable debug APK
         run: gradle -p android :app:assembleDebug --stacktrace --no-daemon
+      - name: Preparar APK v2.5
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/DeadZone-Eclipse-Android-v2.5.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: DeadZone-Eclipse-Android-v1.0
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: DeadZone-Eclipse-Android-v2.5
+          path: dist/DeadZone-Eclipse-Android-v2.5.apk
           retention-days: 30
           if-no-files-found: error
+      - name: Publicar APK v2.5
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create android-v2.5.0 dist/DeadZone-Eclipse-Android-v2.5.apk --title "DEAD ZONE ECLIPSE · Android v2.5" --notes "Incluye el juego v2.5 como respaldo y actualizaciones web cuando estén disponibles. APK de prueba firmada con clave debug: la actualización sobre v1.0 puede requerir reinstalación si las firmas difieren." --target "${{ github.sha }}"
