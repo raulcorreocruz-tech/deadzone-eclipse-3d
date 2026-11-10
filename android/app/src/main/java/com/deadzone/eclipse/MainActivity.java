@@ -23,7 +23,7 @@ import java.net.HttpURLConnection;
 import java.io.ByteArrayOutputStream;
 
 public final class MainActivity extends Activity {
-    private static final String GAME = "https://raulcorreocruz-tech.github.io/deadzone-eclipse-3d/";
+    private static final String GAME = "https://deadzone-eclipse-coop.onrender.com/";
     private static final String LOCAL = "https://appassets.androidplatform.net/index.html";
     private boolean localFallback = false;
     private static final String VERSION = "https://raw.githubusercontent.com/raulcorreocruz-tech/deadzone-eclipse-3d/main/android-version.json";
@@ -86,7 +86,7 @@ public final class MainActivity extends Activity {
                 localFallback = true;
                 runOnUiThread(() -> {
                     status.setVisibility(View.VISIBLE);
-                    status.setText("Cargando versión incluida 2.5...");
+                    status.setText("Sin conexión al servidor cooperativo. Abriendo modo individual incluido...");
                     web.loadUrl(LOCAL);
                 });
             }
@@ -95,7 +95,7 @@ public final class MainActivity extends Activity {
             }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest req) {
                 Uri u = req.getUrl();
-                if ("raulcorreocruz-tech.github.io".equalsIgnoreCase(u.getHost()) || "appassets.androidplatform.net".equalsIgnoreCase(u.getHost())) return false;
+                if ("deadzone-eclipse-coop.onrender.com".equalsIgnoreCase(u.getHost()) || "appassets.androidplatform.net".equalsIgnoreCase(u.getHost())) return false;
                 Intent open = new Intent(Intent.ACTION_VIEW, u);
                 try { startActivity(open); } catch(Exception ignored) {}
                 return true;
@@ -121,7 +121,7 @@ public final class MainActivity extends Activity {
     private void loadGame() {
         status.setVisibility(View.VISIBLE);
         status.setText("DEAD ZONE: ECLIPSE\n\nCargando juego online…");
-        // The live site updates automatically; an embedded v2.5 is available if the site is offline.
+        // The live multiplayer server gets updates without needing a new native APK; the embedded fallback is offline only.
         localFallback = false;
         web.loadUrl(GAME + "?android=1&fresh=" + System.currentTimeMillis());
     }
