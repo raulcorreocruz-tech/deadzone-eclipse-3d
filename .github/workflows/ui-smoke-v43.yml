@@ -53,6 +53,7 @@ jobs:
           await page.screenshot({path:'v43-mobile-menu.png'});
           await page.locator('#start').click();
           await page.waitForTimeout(1700);
+          console.log('UI HINT NODES',JSON.stringify(await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(el=>el.children.length===0&&/DESLIZA|STICK DERECHO|GIRAR CÁMARA|APUNTA CON/i.test(el.textContent||'')).map(el=>({id:el.id,tag:el.tagName,class:el.className,parentId:el.parentElement?.id,parentClass:el.parentElement?.className,text:el.textContent?.slice(0,160)})))));
           await page.screenshot({path:'v43-mobile-game.png'});
           if(errors.some(e=>/ReferenceError|SyntaxError|Uncaught/i.test(e)))throw Error('Browser errors: '+errors.join(' // ').slice(0,1000));
           fs.writeFileSync('v43-browser-report.json',JSON.stringify({ok:true,skinOptions:6,selectedSkin:stored,news:true,started:true,errors:errors.slice(0,10),viewport:'915x412',checkedAt:new Date().toISOString()},null,2));
