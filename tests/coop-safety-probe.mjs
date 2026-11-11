@@ -26,7 +26,7 @@ try{
  const forged=hm.some(m=>m.type==='snapshot'&&m.wave===99999);
  findings.push({check:'guest snapshot forgery',result:forged?'vulnerable':'not_observed',detail:'non-host snapshot relayed to host: '+forged});
  // Invalid JSON must not crash the server or kill the healthy host.
- guest.send('{ intentionally invalid json');
+ const rogue=await connect();sockets.push(rogue);rogue.send('{ intentionally invalid json');
  await delay(300);
  findings.push({check:'malformed JSON resilience',result:host.readyState===WebSocket.OPEN?'pass':'host_disconnected'});
  // A host snapshot should be received by its guest.
