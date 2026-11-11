@@ -1,7 +1,7 @@
 {
   "status": "success",
-  "commit": "e824bc34abd6662564b5dae04a1d209e89a9500e",
-  "runId": "42985609257",
-  "validatedAt": "2026-11-11T08:15:42.100Z",
+  "commit": "107d581dc27ea01bf2feb3bba4e14072eec02b65",
+  "runId": "42985731296",
+  "validatedAt": "2026-11-11T08:16:36.008Z",
   "log": "v3.9 optional missing: customizable new touch buttons\nDEAD ZONE v3.9 patched: inject combat and visuals, streak fire manual, dog retains firing ability, bullet tracer silhouettes, pack gun appearance, only streak shop, keyboard grenade and melee, touch melee grenade, crawlers slow, steering and flanking, crawler pose, crawler injury, surrounding spawns, upgraded gun firing tone, helicopter fires on demand, streak safety, remote cooperative melee grenade streaks, car physics, reset grenades and gun, grenade resupply, step grenade and streak physics, streak camera height, visible streak models, ensure manual fire remains, mobile action styles\nDead Zone v4 completed: asset loader, GLB weapon replacement, actual projectile cartridge, short subtle tracer, dim tracer, tracer lifespan, target nearest teammate, online ally receives damage, anti-wall lookahead, nav target\nDEAD ZONE v4.1 retain categorization, inject systems, preserve GPU buffers, safe GLB cleanup, ballistic brass/copper bullets, kinetic corpse fall, shared pathfinding, physics update, crawler pose, mobile high rigged, rigged mobile budget\nDEAD ZONE v4.1: 18/18 external weapon GLB models validated\nDEAD ZONE v4.1: 3/3 melee models verified\nDEAD ZONE: descargados 5860765 bytes y extraídos 30 archivos\n"
 }
