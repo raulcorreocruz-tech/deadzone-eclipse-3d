@@ -22,8 +22,12 @@ jobs:
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
       - name: Descargar assets y aplicar parches
-        run: node setup.cjs
+        id: game_build
+        run: |
+          node setup.cjs 2>&1 | tee /tmp/v40-build.log
+          exit ${PIPESTATUS[0]}
       - name: Verificar modelos GLB reales
+        id: models_check
         run: |
           node - <<'NODE'
           const fs=require('node:fs');
@@ -40,6 +44,7 @@ jobs:
           console.log('Integración v4 validada');
           NODE
       - name: Verificar sintaxis del JavaScript del juego
+        id: syntax_check
         run: |
           node - <<'NODE'
           const fs=require('node:fs'),cp=require('node:child_process');
@@ -53,6 +58,7 @@ jobs:
           console.log('SINTAXIS JS CORRECTA');
           NODE
       - name: Comprobar servidor multijugador
+        id: server_check
         run: |
           node server.js > /tmp/dz-v4-server.log 2>&1 &
           echo $! > /tmp/dz-v4.pid
@@ -69,7 +75,7 @@ jobs:
           RESULT: ${{ job.status }}
           COMMIT: ${{ github.sha }}
         run: |
-          node -e 'const fs=require("fs");fs.writeFileSync("/tmp/v40-result.json",JSON.stringify({status:process.env.RESULT,commit:process.env.COMMIT,validatedAt:new Date().toISOString()},null,2)+"\n")'
+          node -e 'const fs=require("fs");const log=fs.existsSync("/tmp/v40-build.log")?fs.readFileSync("/tmp/v40-build.log","utf8").slice(-3000):"no build log";fs.writeFileSync("/tmp/v40-result.json",JSON.stringify({status:process.env.RESULT,commit:process.env.COMMIT,runId:process.env.GITHUB_RUN_ID,validatedAt:new Date().toISOString(),log},null,2)+"\n")'
           BLOB=$(base64 -w0 /tmp/v40-result.json)
           CURRENT=$(gh api repos/${{ github.repository }}/contents/v40-build-status.json --jq .sha 2>/dev/null || true)
           if [ -n "$CURRENT" ]; then
