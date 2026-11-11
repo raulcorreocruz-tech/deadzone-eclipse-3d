@@ -9,7 +9,7 @@ on:
       - ".github/workflows/verify-game-v4.yml"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -61,3 +61,19 @@ jobs:
           curl -fsS http://localhost:3000/assets/assault_rifle.glb -o /tmp/dz-rifle.glb
           test -s /tmp/dz-rifle.glb
           kill "$(cat /tmp/dz-v4.pid)"
+
+      - name: Registrar resultado de compilación
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          node -e 'const fs=require("fs");fs.writeFileSync("/tmp/v40-result.json",JSON.stringify({status:process.env.RESULT,commit:process.env.COMMIT,validatedAt:new Date().toISOString()},null,2)+"\n")'
+          BLOB=$(base64 -w0 /tmp/v40-result.json)
+          CURRENT=$(gh api repos/${{ github.repository }}/contents/v40-build-status.json --jq .sha 2>/dev/null || true)
+          if [ -n "$CURRENT" ]; then
+            gh api -X PUT repos/${{ github.repository }}/contents/v40-build-status.json -f message="CI v4 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+          else
+            gh api -X PUT repos/${{ github.repository }}/contents/v40-build-status.json -f message="CI v4 status" -f content="$BLOB" >/dev/null || true
+          fi
