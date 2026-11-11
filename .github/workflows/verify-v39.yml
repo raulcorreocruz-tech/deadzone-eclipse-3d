@@ -29,7 +29,7 @@ jobs:
           node - <<'JS'
           const fs=require('fs'),cp=require('child_process');
           const h=fs.readFileSync('index.html','utf8');
-          if(!h.includes('DZ_UPGRADE_39'))throw Error('v3.9 patch missing');
+          if(!h.includes('DEAD_ZONE_PATCH_39'))throw Error('v3.9 patch missing');
           if(!h.includes('dzSteer(')||!h.includes('dzGrenade()')||!h.includes('dzStreakShop()'))throw Error('Gameplay patch incomplete');
           const scripts=[...h.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(m=>m[2].trim()&&!/importmap|application\/json/i.test(m[1]));
           let checked=0;
