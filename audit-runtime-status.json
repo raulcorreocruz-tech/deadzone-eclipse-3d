@@ -1,7 +1,7 @@
 {
   "status": "success",
-  "runId": "43016386365",
-  "commit": "e301dac6d19d6604195c82f744b4c875db34e38b",
+  "runId": "43016520025",
+  "commit": "ed68ef3191cfb6345580cd5535ab6b4e7456ccee",
   "report": {
     "passed": true,
     "modes": [
@@ -10,7 +10,7 @@
         "skinPicker": true,
         "changelog": true,
         "started": true,
-        "scanned": 3,
+        "scanned": 8,
         "rigged": 2,
         "errors": []
       },
@@ -19,8 +19,8 @@
         "skinPicker": true,
         "changelog": true,
         "started": true,
-        "scanned": 3,
-        "rigged": 3,
+        "scanned": 8,
+        "rigged": 8,
         "errors": []
       }
     ]
