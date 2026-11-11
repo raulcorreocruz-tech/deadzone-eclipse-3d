@@ -1,4 +1,4 @@
-name: Verificar versión 4.0 publicada en Render
+name: Verificar DEAD ZONE 4.3 en Render
 on:
   push:
     branches: [main]
@@ -47,7 +47,7 @@ jobs:
           BLOB=$(base64 -w0 /tmp/live.json)
           CURRENT=$(gh api repos/${{ github.repository }}/contents/v43-live-status.json --jq .sha 2>/dev/null || true)
           if [ -n "$CURRENT" ]; then
-            gh api -X PUT repos/${{ github.repository }}/contents/v40-live-status.json -f message="Live v4.3 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+            gh api -X PUT repos/${{ github.repository }}/contents/v43-live-status.json -f message="Live v4.3 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
           else
-            gh api -X PUT repos/${{ github.repository }}/contents/v40-live-status.json -f message="Live v4 status" -f content="$BLOB" >/dev/null || true
+            gh api -X PUT repos/${{ github.repository }}/contents/v43-live-status.json -f message="Live v4.3 status" -f content="$BLOB" >/dev/null || true
           fi
