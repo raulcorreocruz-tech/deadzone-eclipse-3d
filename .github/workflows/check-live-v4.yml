@@ -6,6 +6,7 @@ on:
       - "gameplay-v40.cjs"
       - "gameplay-v41.cjs"
       - "gameplay-v42.cjs"
+      - "gameplay-v43.cjs"
       - "setup.cjs"
       - ".github/workflows/check-live-v4.yml"
   workflow_dispatch:
@@ -23,11 +24,11 @@ jobs:
           OK=0
           for i in $(seq 1 24); do
             if curl -fsS --max-time 18 "https://deadzone-eclipse-coop.onrender.com/?check=$(date +%s)" -o /tmp/dz-live.html; then
-              if grep -q 'DEAD_ZONE_PATCH_42' /tmp/dz-live.html &&
+              if grep -q 'DEAD_ZONE_PATCH_43' /tmp/dz-live.html &&
                  curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/dz-health &&
                  curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/dz-gun.glb; then
                 if [ "$(head -c 4 /tmp/dz-gun.glb)" = "glTF" ]; then
-                  echo "LIVE v4.2 OK"; OK=1; break
+                  echo "LIVE v4.3 OK"; OK=1; break
                 fi
               fi
             fi
@@ -42,11 +43,11 @@ jobs:
           VERSION_LIVE: ${{ steps.probe.outputs.live }}
           COMMIT: ${{ github.sha }}
         run: |
-          node -e 'const fs=require("fs");fs.writeFileSync("/tmp/live.json",JSON.stringify({version:"4.2",live:process.env.VERSION_LIVE==="yes",commit:process.env.COMMIT,checkedAt:new Date().toISOString()},null,2)+"\n")'
+          node -e 'const fs=require("fs");fs.writeFileSync("/tmp/live.json",JSON.stringify({version:"4.3",live:process.env.VERSION_LIVE==="yes",commit:process.env.COMMIT,checkedAt:new Date().toISOString()},null,2)+"\n")'
           BLOB=$(base64 -w0 /tmp/live.json)
-          CURRENT=$(gh api repos/${{ github.repository }}/contents/v42-live-status.json --jq .sha 2>/dev/null || true)
+          CURRENT=$(gh api repos/${{ github.repository }}/contents/v43-live-status.json --jq .sha 2>/dev/null || true)
           if [ -n "$CURRENT" ]; then
-            gh api -X PUT repos/${{ github.repository }}/contents/v40-live-status.json -f message="Live v4.2 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+            gh api -X PUT repos/${{ github.repository }}/contents/v40-live-status.json -f message="Live v4.3 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
           else
             gh api -X PUT repos/${{ github.repository }}/contents/v40-live-status.json -f message="Live v4 status" -f content="$BLOB" >/dev/null || true
           fi
