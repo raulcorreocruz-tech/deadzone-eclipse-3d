@@ -1,7 +1,7 @@
 {
   "status": "success",
-  "runId": "43015944296",
-  "commit": "e2ac678d4a18da39452581de639cdef7ae958d98",
+  "runId": "43016386365",
+  "commit": "e301dac6d19d6604195c82f744b4c875db34e38b",
   "report": {
     "passed": true,
     "modes": [
@@ -24,5 +24,7 @@
         "errors": []
       }
     ]
-  }
+  },
+  "sourceZipSha256": "6f27e9ba2a435239c5b7e2015a805dc9a64aee0f44b5b87a7a4a253a1192fc74",
+  "assetCount": 32
 }
