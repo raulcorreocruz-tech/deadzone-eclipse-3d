@@ -47,9 +47,9 @@ jobs:
           await page.locator('#dz43SkinsPanel button').first().click();
           await page.locator('#dz43NewsButton').click();
           if(!await page.locator('#dz43NewsPanel').isVisible())throw Error('Changelog missing');
-          if(!await page.locator('#dz43NewsPanel').innerText().then(t=>t.includes('4.3')))throw Error('Version 4.3 news missing');
+          if(!await page.locator('#dz43NewsPanel').innerText().then(t=>t.includes('4.4')))throw Error('Version 4.3 news missing');
           await page.locator('#dz43NewsPanel button').first().click();
-          if(!await page.locator('#versionBadge').innerText().then(t=>t.includes('4.3')))throw Error('Version badge outdated');
+          if(!await page.locator('#versionBadge').innerText().then(t=>t.includes('4.4')))throw Error('Version badge outdated');
           await page.screenshot({path:'v43-mobile-menu.png'});
           await page.locator('#start').click();
           await page.waitForTimeout(1700);
