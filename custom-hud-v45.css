@@ -1,0 +1,33 @@
+/* DEAD_ZONE_PATCH_45 */
+#dz45-editor[hidden],#dz45-quick[hidden]{display:none!important}
+#dz45-editor{position:fixed;inset:0;z-index:100000;pointer-events:none;color:#fff;font-family:system-ui,sans-serif;touch-action:none}
+#dz45-editor .dz45-panel{position:absolute;top:max(6px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(710px,96vw);max-height:85dvh;overflow:auto;pointer-events:auto;background:#0c1a27f5;border:1px solid #83a5b5;border-radius:14px;box-shadow:0 12px 40px #000e;padding:12px;touch-action:pan-y}
+.dz45-panel header,.dz45-panel footer,.dz45-presets{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.dz45-panel header strong{font-size:15px}.dz45-panel header span{font-size:11px;color:#ffe19c}
+.dz45-panel p{font-size:11px;color:#c5d8e4;line-height:1.4;margin:6px 0}
+.dz45-panel label{display:inline-flex;vertical-align:middle;flex-direction:column;gap:5px;min-width:110px;width:31%;margin:5px 1%;font-size:12px;font-weight:700}
+.dz45-panel label.dz45-checkbox{width:auto;min-width:100px;flex-direction:row;align-items:center}
+.dz45-panel input[type=range]{width:100%;height:36px;accent-color:#e45a52}
+.dz45-panel select{min-height:44px;background:#243a4c;color:white;border:1px solid #819aa9;border-radius:8px}
+.dz45-panel button,.dz45-launch{min-height:44px;border:1px solid #7995a9;background:#1e3a4e;color:white;padding:9px 12px;border-radius:9px;font:800 12px system-ui}
+.dz45-panel footer{justify-content:end;margin-top:6px}
+#dz45-save{background:#b83f36;border-color:#ea8372}
+#dz45-quick{position:fixed;z-index:90;top:max(8px,env(safe-area-inset-top));left:calc(50% + 60px);min-width:60px;min-height:44px;background:#142b3bea;color:white;border:1px solid #94b4c3;border-radius:9px;font:800 12px system-ui;touch-action:manipulation}
+body.dz45-editing #dz45-quick,body.dz45-editing #dz44-pause{display:none!important}
+body.dz45-editing #hud{pointer-events:none}
+body.dz45-editing #hud .stick,body.dz45-editing #hud .tact{pointer-events:auto}
+body.dz45-editing #hud .dz45-ghost,.dz45-ghost{outline:2px dashed #e9c36f!important;outline-offset:4px;opacity:.95!important;pointer-events:auto!important;z-index:9999!important}
+body.dz45-editing .dz45-selected{outline:3px solid #65eaff!important;box-shadow:0 0 14px #49bfe4!important}
+body.dz45-editing #hud .hudtop,body.dz45-editing #hud .bottombar,body.dz45-editing #hud .hint{display:none!important}
+body.dz45-editing #hud .mobile{display:block!important}
+.dz45-positioned{position:fixed!important;left:var(--dz45-x)!important;top:var(--dz45-y)!important;right:auto!important;bottom:auto!important;width:var(--dz45-size)!important;height:var(--dz45-size)!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;transform:translate(-50%,-50%)!important;opacity:var(--dz45-opacity)!important;touch-action:none!important;display:grid!important;place-items:center!important}
+.dz45-positioned.stick{display:block!important}
+.dz45-hide{display:none!important}
+body.dz45-editing .dz45-hide{display:grid!important}
+@media(pointer:coarse),(max-width:800px){
+ #hud .stick:not(.dz45-positioned){width:clamp(96px,26dvh,134px);height:clamp(96px,26dvh,134px)}
+ #hud .tact:not(.dz45-positioned){min-width:52px;min-height:52px}
+ #hud .tact.fire:not(.dz45-positioned){width:clamp(74px,20dvh,100px);height:clamp(74px,20dvh,100px);font-size:14px}
+}
+@media(orientation:portrait){#dz45-editor .dz45-panel{max-height:49dvh;top:max(6px,env(safe-area-inset-top))}#dz45-quick{top:calc(env(safe-area-inset-top) + 50px)}.dz45-panel label{width:46%}}
+@media(max-height:370px){#dz45-editor .dz45-panel{max-height:75dvh}.dz45-panel label{width:30%}}
