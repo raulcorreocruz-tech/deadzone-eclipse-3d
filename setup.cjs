@@ -2,6 +2,8 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
+const crypto=require('node:crypto');
+const hashBuffer=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/deadzone-v3.8-aim-physics-coop.zip';
 (async()=>{
  const r=await fetch(URL,{signal:AbortSignal.timeout(120000)});
@@ -100,6 +102,19 @@ if(riggedLoaded<5)throw Error('Insufficient CC0 animated zombie/prop models: '+r
 console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props verified');
 
 
+ const allAssets=fs.readdirSync(path.join(dest,'assets')).filter(x=>x.endsWith('.glb')).sort();
+ const manifest={
+  gameVersion:require('./package.json').version,
+  sourceZipUrl:URL,
+  sourceZipSha256:hashBuffer(data),
+  sourceArchiveBytes:data.length,
+  generatedAt:new Date().toISOString(),
+  mainHtmlSha256:hashBuffer(fs.readFileSync(path.join(dest,'index.html'))),
+  serverSha256:hashBuffer(fs.readFileSync(path.join(dest,'server.js'))),
+  assets:Object.fromEntries(allAssets.map(name=>[name,hashBuffer(fs.readFileSync(path.join(dest,'assets',name)))]))
+ };
+ fs.writeFileSync(path.join(dest,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+ console.log('DEAD ZONE audit source ZIP SHA256:',manifest.sourceZipSha256,'GLB files:',allAssets.length);
  if(!fs.existsSync(path.join(dest,'assets','zombie_realista.glb')))throw Error('Falta modelo GLB');
  console.log('DEAD ZONE: descargados',data.byteLength,'bytes y extraídos',entries.length,'archivos');
 })().catch(err=>{console.error(err);process.exit(1)});
