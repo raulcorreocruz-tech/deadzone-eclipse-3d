@@ -20,7 +20,19 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
    const target=path.resolve(dest,n);
    if(!target.startsWith(dest+path.sep) && target!==dest)throw Error('Ruta ZIP no permitida: '+n);
  }
+ // Preserve the GitHub project's release metadata. The base ZIP contains an older
+ // package.json (3.0.0) that must never replace our 4.3.0 release manifest.
+ const packagePath=path.join(dest,'package.json');
+ const packageLockPath=path.join(dest,'package-lock.json');
+ const releasePackage=fs.readFileSync(packagePath);
+ const releaseLock=fs.existsSync(packageLockPath)?fs.readFileSync(packageLockPath):null;
+ const releaseVersion=JSON.parse(releasePackage.toString('utf8')).version;
  zip.extractAllTo(dest,true);
+ fs.writeFileSync(packagePath,releasePackage);
+ if(releaseLock)fs.writeFileSync(packageLockPath,releaseLock);
+ else if(fs.existsSync(packageLockPath))fs.unlinkSync(packageLockPath);
+ if(require('./package.json').version!==releaseVersion)throw Error('El ZIP ha sobrescrito la versión del proyecto');
+ console.log('DEAD ZONE: manifiesto del repositorio preservado; versión',releaseVersion);
  // Apply tested additive gameplay patch before Render publishes the new game.
  require('./gameplay-v39.cjs');
  require('./gameplay-v40.cjs');
