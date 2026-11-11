@@ -51,7 +51,7 @@ jobs:
           if(close<0)throw Error('No closing module script');
           const hook=`
           window.__dzRegression={
-            spawn:()=>{for(const [i,kind] of ['normal','runner','coloso'].entries())spawnZombie(kind,player.x+7+i*2,player.z+6+i*2)},
+            spawn:()=>{player.ifr=9999;for(const [i,kind] of ['normal','runner','coloso','gritona','trepador','toxico','invocador','final'].entries())spawnZombie(kind,player.x+14+i*1.2,player.z+11+i*1.2)},
             snapshot:()=>zombies.map((z,i)=>{
               const obj=z.figure?.userData?.dz42Visual||z.figure;
               const h=new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3()).y;
