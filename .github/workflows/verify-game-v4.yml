@@ -68,6 +68,29 @@ jobs:
           cat /tmp/dzhealth
           curl -fsS http://localhost:3000/assets/assault_rifle.glb -o /tmp/dz-rifle.glb
           test -s /tmp/dz-rifle.glb
+          node - <<'NODE'
+          const host=new WebSocket('ws://127.0.0.1:3000/ws');
+          const guests=[];let code='',started=false,received=0,joined=0,finished=false;
+          const timer=setTimeout(()=>fail('timeout: '+JSON.stringify({code,joined,started,received})),8500);
+          function fail(msg){if(finished)return;finished=true;console.error(msg);for(const ws of [host,...guests])try{ws.close()}catch{};clearTimeout(timer);process.exitCode=1;}
+          function done(){if(finished)return;finished=true;console.log('COOP PASS: 4 players, lobby, start and 3 snapshots');for(const ws of [host,...guests])ws.close();clearTimeout(timer);}
+          host.addEventListener('open',()=>host.send(JSON.stringify({type:'create',name:'HOST',character:'panda'})));
+          host.addEventListener('error',()=>fail('Host failed'));
+          host.addEventListener('message',ev=>{
+            const m=JSON.parse(ev.data);
+            if(m.type==='welcome'&&!code){code=m.code;for(let i=0;i<3;i++){
+              const guest=new WebSocket('ws://127.0.0.1:3000/ws');guests.push(guest);
+              guest.addEventListener('open',()=>guest.send(JSON.stringify({type:'join',name:'GUEST'+i,character:'panda',code})));
+              guest.addEventListener('error',()=>fail('Guest '+i+' failed'));
+              guest.addEventListener('message',event=>{
+                const n=JSON.parse(event.data);
+                if(n.type==='snapshot'){received++;if(received===3)done()}
+              });
+            }}
+            if(m.type==='lobby'&&m.players.length===4&&!started){started=true;host.send(JSON.stringify({type:'start'}))}
+            if(m.type==='started'){host.send(JSON.stringify({type:'snapshot',wave:1,spawn:1,zombies:[{id:'test',kind:'normal',x:1,z:1}],gates:[],boss:false}))}
+          });
+          NODE
           kill "$(cat /tmp/dz-v4.pid)"
 
       - name: Registrar resultado de compilación
