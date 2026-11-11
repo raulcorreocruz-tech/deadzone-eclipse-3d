@@ -1,0 +1,36 @@
+{
+  "runId": "43020357311",
+  "commit": "15e0316141db2c72753538a8db48c2430efef683",
+  "results": {
+    "date": "2026-11-11T12:26:50.209Z",
+    "findings": [
+      {
+        "check": "create/join/start",
+        "result": "pass"
+      },
+      {
+        "check": "guest snapshot forgery",
+        "result": "not_observed",
+        "detail": "non-host snapshot relayed to host: false"
+      },
+      {
+        "check": "malformed JSON resilience",
+        "result": "pass"
+      },
+      {
+        "check": "host snapshot delivery",
+        "result": "pass"
+      },
+      {
+        "check": "test execution",
+        "result": "error",
+        "detail": "Error: timeout waiting for message"
+      }
+    ],
+    "limitations": [
+      "No long-duration stress test",
+      "No authoritative server penetration test",
+      "No real-device gameplay validation"
+    ]
+  }
+}
