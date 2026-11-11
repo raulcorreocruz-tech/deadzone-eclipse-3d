@@ -9,6 +9,8 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  const r=await fetch(URL,{signal:AbortSignal.timeout(120000)});
  if(!r.ok)throw Error('No se puede descargar el juego: HTTP '+r.status);
  const data=Buffer.from(await r.arrayBuffer());
+ const BASE_ZIP_SHA256='6f27e9ba2a435239c5b7e2015a805dc9a64aee0f44b5b87a7a4a253a1192fc74';
+ if(hashBuffer(data)!==BASE_ZIP_SHA256)throw Error('El ZIP base ha cambiado sin una revisión explícita. Se cancela la compilación para preservar estabilidad.');
  const zip=new AdmZip(data);
  const entries=zip.getEntries();
  const dest=process.cwd();
