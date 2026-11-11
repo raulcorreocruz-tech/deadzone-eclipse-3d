@@ -10,7 +10,7 @@ on:
       - "setup.cjs"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   audit:
     runs-on: ubuntu-24.04
@@ -65,3 +65,18 @@ jobs:
             audit-runtime-results.json
             /tmp/deadzone-audit.log
           if-no-files-found: ignore
+
+      - name: Registrar resultado en la rama de auditoría
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+        run: |
+          RESULT="$RESULT" node -e 'const fs=require("fs"); const r=fs.existsSync("audit-runtime-results.json")?JSON.parse(fs.readFileSync("audit-runtime-results.json","utf8")):null;fs.writeFileSync("/tmp/audit-status.json",JSON.stringify({status:process.env.RESULT,runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,report:r},null,2)+"\n")'
+          BLOB=$(base64 -w0 /tmp/audit-status.json)
+          SHA=$(gh api repos/${{ github.repository }}/contents/audit-runtime-status.json?ref=${{ github.ref_name }} --jq .sha 2>/dev/null || true)
+          if [ -n "$SHA" ]; then
+            gh api -X PUT repos/${{ github.repository }}/contents/audit-runtime-status.json -f message="ci: audit regression result" -f content="$BLOB" -f sha="$SHA" -f branch="${{ github.ref_name }}" >/dev/null || true
+          else
+            gh api -X PUT repos/${{ github.repository }}/contents/audit-runtime-status.json -f message="ci: audit regression result" -f content="$BLOB" -f branch="${{ github.ref_name }}" >/dev/null || true
+          fi
