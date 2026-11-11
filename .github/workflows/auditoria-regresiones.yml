@@ -5,6 +5,7 @@ on:
     paths:
       - "tests/**"
       - ".github/workflows/auditoria-regresiones.yml"
+      - "gameplay-v41.cjs"
       - "gameplay-v42.cjs"
       - "gameplay-v43.cjs"
       - "setup.cjs"
