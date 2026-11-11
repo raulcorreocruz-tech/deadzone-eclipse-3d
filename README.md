@@ -1,24 +1,42 @@
-# Dead Zone: Eclipse 3D
+# DEAD ZONE: ECLIPSE 3D
 
-Juego 3D de supervivencia zombi con versiones web y móvil PWA sincronizadas desde una sola fuente de código.
+Juego 3D de supervivencia zombi con móvil Android y navegador compartiendo servidor.
 
-## Publicación automática
+## Jugar
 
-Cada cambio fusionado en `main` ejecuta `.github/workflows/deploy.yml` para actualizar la web mediante GitHub Pages. Una PWA instalada desde esa web usa la misma versión y obtiene las mejoras al volver a abrirla con conexión.
+**Web y juego online:** https://deadzone-eclipse-coop.onrender.com/
 
-**Configuración inicial del propietario (una sola vez):** entra en GitHub > Settings > Pages > Build and deployment > Source > **GitHub Actions**. Comprueba el resultado en la pestaña Actions.
+**APK nativa:** https://github.com/raulcorreocruz-tech/deadzone-eclipse-3d/releases/download/android-v3.8.0/DeadZone-Eclipse-Android-v3.8.apk
 
-La URL prevista, una vez se active Pages, es: https://raulcorreocruz-tech.github.io/deadzone-eclipse-3d/
+La APK contiene un WebView que abre la URL de Render, por lo que las actualizaciones web desplegadas llegan a la aplicación sin recompilar la APK. La versión del contenedor Android sigue siendo 3.8; el juego web tiene versión 4.2. Esto no garantiza actualizaciones automáticas del APK nativo.
 
-En Chrome Android visita la web, abre el menú (⋮) y pulsa *Instalar aplicación* o *Añadir a pantalla de inicio*, según el navegador.
+## Versión 4.2
 
-### Importante
+- 18 modelos GLB para categorías de armas de fuego y 3 modelos GLB para armas cuerpo a cuerpo (CC0).
+- Balas con geometría lathe de latón y punta cobriza, sin fogonazos gigantes en su trayectoria.
+- Rutas de movimiento mediante campo de distancias con puertas y evasión local de obstáculos.
+- Enemigos con física cinemática de caída, retroceso y desaparición controlada de cadáveres.
+- Cinco modelos animados de criaturas con esqueleto y clips Idle / Walk / Run / Attack / Hit / Death.
+- Nuevos modelos GLB para perros y coche.
+- Caja aleatoria, granadas, melee, mejoras Pack-a-Punch y rachas conservadas.
+- Hasta cuatro clientes cooperativos por WebSocket (servidor anfitrión de oleadas, no arquitectura plenamente autoritativa).
 
-- Esta instalación es una **PWA** (aplicación web), no un APK ni una app publicada en Google Play.
-- Los contenidos externos como Three.js necesitan conexión, por lo que no se garantiza jugar sin internet.
-- GitHub Pages solo sirve la web estática. El leaderboard global y multijugador que requieren servidor tienen que desplegarse por separado.
-- Los nuevos cambios en los archivos descargados en ChatGPT no se publican por sí solos: para actualizar la web y la PWA, hay que guardar los cambios en este repositorio, rama `main`.
+### Rendimiento móvil
 
-## Versión
+Para móviles Android como Xiaomi 13T Pro se aplican presupuestos: dos enemigos riggeados en calidad automática, cinco en Alta y cero en Baja. El resto emplea geometría ligera; cadáveres visibles: máximo cinco. En PC se permiten hasta 15 enemigos riggeados y 12 cadáveres. La calidad se ajusta desde el menú del juego.
 
-2.5: editor de controles táctiles y mejoras previas del juego. Base inicial para publicación continua.
+### Limitaciones conocidas
+
+- Los modelos son estilizados y CC0, no réplicas fotorrealistas individuales de todas las armas comerciales.
+- Caídas con física cinemática y clip de muerte, **no ragdoll físico por articulación**.
+- No se ha realizado prueba física de FPS ni renderizado en un Xiaomi 13T Pro.
+- La prueba automatizada de cuatro clientes WebSocket no sustituye una partida de cuatro personas desde dispositivos reales.
+- La publicación de Render debe comprobarse por separado de la compilación del repositorio.
+
+## Desarrollo y construcción
+
+`npm install` y `npm run build` descargan y extraen el juego base, aplican los parches v3.9–v4.2 e incorporan los modelos 3D CC0. Después, `npm start` sirve el juego y `/ws`.
+
+`.github/workflows/verify-game-v4.yml` valida los 29 GLB, sintaxis JavaScript, arranque del servidor y sesiones WebSocket simuladas de cuatro clientes. `.github/workflows/check-live-v4.yml` comprueba que el entorno público sirva la versión nueva.
+
+Licencias y fuentes de los modelos: [ASSET-LICENSES-v4.md](./ASSET-LICENSES-v4.md).
