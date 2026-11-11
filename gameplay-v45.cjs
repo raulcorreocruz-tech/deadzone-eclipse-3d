@@ -63,6 +63,6 @@ const css = [
 '@media (pointer:coarse) and (orientation:portrait){body.touch-mode #hud{--joy:clamp(99px,27vw,135px);--tap:clamp(52px,14vw,65px);--fire-size:clamp(76px,20vw,96px)}body.touch-mode #controlsEditor .layoutTools{max-height:49dvh}#dz45-edit{top:calc(env(safe-area-inset-top,0px) + 48px)}}'
 ].join('\n');
 change('</style><link rel="manifest"',css+'</style><link rel="manifest"','css');
-html=html.replace(/(<title>[^<]*?)v4\\.4([^<]*<\\/title>)/i,'$1v4.5$2');
+html=html.replace('<title>DEAD ZONE · ECLIPSE 3D v4.4</title>','<title>DEAD ZONE · ECLIPSE 3D v4.5</title>');
 fs.writeFileSync(file,html);console.log('DEAD ZONE v4.5 HUD controls and mobile ergonomics applied');
 }
