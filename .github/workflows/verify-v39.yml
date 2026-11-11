@@ -41,6 +41,7 @@ jobs:
           }
           if(!checked)throw Error('No executable script found');
           console.log('GAMEPLAY v3.9 OK; scripts validated:',checked,'HTML bytes:',h.length);
+          const pos=h.indexOf('remoteFire');console.log('COOP_REMOTE_HANDLER',pos>=0?h.slice(Math.max(0,pos-120),pos+650).replaceAll('\\n',' '):'absent');
           JS
       - name: Validate bundled runtime
         run: |
