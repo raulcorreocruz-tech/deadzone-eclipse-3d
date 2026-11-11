@@ -1,0 +1,72 @@
+name: Prueba visual DEAD ZONE 4.3 Android
+on:
+  push:
+    paths:
+      - ".github/workflows/ui-smoke-v43.yml"
+      - "gameplay-v43.cjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar compilación y navegador
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          node setup.cjs
+      - name: Servir juego local
+        run: |
+          PORT=3000 node server.js >/tmp/deadzone.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://localhost:3000/health && break || sleep 1; done
+      - name: Comprobar skins, novedades y gameplay horizontal
+        run: |
+          cat > dz-smoke.mjs <<'NODE'
+          import {chromium} from 'playwright';
+          import fs from 'node:fs';
+          const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
+          const page=await browser.newPage({viewport:{width:915,height:412},deviceScaleFactor:2,isMobile:true,hasTouch:true});
+          const errors=[];
+          page.on('pageerror',e=>errors.push('page:'+e.message));
+          page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+          await page.goto('http://127.0.0.1:3000/',{waitUntil:'domcontentloaded',timeout:45000});
+          await page.locator('#dz43SkinsButton').waitFor({timeout:30000});
+          await page.locator('#dz43SkinsButton').click();
+          const options=page.locator('#dz43SkinsPanel button[aria-pressed]');
+          if(await options.count()!==6)throw Error('Expected 6 skins, got '+await options.count());
+          await options.filter({hasText:'Pandita'}).click();
+          const stored=await page.evaluate(()=>localStorage.getItem('deadzone_skin_v43'));
+          if(stored!=='panda')throw Error('Skin not persisted '+stored);
+          await page.locator('#dz43SkinsPanel button').first().click();
+          await page.locator('#dz43NewsButton').click();
+          if(!await page.locator('#dz43NewsPanel').isVisible())throw Error('Changelog missing');
+          if(!await page.locator('#dz43NewsPanel').innerText().then(t=>t.includes('4.3')))throw Error('Version 4.3 news missing');
+          await page.locator('#dz43NewsPanel button').first().click();
+          if(!await page.locator('#versionBadge').innerText().then(t=>t.includes('4.3')))throw Error('Version badge outdated');
+          await page.screenshot({path:'v43-mobile-menu.png'});
+          await page.locator('#start').click();
+          await page.waitForTimeout(1700);
+          await page.screenshot({path:'v43-mobile-game.png'});
+          if(errors.some(e=>/ReferenceError|SyntaxError|Uncaught/i.test(e)))throw Error('Browser errors: '+errors.join(' // ').slice(0,1000));
+          fs.writeFileSync('v43-browser-report.json',JSON.stringify({ok:true,skinOptions:6,selectedSkin:stored,news:true,started:true,errors:errors.slice(0,10),viewport:'915x412',checkedAt:new Date().toISOString()},null,2));
+          console.log('BROWSER PASS',fs.readFileSync('v43-browser-report.json','utf8'));
+          await browser.close();
+          NODE
+          node dz-smoke.mjs
+      - name: Capturas de prueba
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deadzone-v43-android-ui-test
+          path: |
+            v43-mobile-menu.png
+            v43-mobile-game.png
+            v43-browser-report.json
+          if-no-files-found: ignore
