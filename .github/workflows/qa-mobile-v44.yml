@@ -2,7 +2,7 @@ name: QA Android HD y pausa v4.4
 on:
   push:
     branches: ["fix/mobile-sharpness-pause-2026-11-11"]
-    paths: ["setup.cjs", "gameplay-v44.cjs", "package.json", "tests/mobile-v44-regression.mjs", ".github/workflows/qa-mobile-v44.yml"]
+    paths: ["setup.cjs", "gameplay-v44.cjs", "package.json", "tests/mobile-v44-regression.mjs", "tests/release-fingerprint.mjs", ".github/workflows/qa-mobile-v44.yml"]
   workflow_dispatch:
 permissions:
   contents: write
