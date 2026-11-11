@@ -1,8 +1,8 @@
 {
-  "runId": "43020425130",
-  "commit": "b13a03516a9bca9d4ecdda3466fe9b2a01969ba5",
+  "runId": "43020538818",
+  "commit": "d023f705ae50a34b05f6d315c3d12dc0a76df39e",
   "results": {
-    "date": "2026-11-11T12:27:14.347Z",
+    "date": "2026-11-11T12:28:02.007Z",
     "findings": [
       {
         "check": "create/join/start",
@@ -22,9 +22,8 @@
         "result": "pass"
       },
       {
-        "check": "test execution",
-        "result": "error",
-        "detail": "Error: timeout waiting for message"
+        "check": "guest damage injection",
+        "result": "not_observed"
       }
     ],
     "limitations": [
