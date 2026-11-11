@@ -2,5 +2,5 @@
   "versionCode": 38,
   "versionName": "3.8.0",
   "apkUrl": "https://github.com/raulcorreocruz-tech/deadzone-eclipse-3d/releases/download/android-v3.8.0/DeadZone-Eclipse-Android-v3.8.apk",
-  "message": "DEAD ZONE Android v3.8: joystick derecho solo gira al personaje; FUEGO dispara; fisicas arcade y cooperativo online usando Render. Si Android no permite instalar encima por una firma diferente, desinstala la APK anterior e instala la nueva. Aviso: al desinstalar se borran los ajustes y datos locales."
+  "message": "DEAD ZONE Android v3.8: joystick de giro independiente, disparo manual, físicas arcade y acceso a salas cooperativas. Esta compilación de prueba puede requerir desinstalar la versión anterior si su firma es diferente; antes guarda tus ajustes, pues se borrarán los datos locales."
 }
