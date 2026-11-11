@@ -1,7 +1,21 @@
 {
-  "result": "failure",
-  "report": null,
-  "runId": "43024436047",
-  "commit": "4b9f7c157da2fcaadec72f6e54cfc77956c3882f",
-  "checkedAt": "2026-11-11T12:55:15.534Z"
+  "result": "success",
+  "report": {
+    "status": "passed",
+    "reports": [
+      {
+        "platform": "Android landscape simulated",
+        "auto": 1.2,
+        "high": 1.75,
+        "low": 0.75,
+        "pauseSolo": true,
+        "resume": true,
+        "coopSafe": true,
+        "errors": []
+      }
+    ]
+  },
+  "runId": "43024559080",
+  "commit": "a47f06a329d9dcaee97d21d8f259a6cdc459bcea",
+  "checkedAt": "2026-11-11T12:57:06.332Z"
 }
