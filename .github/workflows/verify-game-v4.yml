@@ -1,0 +1,63 @@
+name: Verificar DEAD ZONE v4
+on:
+  push:
+    branches: [main]
+    paths:
+      - "setup.cjs"
+      - "gameplay-v39.cjs"
+      - "gameplay-v40.cjs"
+      - ".github/workflows/verify-game-v4.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+      - name: Descargar assets y aplicar parches
+        run: node setup.cjs
+      - name: Verificar modelos GLB reales
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const guns=['pistol_compact','pistol_full','smg_compact','smg_full','assault_rifle','battle_rifle','shotgun_pump','shotgun_auto','sniper'];
+          for(const gun of guns){
+            const buffer=fs.readFileSync('assets/'+gun+'.glb');
+            if(buffer.toString('ascii',0,4)!=='glTF'||buffer.byteLength<1024)throw Error('GLB inválido: '+gun);
+          }
+          console.log('VALIDADOS',guns.length,'MODELOS GLB');
+          const src=fs.readFileSync('index.html','utf8');
+          for(const token of ['DEAD_ZONE_PATCH_39','DEAD_ZONE_PATCH_40','dz40BulletShape(bmesh,a2)','dz40LoadGun(g,w,lv)']){
+            if(!src.includes(token))throw Error('Parche de juego ausente: '+token);
+          }
+          console.log('Integración v4 validada');
+          NODE
+      - name: Verificar sintaxis del JavaScript del juego
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),cp=require('node:child_process');
+          const html=fs.readFileSync('index.html','utf8');
+          const scripts=[...html.matchAll(/<script\s+type="module"\s*>([\s\S]*?)<\/script>/g)];
+          if(!scripts.length)throw Error('No se encontró script 3D');
+          for(const [,s] of scripts){
+            const r=cp.spawnSync(process.execPath,['--check','--input-type=module'],{input:s,encoding:'utf8'});
+            if(r.status)throw Error('Sintaxis JS: '+r.stderr);
+          }
+          console.log('SINTAXIS JS CORRECTA');
+          NODE
+      - name: Comprobar servidor multijugador
+        run: |
+          node server.js > /tmp/dz-v4-server.log 2>&1 &
+          echo $! > /tmp/dz-v4.pid
+          for i in $(seq 1 30); do curl -fsS http://localhost:3000/health >/tmp/dzhealth && break || sleep 1; done
+          cat /tmp/dzhealth
+          curl -fsS http://localhost:3000/assets/assault_rifle.glb -o /tmp/dz-rifle.glb
+          test -s /tmp/dz-rifle.glb
+          kill "$(cat /tmp/dz-v4.pid)"
