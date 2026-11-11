@@ -1,0 +1,101 @@
+name: Release candidate QA — DEAD ZONE
+on:
+  push:
+    branches: ["feat/huella-despliegue-qa-2026-11-11"]
+    paths:
+      - "tests/**"
+      - ".github/workflows/auditoria-regresiones.yml"
+      - "gameplay-v41.cjs"
+      - "gameplay-v42.cjs"
+      - "gameplay-v43.cjs"
+      - "setup.cjs"
+      - "tests/release-fingerprint.mjs"
+      - ".github/workflows/qa-release-candidate.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Dependencias de la rama
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Construir sin publicar
+        run: node setup.cjs
+      - name: Comprobar huellas del origen y los assets
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const m=JSON.parse(fs.readFileSync('build-manifest.json','utf8'));
+          const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+          if(!/^[a-f0-9]{64}$/.test(m.sourceZipSha256))throw Error('SHA de origen ausente');
+          if(m.serverSha256!==sha('server.js'))throw Error('El servidor ha cambiado desde la compilación');
+          if(m.mainHtmlSha256!==sha('index.html'))throw Error('El HTML ha cambiado antes de la instrumentación');
+          if(Object.keys(m.assets).length<29)throw Error('Faltan assets GLB en la compilación');
+          for(const [name,hash] of Object.entries(m.assets))if(sha('assets/'+name)!==hash)throw Error('El modelo '+name+' cambió');
+          console.log('BUILD MANIFEST VERIFIED',m.sourceZipSha256,'GLB:',Object.keys(m.assets).length);
+          NODE
+      - name: Comprobar versión exacta y digest de todos los recursos
+        run: node tests/release-fingerprint.mjs
+      - name: Añadir instrumentación solo en la copia temporal de CI
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),f='index.html';let s=fs.readFileSync(f,'utf8');
+          const head=/<script\s+type=["']module["']\s*>/i.exec(s);
+          if(!head)throw Error('No ES module script');
+          const close=s.indexOf('</script>',head.index);
+          if(close<0)throw Error('No closing module script');
+          const hook=`
+          window.__dzRegression={
+            spawn:()=>{player.ifr=9999;for(const [i,kind] of ['normal','runner','coloso','gritona','trepador','toxico','invocador','final'].entries())spawnZombie(kind,player.x+14+i*1.2,player.z+11+i*1.2)},
+            snapshot:()=>zombies.map((z,i)=>{
+              const obj=z.figure?.userData?.dz42Visual||z.figure;
+              const h=new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3()).y;
+              return {id:z.netId??i,kind:z.kind,height:h,expected:2.3*z.size,rigged:!!z.figure?.userData?.dz42Visual,crawler:!!z.crawler};
+            })
+          };
+          `;
+          s=s.slice(0,close)+hook+s.slice(close);
+          fs.writeFileSync(f,s);
+          console.log('Instrumented local build only');
+          NODE
+      - name: Arrancar servidor local
+        run: |
+          PORT=3000 node server.js > /tmp/deadzone-audit.log 2>&1 &
+          for i in $(seq 1 25); do if curl --fail --silent http://localhost:3000/health >/dev/null; then exit 0; fi; sleep 1; done
+          cat /tmp/deadzone-audit.log
+          exit 1
+      - name: Regresiones reales en Chromium
+        run: node tests/runtime-regression.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deadzone-audit-regression-report
+          path: |
+            audit-runtime-results.json
+            build-manifest.json
+            /tmp/deadzone-audit.log
+          if-no-files-found: ignore
+
+      - name: Registrar resultado en la rama de auditoría
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+        run: |
+          RESULT="$RESULT" node -e 'const fs=require("fs"); const r=fs.existsSync("audit-runtime-results.json")?JSON.parse(fs.readFileSync("audit-runtime-results.json","utf8")):null;const build=fs.existsSync("build-manifest.json")?JSON.parse(fs.readFileSync("build-manifest.json","utf8")):null;fs.writeFileSync("/tmp/audit-status.json",JSON.stringify({status:process.env.RESULT,runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,report:r,sourceZipSha256:build?.sourceZipSha256,assetCount:build?Object.keys(build.assets).length:null},null,2)+"\n")'
+          BLOB=$(base64 -w0 /tmp/audit-status.json)
+          SHA=$(gh api repos/${{ github.repository }}/contents/release-qa-status.json?ref=${{ github.ref_name }} --jq .sha 2>/dev/null || true)
+          if [ -n "$SHA" ]; then
+            gh api -X PUT repos/${{ github.repository }}/contents/release-qa-status.json -f message="ci: release candidate QA result" -f content="$BLOB" -f sha="$SHA" -f branch="${{ github.ref_name }}" >/dev/null || true
+          else
+            gh api -X PUT repos/${{ github.repository }}/contents/release-qa-status.json -f message="ci: release candidate QA result" -f content="$BLOB" -f branch="${{ github.ref_name }}" >/dev/null || true
+          fi
