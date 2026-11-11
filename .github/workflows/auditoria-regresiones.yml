@@ -28,6 +28,19 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Construir sin publicar
         run: node setup.cjs
+      - name: Comprobar huellas del origen y los assets
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const m=JSON.parse(fs.readFileSync('build-manifest.json','utf8'));
+          const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+          if(!/^[a-f0-9]{64}$/.test(m.sourceZipSha256))throw Error('SHA de origen ausente');
+          if(m.serverSha256!==sha('server.js'))throw Error('El servidor ha cambiado desde la compilación');
+          if(m.mainHtmlSha256!==sha('index.html'))throw Error('El HTML ha cambiado antes de la instrumentación');
+          if(Object.keys(m.assets).length<29)throw Error('Faltan assets GLB en la compilación');
+          for(const [name,hash] of Object.entries(m.assets))if(sha('assets/'+name)!==hash)throw Error('El modelo '+name+' cambió');
+          console.log('BUILD MANIFEST VERIFIED',m.sourceZipSha256,'GLB:',Object.keys(m.assets).length);
+          NODE
       - name: Añadir instrumentación solo en la copia temporal de CI
         run: |
           node - <<'NODE'
@@ -73,7 +86,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RESULT: ${{ job.status }}
         run: |
-          RESULT="$RESULT" node -e 'const fs=require("fs"); const r=fs.existsSync("audit-runtime-results.json")?JSON.parse(fs.readFileSync("audit-runtime-results.json","utf8")):null;fs.writeFileSync("/tmp/audit-status.json",JSON.stringify({status:process.env.RESULT,runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,report:r},null,2)+"\n")'
+          RESULT="$RESULT" node -e 'const fs=require("fs"); const r=fs.existsSync("audit-runtime-results.json")?JSON.parse(fs.readFileSync("audit-runtime-results.json","utf8")):null;const build=fs.existsSync("build-manifest.json")?JSON.parse(fs.readFileSync("build-manifest.json","utf8")):null;fs.writeFileSync("/tmp/audit-status.json",JSON.stringify({status:process.env.RESULT,runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,report:r,sourceZipSha256:build?.sourceZipSha256,assetCount:build?Object.keys(build.assets).length:null},null,2)+"\n")'
           BLOB=$(base64 -w0 /tmp/audit-status.json)
           SHA=$(gh api repos/${{ github.repository }}/contents/audit-runtime-status.json?ref=${{ github.ref_name }} --jq .sha 2>/dev/null || true)
           if [ -n "$SHA" ]; then
