@@ -6,7 +6,7 @@ on:
       - "gameplay-v43.cjs"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   ui:
     runs-on: ubuntu-latest
@@ -70,3 +70,15 @@ jobs:
             v43-mobile-game.png
             v43-browser-report.json
           if-no-files-found: ignore
+
+      - name: Registrar estado de prueba del navegador
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+        run: |
+          RESULT="$RESULT" node -e 'const fs=require("fs");const report=fs.existsSync("v43-browser-report.json")?JSON.parse(fs.readFileSync("v43-browser-report.json","utf8")):null;fs.writeFileSync("/tmp/browser-result.json",JSON.stringify({result:process.env.RESULT,runId:process.env.GITHUB_RUN_ID,report},null,2)+"\n")'
+          BLOB=$(base64 -w0 /tmp/browser-result.json)
+          CURRENT=$(gh api repos/${{ github.repository }}/contents/v43-ui-status.json --jq .sha 2>/dev/null || true)
+          if [ -n "$CURRENT" ]; then gh api -X PUT repos/${{ github.repository }}/contents/v43-ui-status.json -f message="CI v4.3 mobile browser result" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+          else gh api -X PUT repos/${{ github.repository }}/contents/v43-ui-status.json -f message="CI v4.3 mobile browser result" -f content="$BLOB" >/dev/null || true; fi
