@@ -17,7 +17,8 @@ jobs:
         run: |
           HTTP=$(curl -L --max-time 28 -sS -w "%{http_code}" "https://deadzone-eclipse-coop.onrender.com/?probe=$(date +%s)" -o /tmp/game.html || true)
           VERSION="unknown"
-          if grep -q 'DEAD_ZONE_PATCH_43' /tmp/game.html; then VERSION="4.3"
+          if grep -q 'DEAD_ZONE_PATCH_44' /tmp/game.html; then VERSION="4.4"
+          elif grep -q 'DEAD_ZONE_PATCH_43' /tmp/game.html; then VERSION="4.3"
           elif grep -q 'DEAD_ZONE_PATCH_42' /tmp/game.html; then VERSION="4.2"
           elif grep -q 'DEAD_ZONE_PATCH_41' /tmp/game.html; then VERSION="4.1"
           elif grep -q 'DEAD_ZONE_PATCH_40' /tmp/game.html; then VERSION="4.0"
