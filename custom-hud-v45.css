@@ -70,3 +70,19 @@ body.touch-mode #hud #movestick:before{background:#d1f0faab}
 #dz52-aim-reticle{position:fixed;left:50%;top:50%;width:38px;height:38px;border:2px solid #ecf9ffad;border-radius:50%;background:radial-gradient(circle,#ff8c7766 0 3px,transparent 4px);box-shadow:0 0 0 7px #f7ecec19,0 0 14px #00d8ff66;transform:translate(-50%,-50%);z-index:10;pointer-events:none;display:none;touch-action:none}
 #dz52-aim-reticle.dz52-active{display:block}
 body.dz45-editing #dz52-aim-reticle{display:none!important}
+
+/* v5.3: compact dock; controls stay accessible while editing */
+#dz45-editor{background:transparent!important;backdrop-filter:none!important}
+#dz45-editor .dz45-panel{width:min(310px,40vw)!important;max-height:min(66dvh,270px)!important;right:max(8px,env(safe-area-inset-right))!important;left:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;top:auto!important;transform:none!important;overflow:auto!important;box-shadow:0 6px 20px #0009!important}
+#dz45-editor.dz45-collapsed .dz45-panel{width:156px!important;height:42px!important;max-height:42px!important;min-height:42px!important;padding:2px 6px!important;overflow:hidden!important}
+#dz45-editor.dz45-collapsed #dz45-fold{width:100%;height:36px!important;min-height:36px!important}
+body.dz45-editing #hud{background:transparent!important;pointer-events:none!important}
+body.dz45-editing #hud .dz45-ghost{pointer-events:auto!important}
+body.dz45-editing #hud #aimstick,body.dz45-editing #hud #fire{display:none!important}
+@media(orientation:portrait){
+ #dz45-editor .dz45-panel{width:min(320px,92vw)!important;max-height:33dvh!important;bottom:max(7px,env(safe-area-inset-bottom))!important;top:auto!important}
+ #dz45-editor.dz45-collapsed .dz45-panel{width:156px!important;max-height:42px!important}
+}
+@media(orientation:landscape) and (max-height:460px){
+ #dz45-editor .dz45-panel{width:min(310px,40vw)!important;max-height:74dvh!important;top:auto!important;bottom:6px!important}
+}
