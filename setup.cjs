@@ -118,7 +118,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
