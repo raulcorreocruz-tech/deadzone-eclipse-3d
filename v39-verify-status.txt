@@ -1,3 +1,3 @@
-DEAD ZONE v3.9: failure
-commit: 95dbbe3fedd0cf59a528416d0db1f187b8d11bf4
-run: 42980085771
+DEAD ZONE v3.9: success
+commit: 87165e53ba079befe98ec702fa8c2f4bf9870d46
+run: 42980204439
