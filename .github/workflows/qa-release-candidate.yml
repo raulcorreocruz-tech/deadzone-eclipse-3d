@@ -95,7 +95,7 @@ jobs:
           BLOB=$(base64 -w0 /tmp/audit-status.json)
           SHA=$(gh api repos/${{ github.repository }}/contents/release-qa-status.json?ref=${{ github.ref_name }} --jq .sha 2>/dev/null || true)
           if [ -n "$SHA" ]; then
-            gh api -X PUT repos/${{ github.repository }}/contents/audit-runtime-status.json -f message="ci: release candidate QA result" -f content="$BLOB" -f sha="$SHA" -f branch="${{ github.ref_name }}" >/dev/null || true
+            gh api -X PUT repos/${{ github.repository }}/contents/release-qa-status.json -f message="ci: release candidate QA result" -f content="$BLOB" -f sha="$SHA" -f branch="${{ github.ref_name }}" >/dev/null || true
           else
-            gh api -X PUT repos/${{ github.repository }}/contents/audit-runtime-status.json -f message="ci: audit regression result" -f content="$BLOB" -f branch="${{ github.ref_name }}" >/dev/null || true
+            gh api -X PUT repos/${{ github.repository }}/contents/release-qa-status.json -f message="ci: release candidate QA result" -f content="$BLOB" -f branch="${{ github.ref_name }}" >/dev/null || true
           fi
