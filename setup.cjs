@@ -45,6 +45,17 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v47.cjs');
  require('./gameplay-v48.cjs');
  require('./gameplay-v49.cjs');
+ require('./gameplay-v50.cjs');
+ // Verify browser module syntax before deployment, not only that the build task completed.
+ const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
+ const moduleScripts=[...compiledHtml.matchAll(/<script\\s+type="module"\\s*>([\\s\\S]*?)<\\/script>/g)];
+ if(!moduleScripts.length)throw Error('No 3D module script found');
+ const {spawnSync}=require('node:child_process');
+ for(const [,source] of moduleScripts){
+  const result=spawnSync(process.execPath,['--check','--input-type=module'],{input:source,encoding:'utf8'});
+  if(result.status!==0)throw Error('3D game JavaScript syntax invalid: '+result.stderr);
+ }
+ console.log('DEAD ZONE v5.0: browser module JavaScript syntax check passed');
  // Legally redistributable CC0 weapon models from petroulacl/fps-asset-kit,
  // based on OpenGameArt Flat Guns West by PCL. Downloaded at build time and
  // hosted locally, so the game never depends on hotlinking external models.
@@ -123,7 +134,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','custom-hud-v45.js','custom-hud-v45.css'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','custom-hud-v45.js','custom-hud-v45.css'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
