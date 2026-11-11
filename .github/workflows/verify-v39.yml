@@ -1,0 +1,51 @@
+name: Verificar DEAD ZONE v3.9
+on:
+  push:
+    paths:
+      - "gameplay-v39.cjs"
+      - "setup.cjs"
+      - ".github/workflows/verify-v39.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Download current game and apply patch
+        run: npm run build
+      - name: Static JavaScript syntax
+        run: |
+          node --check gameplay-v39.cjs
+          node --check server.js
+          node --check minisocket.js
+          node - <<'JS'
+          const fs=require('fs'),cp=require('child_process');
+          const h=fs.readFileSync('index.html','utf8');
+          if(!h.includes('DZ_UPGRADE_39'))throw Error('v3.9 patch missing');
+          if(!h.includes('dzSteer(')||!h.includes('dzGrenade()')||!h.includes('dzStreakShop()'))throw Error('Gameplay patch incomplete');
+          const scripts=[...h.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(m=>m[2].trim()&&!/importmap|application\/json/i.test(m[1]));
+          let checked=0;
+          for(const m of scripts){
+            const mod=/type=['"]module/i.test(m[1]);
+            const p=cp.spawnSync('node',['--check',...(mod?['--input-type=module']:[])],{input:m[2],encoding:'utf8'});
+            if(p.status!==0)throw Error('Inline script syntax failed: '+p.stderr);
+            checked++;
+          }
+          if(!checked)throw Error('No executable script found');
+          console.log('GAMEPLAY v3.9 OK; scripts validated:',checked,'HTML bytes:',h.length);
+          JS
+      - name: Validate bundled runtime
+        run: |
+          test -s assets/zombie_realista.glb
+          test -s assets/rapero_yankees_realista.glb
+          test -s assets/panda_vaquero_realista.glb
+          test -s server.js
+          test -s index.html
