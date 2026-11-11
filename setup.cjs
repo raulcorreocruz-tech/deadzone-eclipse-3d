@@ -115,6 +115,10 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
   serverSha256:hashBuffer(fs.readFileSync(path.join(dest,'server.js'))),
   assets:Object.fromEntries(allAssets.map(name=>[name,hashBuffer(fs.readFileSync(path.join(dest,'assets',name)))]))
  };
+ const expectedAssetsSha256='fd6cfc1ebd7d735f50585bd48a36f422e15794f12c4795b7c6e5afa75868c3c0';
+ const actualAssetsSha256=hashBuffer(Buffer.from(JSON.stringify(manifest.assets)));
+ if(actualAssetsSha256!==expectedAssetsSha256)throw Error('Los modelos 3D han cambiado respecto a la versión auditada; compilación detenida para impedir regresiones');
+ console.log('DEAD ZONE audit asset-set SHA256:',actualAssetsSha256);
  fs.writeFileSync(path.join(dest,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
  console.log('DEAD ZONE audit source ZIP SHA256:',manifest.sourceZipSha256,'GLB files:',allAssets.length);
  if(!fs.existsSync(path.join(dest,'assets','zombie_realista.glb')))throw Error('Falta modelo GLB');
