@@ -1,0 +1,64 @@
+name: Comprobar DEAD ZONE v3.9 en Render
+on:
+  push:
+    paths:
+      - ".github/workflows/check-live-v39.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comprobar versión web y servidor cooperativo
+        id: live
+        continue-on-error: true
+        run: |
+          node <<'JS'
+          const url='https://deadzone-eclipse-coop.onrender.com/';
+          (async()=>{
+            let ok=false,health=null,status='';
+            for(let attempt=0;attempt<18;attempt++){
+              try{
+                const r=await fetch(url+'?probe=v39-'+Date.now(),{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+                const body=await r.text();
+                const h=await fetch(url+'health',{signal:AbortSignal.timeout(15000)});
+                health=await h.json();
+                ok=r.ok&&body.includes('DEAD_ZONE_PATCH_39')&&health.status==='ok';
+                status='HTTP '+r.status+' marker '+body.includes('DEAD_ZONE_PATCH_39')+' health '+health.status;
+                console.log('CHECK',attempt,status);
+                if(ok)break;
+              }catch(e){status=String(e);console.log('CHECK',attempt,status)}
+              await new Promise(resolve=>setTimeout(resolve,12000));
+            }
+            if(!ok)throw Error('GAME v3.9 NOT LIVE: '+status);
+            const ws=new WebSocket('wss://deadzone-eclipse-coop.onrender.com/ws');
+            let created=false;
+            await Promise.race([new Promise((resolve,reject)=>{
+              ws.onopen=()=>ws.send(JSON.stringify({type:'create',name:'SMOKETEST',character:'panda'}));
+              ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.type==='welcome')created=!!m.code;if(m.type==='lobby'){ws.close();resolve()}};
+              ws.onerror=()=>reject(Error('WebSocket failed'));
+            }),new Promise((_,reject)=>setTimeout(()=>reject(Error('WebSocket timeout')),13000))]);
+            if(!created)throw Error('No room code created');
+            console.log('LIVE v3.9 and WebSocket lobby verified');
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          JS
+      - name: Registrar estado de producción
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROD_STATUS: ${{ steps.live.outcome }}
+        run: |
+          printf 'DEAD ZONE v3.9 production: %s\ncommit: %s\nrun: %s\n' "$PROD_STATUS" "$GITHUB_SHA" "$GITHUB_RUN_ID" > status.txt
+          PAYLOAD=$(base64 -w0 status.txt)
+          OLD=$(gh api repos/${{ github.repository }}/contents/v39-live-status.txt --jq '.sha' 2>/dev/null || true)
+          if [ -n "$OLD" ]; then
+            gh api --method PUT repos/${{ github.repository }}/contents/v39-live-status.txt -f message='Live v3.9 smoke test status' -f content="$PAYLOAD" -f sha="$OLD"
+          else
+            gh api --method PUT repos/${{ github.repository }}/contents/v39-live-status.txt -f message='Live v3.9 smoke test status' -f content="$PAYLOAD"
+          fi
