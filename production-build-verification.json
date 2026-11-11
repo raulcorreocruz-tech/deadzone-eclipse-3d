@@ -1,0 +1,8 @@
+{
+  "expected": "4.3.0-08ef1d3f8c6f",
+  "actual": "3.0.0-4870a9be3f5e",
+  "verified": false,
+  "runId": "43019599017",
+  "commit": "14304d680a4383bdec05a4e53d8788d4d761471a",
+  "checkedAt": "2026-11-11T12:28:34.557Z"
+}
