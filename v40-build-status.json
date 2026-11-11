@@ -1,7 +1,7 @@
 {
   "status": "success",
-  "commit": "26d1827daf42080edc20ee1231e2d51a838b889f",
-  "runId": "42989244074",
-  "validatedAt": "2026-11-11T08:43:16.056Z",
+  "commit": "e89e1ff93f57224635995747cc93e17cf81faa4c",
+  "runId": "42989313089",
+  "validatedAt": "2026-11-11T08:43:48.643Z",
   "log": "v3.9 optional missing: customizable new touch buttons\nDEAD ZONE v3.9 patched: inject combat and visuals, streak fire manual, dog retains firing ability, bullet tracer silhouettes, pack gun appearance, only streak shop, keyboard grenade and melee, touch melee grenade, crawlers slow, steering and flanking, crawler pose, crawler injury, surrounding spawns, upgraded gun firing tone, helicopter fires on demand, streak safety, remote cooperative melee grenade streaks, car physics, reset grenades and gun, grenade resupply, step grenade and streak physics, streak camera height, visible streak models, ensure manual fire remains, mobile action styles\nDead Zone v4 completed: asset loader, GLB weapon replacement, actual projectile cartridge, short subtle tracer, dim tracer, tracer lifespan, target nearest teammate, online ally receives damage, anti-wall lookahead, nav target\nDEAD ZONE v4.1 retain categorization, inject systems, preserve GPU buffers, safe GLB cleanup, ballistic brass/copper bullets, kinetic corpse fall, shared pathfinding, physics update, crawler pose, mobile high rigged, rigged mobile budget\nv4.2 skeleton clone import\nv4.2 append animated characters\nv4.2 spawn rigged variants\nv4.2 animate rigged enemies\nv4.2 death clip on rigged zombie\nv4.2 release corpse animation mixer\nv4.2 real dog model\nv4.2 real car model\nv4.2 avoid duplicate zombie rigs\nDEAD ZONE 4.2 integrated rigged models\nDEAD ZONE v4.3 skin selector, news and version badge installed\nDEAD ZONE v4.1: 18/18 external weapon GLB models validated\nDEAD ZONE v4.1: 3/3 melee models verified\nDEAD ZONE v4.2: 8/8 animated monsters and props verified\nDEAD ZONE: descargados 5860765 bytes y extraídos 30 archivos\n"
 }
