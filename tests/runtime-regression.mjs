@@ -28,6 +28,8 @@ try{
   await page.waitForTimeout(2200);
   const second=await page.evaluate(()=>window.__dzRegression.snapshot());
   const rigged=first.filter(x=>x.rigged);
+  if(first.length<8)throw Error(mode.name+': expected eight zombie variants, got '+first.length);
+  if(rigged.length<(mode.mobile?2:5))throw Error(mode.name+': too few animated models '+rigged.length);
   for(const [i,z] of first.entries()){
     if(!Number.isFinite(z.height)||z.height<=0)throw Error(mode.name+': invalid zombie height '+JSON.stringify(z));
     if(z.rigged && !(z.height>=z.expected*.67&&z.height<=z.expected*1.65))throw Error(mode.name+': mini/oversized rigged zombie '+JSON.stringify(z));
