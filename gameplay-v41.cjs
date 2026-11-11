@@ -13,7 +13,7 @@ once("dz40BulletShape(bmesh,a2,pl);","dz41Bullet(bmesh,a2,pl);","ballistic brass
 once("retireActor(z.figure);scene.remove(z.figure);removeObject(zombies,z)","dz41Corpse(z);removeObject(zombies,z)","kinetic corpse fall");
 once("function dzSteer(z,angle,move,dt){","function dzSteer(z,angle,move,dt){angle=dz41Angle(z,angle);","shared pathfinding");
 once("function dzTick(dt){","function dzTick(dt){dz41Tick(dt);","physics update");
-once("z.figure.userData.body.scale.setScalar(1+z.hit*.16)","z.figure.userData.body.scale.setScalar(1+z.hit*.16);dz41AnimateZombie(z,dt)","crawler pose");
+once("z.figure.userData.body.scale.setScalar(1+z.hit*.16)","z.figure.userData.body.scale.set(1+z.hit*.16,z.crawler?.42:1,1+z.hit*.16);dz41AnimateZombie(z,dt)","crawler pose");
 once("if(MOBILE_MODE){setModelStatus('Modo móvil estable: modelos ligeros y memoria reducida');return}","if(MOBILE_MODE&&qualityMode!=='high'){setModelStatus('Modo móvil estable: modelos ligeros; Alta permite animaciones GLB');return}","mobile high rigged");
 once("if(animatedTemplates.zombie&&!MOBILE_MODE&&zombies.length<=14)","if(animatedTemplates.zombie&&(!MOBILE_MODE||qualityMode==='high')&&zombies.length<=(MOBILE_MODE?4:14))","rigged mobile budget");
 html=html.replace(/(<title>[^<]*?)v4\.0([^<]*<\/title>)/i,'$1v4.1$2');
