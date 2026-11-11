@@ -77,6 +77,7 @@ jobs:
           name: deadzone-audit-regression-report
           path: |
             audit-runtime-results.json
+            build-manifest.json
             /tmp/deadzone-audit.log
           if-no-files-found: ignore
 
