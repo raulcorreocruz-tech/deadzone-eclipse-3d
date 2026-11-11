@@ -5,7 +5,7 @@ on:
     paths: ["setup.cjs", "gameplay-v39.cjs", "gameplay-v40.cjs", "gameplay-v41.cjs", "gameplay-v42.cjs", "gameplay-v43.cjs", "package.json", ".github/workflows/check-live-v4.yml"]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   verify-live-build:
     runs-on: ubuntu-24.04
@@ -44,24 +44,14 @@ jobs:
           echo "actual=$LAST" >> "$GITHUB_OUTPUT"
           echo "verified=$SUCCESS" >> "$GITHUB_OUTPUT"
           test "$SUCCESS" = yes
-      - name: Guardar prueba de publicación
+       - name: Registrar resultado del despliegue
         if: always()
         env:
           EXPECTED: ${{ steps.expected.outputs.build }}
           ACTUAL: ${{ steps.probe.outputs.actual }}
           VERIFIED: ${{ steps.probe.outputs.verified }}
-          GH_TOKEN: ${{ github.token }}
         run: |
-          node - <<'NODE'
-          const fs=require('fs');
-          const x={expected:process.env.EXPECTED,actual:process.env.ACTUAL||null,verified:process.env.VERIFIED==='yes',runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,checkedAt:new Date().toISOString()};
-          fs.writeFileSync('production-build-verification.json',JSON.stringify(x,null,2)+'\n');
-          console.log(x);
-          NODE
-          BLOB=$(base64 -w0 production-build-verification.json)
-          CURRENT=$(gh api "repos/${{ github.repository }}/contents/production-build-verification.json" --jq .sha 2>/dev/null || true)
-          if [ -n "$CURRENT" ]; then gh api -X PUT "repos/${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
-          else gh api -X PUT "repos/${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" >/dev/null || true;fi
+          node -e 'const fs=require("fs");fs.writeFileSync("production-build-verification.json",JSON.stringify({expected:process.env.EXPECTED,actual:process.env.ACTUAL||null,verified:process.env.VERIFIED==="yes",runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,checkedAt:new Date().toISOString()},null,2)+"\n")'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
