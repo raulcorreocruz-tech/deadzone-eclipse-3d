@@ -2,11 +2,15 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
+const crypto=require('node:crypto');
+const hashBuffer=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/deadzone-v3.8-aim-physics-coop.zip';
 (async()=>{
  const r=await fetch(URL,{signal:AbortSignal.timeout(120000)});
  if(!r.ok)throw Error('No se puede descargar el juego: HTTP '+r.status);
  const data=Buffer.from(await r.arrayBuffer());
+ const BASE_ZIP_SHA256='6f27e9ba2a435239c5b7e2015a805dc9a64aee0f44b5b87a7a4a253a1192fc74';
+ if(hashBuffer(data)!==BASE_ZIP_SHA256)throw Error('El ZIP base ha cambiado sin una revisión explícita. Se cancela la compilación para preservar estabilidad.');
  const zip=new AdmZip(data);
  const entries=zip.getEntries();
  const dest=process.cwd();
@@ -100,6 +104,23 @@ if(riggedLoaded<5)throw Error('Insufficient CC0 animated zombie/prop models: '+r
 console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props verified');
 
 
+ const allAssets=fs.readdirSync(path.join(dest,'assets')).filter(x=>x.endsWith('.glb')).sort();
+ const manifest={
+  gameVersion:require('./package.json').version,
+  sourceZipUrl:URL,
+  sourceZipSha256:hashBuffer(data),
+  sourceArchiveBytes:data.length,
+  generatedAt:new Date().toISOString(),
+  mainHtmlSha256:hashBuffer(fs.readFileSync(path.join(dest,'index.html'))),
+  serverSha256:hashBuffer(fs.readFileSync(path.join(dest,'server.js'))),
+  assets:Object.fromEntries(allAssets.map(name=>[name,hashBuffer(fs.readFileSync(path.join(dest,'assets',name)))]))
+ };
+ const expectedAssetsSha256='fd6cfc1ebd7d735f50585bd48a36f422e15794f12c4795b7c6e5afa75868c3c0';
+ const actualAssetsSha256=hashBuffer(Buffer.from(JSON.stringify(manifest.assets)));
+ if(actualAssetsSha256!==expectedAssetsSha256)throw Error('Los modelos 3D han cambiado respecto a la versión auditada; compilación detenida para impedir regresiones');
+ console.log('DEAD ZONE audit asset-set SHA256:',actualAssetsSha256);
+ fs.writeFileSync(path.join(dest,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+ console.log('DEAD ZONE audit source ZIP SHA256:',manifest.sourceZipSha256,'GLB files:',allAssets.length);
  if(!fs.existsSync(path.join(dest,'assets','zombie_realista.glb')))throw Error('Falta modelo GLB');
  console.log('DEAD ZONE: descargados',data.byteLength,'bytes y extraídos',entries.length,'archivos');
 })().catch(err=>{console.error(err);process.exit(1)});
