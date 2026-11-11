@@ -1,0 +1,35 @@
+name: Inspect v4 source for animation & art upgrade
+on:
+  push:
+    paths:
+      - .github/workflows/inspect-v4.yml
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund && node setup.cjs
+      - name: Collect grounded code excerpts for upgrade
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('index.html','utf8');
+          const queries=['function killEnemy(', 'function spawnZombie(', 'function setActorAnimation(', 'function animateActor(', 'function stableCharacterMesh(', 'function dzSteer(', 'function dz40FinishGun(', 'function dz40WeaponFile(', 'function dz40TargetFor(', 'function dzGun(', 'function dzTick(', 'function shoot(', 'function tick(', 'function dz40BulletShape(', 'function dzExplosion(', 'function dzGrenade(', 'function hitEnemy(', 'function cameraTick(', 'function dzModelTick(', 'function coopTick(', 'function disposeActor(', 'function retireActor(', 'const weapons=', 'const types=', 'function spawnDog(', 'function dzMelee(', 'function finish(', 'function roomFor(', 'const collisions=', 'const bullet=', 'const w=weapon(', 'const nav=', 'function startRound('];
+          const excerpts={};for(const q of queries){const idx=s.indexOf(q);excerpts[q]=idx<0?'NOT FOUND':s.slice(idx,idx+Math.min(2100,idx>=0?s.length-idx:0));}
+          fs.writeFileSync('/tmp/v4-inspection.json',JSON.stringify({size:s.length,excerpts},null,2)+'\n');
+          NODE
+          BLOB=$(base64 -w0 /tmp/v4-inspection.json)
+          CURRENT=$(gh api repos/${{ github.repository }}/contents/v4-inspection.json --jq .sha 2>/dev/null || true)
+          if [ -n "$CURRENT" ]; then
+            gh api -X PUT repos/${{ github.repository }}/contents/v4-inspection.json -f message="Build source inspection" -f content="$BLOB" -f sha="$CURRENT" >/dev/null
+          else
+            gh api -X PUT repos/${{ github.repository }}/contents/v4-inspection.json -f message="Build source inspection" -f content="$BLOB" >/dev/null
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
