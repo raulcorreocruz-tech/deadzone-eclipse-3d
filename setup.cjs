@@ -1,4 +1,4 @@
-/* Dead Zone v3.8 build: download game assets and the multiplayer server. */
+/* Dead Zone v3.9 build: download game assets and the multiplayer server. */
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
@@ -17,6 +17,8 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
    if(!target.startsWith(dest+path.sep) && target!==dest)throw Error('Ruta ZIP no permitida: '+n);
  }
  zip.extractAllTo(dest,true);
+ // Apply tested additive gameplay patch before Render publishes the new game.
+ require('./gameplay-v39.cjs');
  if(!fs.existsSync(path.join(dest,'assets','zombie_realista.glb')))throw Error('Falta modelo GLB');
  console.log('DEAD ZONE: descargados',data.byteLength,'bytes y extraídos',entries.length,'archivos');
 })().catch(err=>{console.error(err);process.exit(1)});
