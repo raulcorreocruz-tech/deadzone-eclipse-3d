@@ -24,7 +24,7 @@ jobs:
           OK=0
           for i in $(seq 1 24); do
             if curl -fsS --max-time 18 "https://deadzone-eclipse-coop.onrender.com/?check=$(date +%s)" -o /tmp/dz-live.html; then
-              if grep -q 'DEAD_ZONE_PATCH_43' /tmp/dz-live.html &&
+              if grep -q 'DEAD_ZONE_PATCH_43' /tmp/dz-live.html && grep -Fq '#cameraHelp{display:none!important}' /tmp/dz-live.html && grep -Fq 'const zoom=MOBILE_MODE?.73:' /tmp/dz-live.html &&
                  curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/dz-health &&
                  curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/dz-gun.glb; then
                 if [ "$(head -c 4 /tmp/dz-gun.glb)" = "glTF" ]; then
