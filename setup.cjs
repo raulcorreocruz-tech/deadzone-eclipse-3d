@@ -1,4 +1,4 @@
-/* Dead Zone v4.3 build: download game assets and the multiplayer server. */
+/* Dead Zone v4.4 build: download game assets and the multiplayer server. */
 const fs=require('node:fs');
 const path=require('node:path');
 const AdmZip=require('adm-zip');
@@ -39,6 +39,7 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v41.cjs');
  require('./gameplay-v42.cjs');
  require('./gameplay-v43.cjs');
+ require('./gameplay-v44.cjs');
  // Legally redistributable CC0 weapon models from petroulacl/fps-asset-kit,
  // based on OpenGameArt Flat Guns West by PCL. Downloaded at build time and
  // hosted locally, so the game never depends on hotlinking external models.
