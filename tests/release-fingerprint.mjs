@@ -6,7 +6,7 @@ const read=n=>fs.readFileSync(n);
 const manifest=JSON.parse(read('build-manifest.json'));
 const html=read('index.html').toString('utf8');
 const pkg=JSON.parse(read('package.json'));
-const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs'];
+const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs'];
 const hash=crypto.createHash('sha256');
 for(const n of sourceFiles){hash.update(n);hash.update(read(n))}
 const expected=pkg.version+'-'+hash.digest('hex').slice(0,12);

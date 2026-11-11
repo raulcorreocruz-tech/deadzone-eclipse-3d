@@ -1,0 +1,78 @@
+name: QA Android HD y pausa v4.4
+on:
+  push:
+    branches: ["fix/mobile-sharpness-pause-2026-11-11"]
+    paths: ["setup.cjs", "gameplay-v44.cjs", "package.json", "tests/mobile-v44-regression.mjs", "tests/release-fingerprint.mjs", ".github/workflows/qa-mobile-v44.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  mobile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar entorno Chromium
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Construir juego sin desplegar
+        run: |
+          node setup.cjs
+          node tests/release-fingerprint.mjs
+          grep -q DEAD_ZONE_PATCH_44 index.html
+      - name: Instrumentar copia temporal del cliente
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          let s=fs.readFileSync('index.html','utf8');
+          const m=/<script\s+type=["']module["']\s*>/i.exec(s);
+          if(!m)throw Error('Three.js module not found');
+          const end=s.indexOf('</script>',m.index);
+          const inject=[
+           "window.__DZQA={",
+           "metrics:()=>({renderScale,qualityMode,paused,onlinePaused:DZ44.onlinePaused,playing,gameTime,bufferWidth:renderer.domElement.width,cssWidth:renderer.domElement.getBoundingClientRect().width}),",
+           "setQuality:mode=>applyQuality(mode),",
+           "setCoop:value=>{coop.active=value;coop.guest=false}",
+           "};"
+          ].join('\n');
+          s=s.slice(0,end)+inject+'\n'+s.slice(end);
+          fs.writeFileSync('index.html',s);
+          NODE
+      - name: Arrancar servidor local
+        run: |
+          node server.js >/tmp/v44-server.log 2>&1 &
+          for i in $(seq 1 30); do if curl -fsS http://127.0.0.1:3000/health >/dev/null; then exit 0;fi;sleep 1;done
+          cat /tmp/v44-server.log
+          exit 1
+      - name: Probar móvil Android 915×412
+        run: node tests/mobile-v44-regression.mjs
+      - name: Guardar capturas e informes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deadzone-mobile-v44-qa
+          path: |
+            mobile-v44-results.json
+            v44-mobile-game.png
+            v44-mobile-paused.png
+          if-no-files-found: ignore
+      - name: Registrar estado en rama (nunca main)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+        run: |
+          RESULT="$RESULT" node - <<'NODE'
+          const fs=require('node:fs');
+          const report=fs.existsSync('mobile-v44-results.json')?JSON.parse(fs.readFileSync('mobile-v44-results.json','utf8')):null;
+          fs.writeFileSync('/tmp/v44.json',JSON.stringify({result:process.env.RESULT,report,runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,checkedAt:new Date().toISOString()},null,2)+'\n');
+          NODE
+          BLOB=$(base64 -w0 /tmp/v44.json)
+          SHA=$(gh api "repos/${{ github.repository }}/contents/mobile-v44-status.json?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)
+          if [ -n "$SHA" ];then gh api -X PUT "repos/${{ github.repository }}/contents/mobile-v44-status.json" -f branch="${{ github.ref_name }}" -f message="ci: mobile v4.4 tests" -f content="$BLOB" -f sha="$SHA" >/dev/null || true
+          else gh api -X PUT "repos/${{ github.repository }}/contents/mobile-v44-status.json" -f branch="${{ github.ref_name }}" -f message="ci: mobile v4.4 tests" -f content="$BLOB" >/dev/null || true;fi

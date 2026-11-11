@@ -1,0 +1,33 @@
+name: Mobile renderer code inspection
+on:
+  push:
+    branches: ["fix/mobile-sharpness-pause-2026-11-11"]
+    paths: [".github/workflows/inspect-mobile.yml"]
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund && node setup.cjs
+      - name: Inspect actual built game
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const s=fs.readFileSync('index.html','utf8');
+          const queries=['setPixelRatio','devicePixelRatio','pixelRatio','renderer.setSize','qualityMode','MOBILE_MODE','qualitySel','qualitySelect','function setQuality','function applyQuality','function togglePause','function pauseGame','paused=','paused =','pauseBtn','function animate(','function frame(','function loop(','function render(','function dzMobileButtons','controlDefs','pauseOverlay','menuPause','new THREE.WebGLRenderer','THREE.WebGLRenderer','shadows','powerPreference','antialias','cameraTick('];
+          const output={bytes:s.length,queries:{}};
+          for(const q of queries){let indexes=[],pos=0;while((pos=s.indexOf(q,pos))>=0&&indexes.length<15){indexes.push(pos);pos+=q.length}output.queries[q]=indexes.map(i=>({at:i,text:s.slice(Math.max(0,i-310),Math.min(s.length,i+760))}))}
+          fs.writeFileSync('mobile-source-inspection.json',JSON.stringify(output,null,2));
+          NODE
+          BLOB=$(base64 -w0 mobile-source-inspection.json)
+          SHA=$(gh api "repos/${{ github.repository }}/contents/mobile-source-inspection.json?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)
+          if [ -n "$SHA" ]; then gh api -X PUT "repos/${{ github.repository }}/contents/mobile-source-inspection.json" -f branch="${{ github.ref_name }}" -f message="ci: inspect renderer and pause code" -f content="$BLOB" -f sha="$SHA" >/dev/null
+          else gh api -X PUT "repos/${{ github.repository }}/contents/mobile-source-inspection.json" -f branch="${{ github.ref_name }}" -f message="ci: inspect renderer and pause code" -f content="$BLOB" >/dev/null;fi

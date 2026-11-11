@@ -2,7 +2,7 @@ name: Verificar compilación exacta en Render y APK
 on:
   push:
     branches: [main]
-    paths: ["setup.cjs", "gameplay-v39.cjs", "gameplay-v40.cjs", "gameplay-v41.cjs", "gameplay-v42.cjs", "gameplay-v43.cjs", "package.json", ".github/workflows/check-live-v4.yml"]
+    paths: ["setup.cjs", "gameplay-v39.cjs", "gameplay-v40.cjs", "gameplay-v41.cjs", "gameplay-v42.cjs", "gameplay-v43.cjs", "gameplay-v44.cjs", "package.json", ".github/workflows/check-live-v4.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,7 +20,7 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs'),crypto=require('crypto');
-          const files=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs'];
+          const files=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs'];
           const h=crypto.createHash('sha256');
           for(const f of files){h.update(f);h.update(fs.readFileSync(f))}
           fs.appendFileSync(process.env.GITHUB_OUTPUT,'build='+JSON.parse(fs.readFileSync('package.json')).version+'-'+h.digest('hex').slice(0,12)+'\n');
