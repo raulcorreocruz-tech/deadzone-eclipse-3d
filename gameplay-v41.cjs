@@ -10,7 +10,7 @@ once("function dzGun(){","\n// DEAD_ZONE_PATCH_41 — real CC0 arsenal variants 
 once("if(!m.isMesh)return;m.castShadow=","if(!m.isMesh)return;m.userData.dzSharedGeometry=true;m.castShadow=","preserve GPU buffers");
 once("if(DZ39.visualGun){hero.remove(DZ39.visualGun);DZ39.visualGun.traverse(o=>{if(o.isMesh){o.geometry.dispose();o.material.dispose()}})}","if(DZ39.visualGun){hero.remove(DZ39.visualGun);dz41ReleaseGun(DZ39.visualGun)}","safe GLB cleanup");
 once("dz40BulletShape(bmesh,a2,pl);","dz41Bullet(bmesh,a2,pl);","ballistic brass/copper bullets");
-once("retireActor(z.figure);scene.remove(z.figure);removeObject(zombies,z)","dz41Corpse(z);removeObject(zombies,z)","kinetic corpse fall");
+once("if(z.kind==='final'){notify('¡JEFE FINAL DERROTADO! ECLIPSE SUPERADO',5);bossSpawned=false}retireActor(z.figure);scene.remove(z.figure);removeObject(zombies,z)","if(z.kind==='final'){notify('¡JEFE FINAL DERROTADO! ECLIPSE SUPERADO',5);bossSpawned=false}dz41Corpse(z);removeObject(zombies,z)","kinetic corpse fall");
 once("function dzSteer(z,angle,move,dt){","function dzSteer(z,angle,move,dt){angle=dz41Angle(z,angle);","shared pathfinding");
 once("function dzTick(dt){","function dzTick(dt){dz41Tick(dt);","physics update");
 once("z.figure.userData.body.scale.setScalar(1+z.hit*.16)","z.figure.userData.body.scale.set(1+z.hit*.16,z.crawler?.42:1,1+z.hit*.16);dz41AnimateZombie(z,dt)","crawler pose");
