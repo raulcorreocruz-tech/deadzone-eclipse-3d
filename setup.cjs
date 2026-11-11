@@ -49,6 +49,7 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v51.cjs');
  require('./gameplay-v52.cjs');
  require('./gameplay-v53.cjs');
+ require('./gameplay-v54.cjs');
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
@@ -139,7 +140,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','custom-hud-v45.js','custom-hud-v45.css'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','custom-hud-v45.js','custom-hud-v45.css'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
@@ -148,6 +149,15 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
  if(originalHtml.split('</head>').length!==2)throw Error('No se puede insertar la versión: head inválido');
  fs.writeFileSync(gameFile,originalHtml.replace('</head>','<meta name="deadzone-build" content="'+buildId+'"></head>'));
  console.log('DEAD ZONE BUILD ID',buildId);
+ // User-supplied static avatar: pinned source digest prevents silent binary substitution.
+ const avatarUrl='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/6e5599ad-8b93-4eb3-bc13-1589e53bab6d-doreamon_3d_model.glb';
+ const avatarResponse=await fetch(avatarUrl,{signal:AbortSignal.timeout(45000)});
+ if(!avatarResponse.ok)throw Error('Custom avatar download failed: '+avatarResponse.status);
+ const avatar=Buffer.from(await avatarResponse.arrayBuffer());
+ const expectedAvatar='19dd696e7670a0c03a32f7ca54ccd013e68415dde211dc471b32fd026788e3f9';
+ if(avatar.length!==2590648||hashBuffer(avatar)!==expectedAvatar||avatar.toString('utf8',0,4)!=='glTF')throw Error('Custom avatar integrity check failed');
+ fs.writeFileSync(path.join(dest,'assets','doraemon_custom.glb'),avatar);
+ console.log('DEAD ZONE custom user avatar loaded:',avatar.length,'bytes');
  const allAssets=fs.readdirSync(path.join(dest,'assets')).filter(x=>x.endsWith('.glb')).sort();
  const manifest={
   gameVersion:version,
@@ -161,7 +171,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
   assets:Object.fromEntries(allAssets.map(name=>[name,hashBuffer(fs.readFileSync(path.join(dest,'assets',name)))]))
  };
  const expectedAssetsSha256='fd6cfc1ebd7d735f50585bd48a36f422e15794f12c4795b7c6e5afa75868c3c0';
- const actualAssetsSha256=hashBuffer(Buffer.from(JSON.stringify(manifest.assets)));
+ const actualAssetsSha256=hashBuffer(Buffer.from(JSON.stringify(Object.fromEntries(Object.entries(manifest.assets).filter(([name])=>name!=='doraemon_custom.glb')))));
  if(actualAssetsSha256!==expectedAssetsSha256)throw Error('Los modelos 3D han cambiado respecto a la versión auditada; compilación detenida para impedir regresiones');
  console.log('DEAD ZONE audit asset-set SHA256:',actualAssetsSha256);
  fs.writeFileSync(path.join(dest,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
