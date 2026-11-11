@@ -1,53 +1,70 @@
-name: Verificar DEAD ZONE 4.3 en Render
+name: Verificar compilación exacta en Render y APK
 on:
   push:
     branches: [main]
-    paths:
-      - "gameplay-v40.cjs"
-      - "gameplay-v41.cjs"
-      - "gameplay-v42.cjs"
-      - "gameplay-v43.cjs"
-      - "setup.cjs"
-      - ".github/workflows/check-live-v4.yml"
+    paths: ["setup.cjs", "gameplay-v39.cjs", "gameplay-v40.cjs", "gameplay-v41.cjs", "gameplay-v42.cjs", "gameplay-v43.cjs", "package.json", ".github/workflows/check-live-v4.yml"]
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  live:
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
+  verify-live-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     steps:
-      - name: Esperar despliegue Render y comprobar versión
-        id: probe
-        shell: bash
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Calcular huella de la versión
+        id: expected
         run: |
-          OK=0
-          for i in $(seq 1 24); do
-            if curl -fsS --max-time 18 "https://deadzone-eclipse-coop.onrender.com/?check=$(date +%s)" -o /tmp/dz-live.html; then
-              if grep -q 'DEAD_ZONE_PATCH_43' /tmp/dz-live.html && grep -Fq '#cameraHelp{display:none!important}' /tmp/dz-live.html && grep -Fq 'const zoom=MOBILE_MODE?.73:' /tmp/dz-live.html &&
-                 curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/dz-health &&
-                 curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/dz-gun.glb; then
-                if [ "$(head -c 4 /tmp/dz-gun.glb)" = "glTF" ]; then
-                  echo "LIVE v4.3 OK"; OK=1; break
-                fi
-              fi
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const files=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs'];
+          const h=crypto.createHash('sha256');
+          for(const f of files){h.update(f);h.update(fs.readFileSync(f))}
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,'build='+JSON.parse(fs.readFileSync('package.json')).version+'-'+h.digest('hex').slice(0,12)+'\n');
+          NODE
+      - name: Verificar web exacta y recursos de Render
+        id: probe
+        env:
+          EXPECTED: \${{ steps.expected.outputs.build }}
+        run: |
+          set -euo pipefail
+          SUCCESS=no
+          LAST=unknown
+          for i in $(seq 1 42); do
+            if curl -fsSL --compressed --max-time 18 -H 'Cache-Control: no-cache' "https://deadzone-eclipse-coop.onrender.com/?check=\${GITHUB_RUN_ID}_\${i}" -o /tmp/game.html; then
+              LAST=$(node -e 'const s=require("fs").readFileSync("/tmp/game.html","utf8");console.log(s.match(/<meta name="deadzone-build" content="([^"]+)"/)?.[1]||"missing")')
+              if [ "$LAST" = "$EXPECTED" ] && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/health && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/model && [ "$(head -c 4 /tmp/model)" = glTF ]; then SUCCESS=yes;break; fi
             fi
-            echo "Not live yet, check $i/24"
+            echo "Intento $i/42: esperado=$EXPECTED actual=$LAST"
             sleep 10
           done
-          if [ "$OK" -eq 1 ]; then echo "live=yes" >> "$GITHUB_OUTPUT"; else echo "live=no" >> "$GITHUB_OUTPUT"; exit 1; fi
-      - name: Registrar verificación web
+          echo "actual=$LAST" >> "$GITHUB_OUTPUT"
+          echo "verified=$SUCCESS" >> "$GITHUB_OUTPUT"
+          test "$SUCCESS" = yes
+      - name: Guardar prueba de publicación
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION_LIVE: ${{ steps.probe.outputs.live }}
-          COMMIT: ${{ github.sha }}
+          EXPECTED: \${{ steps.expected.outputs.build }}
+          ACTUAL: \${{ steps.probe.outputs.actual }}
+          VERIFIED: \${{ steps.probe.outputs.verified }}
+          GH_TOKEN: \${{ github.token }}
         run: |
-          node -e 'const fs=require("fs");fs.writeFileSync("/tmp/live.json",JSON.stringify({version:"4.3",live:process.env.VERSION_LIVE==="yes",commit:process.env.COMMIT,checkedAt:new Date().toISOString()},null,2)+"\n")'
-          BLOB=$(base64 -w0 /tmp/live.json)
-          CURRENT=$(gh api repos/${{ github.repository }}/contents/v43-live-status.json --jq .sha 2>/dev/null || true)
-          if [ -n "$CURRENT" ]; then
-            gh api -X PUT repos/${{ github.repository }}/contents/v43-live-status.json -f message="Live v4.3 status" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
-          else
-            gh api -X PUT repos/${{ github.repository }}/contents/v43-live-status.json -f message="Live v4.3 status" -f content="$BLOB" >/dev/null || true
-          fi
+          node - <<'NODE'
+          const fs=require('fs');
+          const x={expected:process.env.EXPECTED,actual:process.env.ACTUAL||null,verified:process.env.VERIFIED==='yes',runId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,checkedAt:new Date().toISOString()};
+          fs.writeFileSync('production-build-verification.json',JSON.stringify(x,null,2)+'\n');
+          console.log(x);
+          NODE
+          BLOB=$(base64 -w0 production-build-verification.json)
+          CURRENT=$(gh api "repos/\${{ github.repository }}/contents/production-build-verification.json" --jq .sha 2>/dev/null || true)
+          if [ -n "$CURRENT" ]; then gh api -X PUT "repos/\${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+          else gh api -X PUT "repos/\${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" >/dev/null || true;fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deadzone-deployment-proof
+          path: production-build-verification.json
+          if-no-files-found: error
