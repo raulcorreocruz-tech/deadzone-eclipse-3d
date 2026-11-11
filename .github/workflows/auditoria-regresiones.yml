@@ -1,0 +1,67 @@
+name: Auditoría segura de regresiones DEAD ZONE
+on:
+  push:
+    branches: ["fix/auditoria-estabilidad-2026-11-11"]
+    paths:
+      - "tests/**"
+      - ".github/workflows/auditoria-regresiones.yml"
+      - "gameplay-v42.cjs"
+      - "gameplay-v43.cjs"
+      - "setup.cjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Dependencias de la rama
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Construir sin publicar
+        run: node setup.cjs
+      - name: Añadir instrumentación solo en la copia temporal de CI
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),f='index.html';let s=fs.readFileSync(f,'utf8');
+          const head=/<script\\s+type=["']module["']\\s*>/i.exec(s);
+          if(!head)throw Error('No ES module script');
+          const close=s.indexOf('</script>',head.index);
+          if(close<0)throw Error('No closing module script');
+          const hook=\`
+          window.__dzRegression={
+            spawn:()=>{for(const [i,kind] of ['normal','runner','coloso'].entries())spawnZombie(kind,player.x+7+i*2,player.z+6+i*2)},
+            snapshot:()=>zombies.map((z,i)=>{
+              const obj=z.figure?.userData?.dz42Visual||z.figure;
+              const h=new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3()).y;
+              return {id:z.netId??i,kind:z.kind,height:h,expected:2.3*z.size,rigged:!!z.figure?.userData?.dz42Visual,crawler:!!z.crawler};
+            })
+          };
+          \`;
+          s=s.slice(0,close)+hook+s.slice(close);
+          fs.writeFileSync(f,s);
+          console.log('Instrumented local build only');
+          NODE
+      - name: Arrancar servidor local
+        run: |
+          PORT=3000 node server.js > /tmp/deadzone-audit.log 2>&1 &
+          for i in $(seq 1 25); do if curl --fail --silent http://localhost:3000/health >/dev/null; then exit 0; fi; sleep 1; done
+          cat /tmp/deadzone-audit.log
+          exit 1
+      - name: Regresiones reales en Chromium
+        run: node tests/runtime-regression.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deadzone-audit-regression-report
+          path: |
+            audit-runtime-results.json
+            /tmp/deadzone-audit.log
+          if-no-files-found: ignore
