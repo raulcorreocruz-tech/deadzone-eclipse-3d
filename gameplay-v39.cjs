@@ -65,7 +65,7 @@ function dzStreakShop(){
  for(const [key,name,cost,desc] of items){const card=document.createElement('div');card.className='weapon';const b=document.createElement('b');b.textContent=name;const info=document.createElement('small');info.textContent=desc;const btn=document.createElement('button');btn.className='btn slim';btn.textContent=cost.toLocaleString('es-ES')+' PTS';btn.onclick=()=>{if(player.points<cost){notify('NECESITAS '+cost+' PUNTOS');return;}if((player.heli>0||player.car>0||player.tower>0)&&['heli','car','tower'].includes(key)){notify('YA TIENES UNA RACHA ACTIVA');return}player.points-=cost;
  if(key==='heli')player.heli=10;
  if(key==='car'){player.car=18;player.carHits=0}
- if(key==='tower')player.tower=16;
+ if(key==='tower'){player.tower=16;player.towerX=player.x;player.towerZ=player.z;}
  if(key==='dogs'){player.dogs=30;for(let i=0;i<3;i++)spawnDog(i)}
  if(key==='turret')makeTurret();
  paused=false;$('shopModal').classList.add('hidden');notify(name+' ACTIVADO',2);updateHud();};card.append(b,info,btn);list.appendChild(card)}
@@ -97,7 +97,7 @@ function dzTick(dt){
   if(gr.ttl<=0||gr.bounces>3){dzExplosion(gr.x,gr.z);scene.remove(gr.mesh);gr.mesh.geometry.dispose();gr.mesh.material.dispose();DZ39.grenades.splice(DZ39.grenades.indexOf(gr),1)}
  }
  if(player.car>0){player.car=Math.max(0,player.car-dt);for(const z of [...zombies])if(D(player,z)<1.8){if(!coop.guest)hitEnemy(z,430*dt);if((z.carCD||0)<=0){z.carCD=1;player.carHits++;if(player.carHits>=5){player.car=0;notify('COCHE DESTROZADO',2)}}}for(const z of zombies)z.carCD=Math.max(0,(z.carCD||0)-dt)}
- if(player.tower>0)player.tower=Math.max(0,player.tower-dt);
+ if(player.tower>0){player.tower=Math.max(0,player.tower-dt);player.x=player.towerX;player.z=player.towerZ;physics.vx=physics.vz=0;}
  if(DZ39.visualGun){DZ39.visualGun.position.z=.53-weaponKick*.15}
  dzGun();if(typeof weaponDisplay!=='undefined')weaponDisplay.visible=false;
 }
@@ -125,7 +125,7 @@ once('function shoot(){if(!playing||paused||player.dead||player.reload>0||player
 once('if(pl===\'Invocación de perros\'){if(player.dogs>0)return;',"if(pl==='Invocación de perros'){if(player.dogs>0)return;",'dog retains firing ability',false);
 once('bmesh.castShadow=false;bullets.push',"bmesh.scale.set(.34,.34,shotgun?2:3.4);bmesh.rotation.y=a2;bmesh.castShadow=false;bullets.push",'bullet tracer silhouettes',false);
 once('player.upgrades[id]=lv+1;',"player.upgrades[id]=lv+1;DZ39.visualGunLevel=-1;dzGun();",'pack gun appearance');
-once("function openShop(){paused=true;$('shopModal').classList.remove('hidden');drawShop()}","function openShop(){paused=true;$('shopModal').classList.remove('hidden');dzStreakShop()}",'only streak shop');
+once("function openShop(){paused=true;$('shopModal').classList.remove('hidden');drawShop()}","function openShop(){const station=interactions.find(i=>i.id==='armory');if(!playing||!station||D(player,station)>4){notify('ACÉRCATE A LA CENTRAL DE RACHAS',1.5);return}paused=true;$('shopModal').classList.remove('hidden');dzStreakShop()}",'only streak shop');
 once("if(e.code==='KeyR')reload();","if(e.code==='KeyG')dzGrenade();if(e.code==='KeyV')dzMelee();if(e.code==='KeyR')reload();",'keyboard grenade and melee');
 once("setupStick('movestick',touch.move);setupStick('aimstick',touch.aim);","setupStick('movestick',touch.move);setupStick('aimstick',touch.aim);dzMobileButtons();",'touch melee grenade');
 once("const speed=z.t.speed*(1+Math.min(wave,40)*.012)*(z.freeze>0||freezeUntil>gameTime?.18:1);","const speed=z.t.speed*(1+Math.min(wave,40)*.012)*(z.freeze>0||freezeUntil>gameTime?.18:1)*(z.crawler?.39:1);",'crawlers slow',false);
@@ -139,7 +139,7 @@ once("if(player.heli>0){player.heli-=dt;player.cool-=dt;const target=zombies.red
 once('function hurt(n,source=null){if(player.ifr>0||player.dead)return;',"function hurt(n,source=null){if(player.ifr>0||player.dead||player.heli>0||player.tower>0)return;",'streak safety',false);
 once("if(m.type==='remoteFire'&&!coop.guest&&coop.active){","if(m.type==='remoteFire'&&!coop.guest&&coop.active){if(m.weaponId===-2){dzExplosion(m.x,m.z);return}if(m.weaponId===-3){for(const z of [...zombies]){const dx=z.x-m.x,dz=z.z-m.z;if(Math.hypot(dx,dz)<3&&Math.abs(Math.atan2(Math.sin(Math.atan2(dx,dz)-m.a),Math.cos(Math.atan2(dx,dz)-m.a)))<1)hitEnemy(z,150)}return}if(m.weaponId===-4||m.weaponId===-5){const target=zombies.filter(z=>Math.hypot(z.x-m.x,z.z-m.z)<45&&Math.abs(Math.atan2(Math.sin(Math.atan2(z.x-m.x,z.z-m.z)-m.a),Math.cos(Math.atan2(z.x-m.x,z.z-m.z)-m.a)))<.17).sort((a,b)=>D(m,a)-D(m,b))[0];if(target)hitEnemy(target,m.weaponId===-4?105:620);return}",'remote cooperative melee grenade streaks',false);
 once('const sp=(player.moto>0?11:player.roll>0?13:6.2)',"const sp=(player.car>0?14:player.moto>0?11:player.roll>0?13:6.2)",'car physics',false);
-once('Object.assign(physics,{vx:0,vz:0,impactX:0,impactZ:0});',"for(const gr of DZ39.grenades){scene.remove(gr.mesh);gr.mesh.geometry.dispose();gr.mesh.material.dispose()}DZ39.grenades.length=0;DZ39.grenadeCount=3;DZ39.visualGunId=-1;DZ39.visualGunLevel=-1;Object.assign(physics,{vx:0,vz:0,impactX:0,impactZ:0});",'reset grenades and gun',false);
+once('Object.assign(physics,{vx:0,vz:0,impactX:0,impactZ:0});',"for(const gr of DZ39.grenades){scene.remove(gr.mesh);gr.mesh.geometry.dispose();gr.mesh.material.dispose()}DZ39.grenades.length=0;DZ39.grenadeCount=3;player.car=0;player.tower=0;player.carHits=0;DZ39.visualGunId=-1;DZ39.visualGunLevel=-1;Object.assign(physics,{vx:0,vz:0,impactX:0,impactZ:0});",'reset grenades and gun',false);
 once('function startRound(){if(player.dead)return;wave++;',"function startRound(){if(player.dead)return;wave++;DZ39.grenadeCount=Math.min(5,DZ39.grenadeCount+2);",'grenade resupply');
 once('const controlsNodes=Object.fromEntries(controlDefs.map(([id])=>[id,$(id)]));',"if(MOBILE_MODE)controlDefs.push(['dz39-melee','Cuerpo a cuerpo',true],['dz39-grenade','Granada',true]);const controlsNodes=Object.fromEntries(controlDefs.map(([id])=>[id,$(id)]));",'customizable new touch buttons',false);
 once('function tick(dt){gameTime+=dt;',"function tick(dt){gameTime+=dt;dzTick(dt);",'step grenade and streak physics');
