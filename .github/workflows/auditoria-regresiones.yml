@@ -31,11 +31,11 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs'),f='index.html';let s=fs.readFileSync(f,'utf8');
-          const head=/<script\\s+type=["']module["']\\s*>/i.exec(s);
+          const head=/<script\s+type=["']module["']\s*>/i.exec(s);
           if(!head)throw Error('No ES module script');
           const close=s.indexOf('</script>',head.index);
           if(close<0)throw Error('No closing module script');
-          const hook=\`
+          const hook=`
           window.__dzRegression={
             spawn:()=>{for(const [i,kind] of ['normal','runner','coloso'].entries())spawnZombie(kind,player.x+7+i*2,player.z+6+i*2)},
             snapshot:()=>zombies.map((z,i)=>{
@@ -44,7 +44,7 @@ jobs:
               return {id:z.netId??i,kind:z.kind,height:h,expected:2.3*z.size,rigged:!!z.figure?.userData?.dz42Visual,crawler:!!z.crawler};
             })
           };
-          \`;
+          `;
           s=s.slice(0,close)+hook+s.slice(close);
           fs.writeFileSync(f,s);
           console.log('Instrumented local build only');
