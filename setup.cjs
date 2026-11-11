@@ -48,7 +48,9 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v50.cjs');
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
- const moduleScripts=[...compiledHtml.matchAll(/<script\\s+type="module"\\s*>([\\s\\S]*?)<\\/script>/g)];
+ const scriptStart=compiledHtml.indexOf('<script type="module">');
+ const scriptEnd=compiledHtml.indexOf('</script>',scriptStart);
+ const moduleScripts=scriptStart>=0&&scriptEnd>scriptStart?[[null,compiledHtml.slice(scriptStart+'<script type="module">'.length,scriptEnd)]]:[];
  if(!moduleScripts.length)throw Error('No 3D module script found');
  const {spawnSync}=require('node:child_process');
  for(const [,source] of moduleScripts){
