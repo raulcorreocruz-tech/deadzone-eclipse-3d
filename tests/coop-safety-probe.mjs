@@ -16,6 +16,9 @@ try{
  const guest=await connect();sockets.push(guest);const gm=collect(guest);
  guest.send(JSON.stringify({type:'join',name:'AUDIT_GUEST',code,character:'rapero'}));
  await until(()=>gm.find(m=>m.type==='welcome'));
+ const watcher=await connect();sockets.push(watcher);const wm=collect(watcher);
+ watcher.send(JSON.stringify({type:'join',name:'AUDIT_OBSERVER',code,character:'panda'}));
+ await until(()=>wm.find(m=>m.type==='welcome'));
  host.send(JSON.stringify({type:'start'}));
  await until(()=>gm.find(m=>m.type==='started'));
  findings.push({check:'create/join/start',result:'pass'});
@@ -34,9 +37,6 @@ try{
  await until(()=>gm.find(m=>m.type==='snapshot'&&m.wave===1));
  findings.push({check:'host snapshot delivery',result:'pass'});
  // Clients should not be able to change someone else's health or money unilaterally.
- const watcher=await connect();sockets.push(watcher);const wm=collect(watcher);
- watcher.send(JSON.stringify({type:'join',name:'AUDIT_OBSERVER',code,character:'panda'}));
- await until(()=>wm.find(m=>m.type==='welcome'));
  guest.send(JSON.stringify({type:'damage',id:'AUDIT_OBSERVER',amount:999999}));
  await delay(300);
  const unverified=wm.some(m=>m.type==='damage'&&m.amount===999999);
