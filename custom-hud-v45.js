@@ -78,13 +78,15 @@ function sync(){
 }
 function open(){
  if(editing||!mobile())return;
- $('dz45-editor')?.classList.remove('dz45-collapsed');if($('dz45-fold'))$('dz45-fold').textContent='− PLEGAR';
+ // Open folded by default: the playfield remains available for drag-and-drop.
+ $('dz45-editor')?.classList.add('dz45-collapsed');if($('dz45-fold'))$('dz45-fold').textContent='⚙ ABRIR PANEL';
  startedInMenu=!!($('mainMenu')&&!$('mainMenu').classList.contains('hidden'));
  if(startedInMenu){$('mainMenu').classList.add('hidden');const hud=$('hud');shownHud=!!hud?.classList.contains('hidden');hud?.classList.remove('hidden')}
  else if($('pauseModal')){$('pauseModal').classList.add('hidden')}
  draft=structuredClone(saved);editing=true;document.body.classList.add('dz45-editing');
  $('dz45-editor').hidden=false;
  apply();fillMissing();apply();selected=$('movestick')?'movestick':all()[0]?.id;sync();
+ const root=$('dz45-editor');root?.classList.add('dz45-collapsed');
 }
 function close(save){
  if(!editing)return;
