@@ -31,3 +31,9 @@ body.dz45-editing .dz45-hide{display:grid!important}
 }
 @media(orientation:portrait){#dz45-editor .dz45-panel{max-height:49dvh;top:max(6px,env(safe-area-inset-top))}#dz45-quick{top:calc(env(safe-area-inset-top) + 50px)}.dz45-panel label{width:46%}}
 @media(max-height:370px){#dz45-editor .dz45-panel{max-height:75dvh}.dz45-panel label{width:30%}}
+
+/* Legacy v2.5 layout compatibility: v4.5 settings must override old saved positions. */
+body.touch-mode #hud .dz-custom-control.dz45-positioned{left:var(--dz45-x)!important;top:var(--dz45-y)!important;right:auto!important;bottom:auto!important;width:var(--dz45-size)!important;height:var(--dz45-size)!important;transform:translate(-50%,-50%)!important;opacity:var(--dz45-opacity)!important}
+body.touch-mode #hud .dz-control-hidden.dz45-ghost{display:grid!important}
+body.touch-mode #hud .dz-control-hidden.dz45-positioned:not(.dz45-hide){display:grid!important}
+body.touch-mode #hud .dz45-hide,body.touch-mode #hud .dz-custom-control.dz45-hide{display:none!important}
