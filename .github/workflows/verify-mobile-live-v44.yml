@@ -1,0 +1,62 @@
+name: Confirmar DEAD ZONE móvil v4.4 en Render
+on:
+  push:
+    branches: ["fix/mobile-sharpness-pause-2026-11-11"]
+    paths: [".github/workflows/verify-mobile-live-v44.yml"]
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verificar huella exacta que recibe la APK
+        id: probe
+        run: |
+          set +e
+          EXPECTED=$(node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const names=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs'];
+          const h=crypto.createHash('sha256');for(const n of names){h.update(n);h.update(fs.readFileSync(n))}
+          console.log(require('./package.json').version+'-'+h.digest('hex').slice(0,12));
+          NODE
+          )
+          FOUND=missing
+          HTTP=0
+          for i in $(seq 1 18); do
+            HTTP=$(curl -L --max-time 16 -sS -w '%{http_code}' -H 'Cache-Control: no-cache' "https://deadzone-eclipse-coop.onrender.com/?live-v44=${GITHUB_RUN_ID}_${i}" -o /tmp/live-v44.html || true)
+            FOUND=$(node - <<'NODE'
+          const fs=require('fs');
+          const s=fs.existsSync('/tmp/live-v44.html')?fs.readFileSync('/tmp/live-v44.html','utf8'):'';
+          console.log(s.match(/<meta name="deadzone-build" content="([^"]+)"/)?.[1]||'missing');
+          NODE
+            )
+            echo "Intento $i: $HTTP $FOUND esperado $EXPECTED"
+            if [ "$HTTP" = 200 ] && [ "$FOUND" = "$EXPECTED" ];then break;fi
+            sleep 8
+          done
+          echo "expected=$EXPECTED" >> "$GITHUB_OUTPUT"
+          echo "actual=$FOUND" >> "$GITHUB_OUTPUT"
+          echo "http=$HTTP" >> "$GITHUB_OUTPUT"
+          test "$FOUND" = "$EXPECTED" && test "$HTTP" = 200
+      - name: Guardar informe de publicación
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED: ${{ steps.probe.outputs.expected }}
+          ACTUAL: ${{ steps.probe.outputs.actual }}
+          HTTP_CODE: ${{ steps.probe.outputs.http }}
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const j={expected:process.env.EXPECTED,actual:process.env.ACTUAL,http:process.env.HTTP_CODE,verified:process.env.EXPECTED===process.env.ACTUAL&&process.env.HTTP_CODE==='200',runId:process.env.GITHUB_RUN_ID};
+          fs.writeFileSync('/tmp/proof.json',JSON.stringify(j,null,2)+'\n');
+          NODE
+          BLOB=$(base64 -w0 /tmp/proof.json)
+          SHA=$(gh api "repos/${{ github.repository }}/contents/mobile-v44-live.json?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)
+          if [ -n "$SHA" ];then gh api -X PUT "repos/${{ github.repository }}/contents/mobile-v44-live.json" -f branch="${{ github.ref_name }}" -f message="ci: mobile 4.4 Render proof" -f content="$BLOB" -f sha="$SHA" >/dev/null || true
+          else gh api -X PUT "repos/${{ github.repository }}/contents/mobile-v44-live.json" -f branch="${{ github.ref_name }}" -f message="ci: mobile 4.4 Render proof" -f content="$BLOB" >/dev/null || true;fi
