@@ -28,13 +28,13 @@ jobs:
       - name: Verificar web exacta y recursos de Render
         id: probe
         env:
-          EXPECTED: \${{ steps.expected.outputs.build }}
+          EXPECTED: ${{ steps.expected.outputs.build }}
         run: |
           set -euo pipefail
           SUCCESS=no
           LAST=unknown
           for i in $(seq 1 42); do
-            if curl -fsSL --compressed --max-time 18 -H 'Cache-Control: no-cache' "https://deadzone-eclipse-coop.onrender.com/?check=\${GITHUB_RUN_ID}_\${i}" -o /tmp/game.html; then
+            if curl -fsSL --compressed --max-time 18 -H 'Cache-Control: no-cache' "https://deadzone-eclipse-coop.onrender.com/?check=${GITHUB_RUN_ID}_${i}" -o /tmp/game.html; then
               LAST=$(node -e 'const s=require("fs").readFileSync("/tmp/game.html","utf8");console.log(s.match(/<meta name="deadzone-build" content="([^"]+)"/)?.[1]||"missing")')
               if [ "$LAST" = "$EXPECTED" ] && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/health && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/model && [ "$(head -c 4 /tmp/model)" = glTF ]; then SUCCESS=yes;break; fi
             fi
@@ -47,10 +47,10 @@ jobs:
       - name: Guardar prueba de publicación
         if: always()
         env:
-          EXPECTED: \${{ steps.expected.outputs.build }}
-          ACTUAL: \${{ steps.probe.outputs.actual }}
-          VERIFIED: \${{ steps.probe.outputs.verified }}
-          GH_TOKEN: \${{ github.token }}
+          EXPECTED: ${{ steps.expected.outputs.build }}
+          ACTUAL: ${{ steps.probe.outputs.actual }}
+          VERIFIED: ${{ steps.probe.outputs.verified }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           node - <<'NODE'
           const fs=require('fs');
@@ -59,9 +59,9 @@ jobs:
           console.log(x);
           NODE
           BLOB=$(base64 -w0 production-build-verification.json)
-          CURRENT=$(gh api "repos/\${{ github.repository }}/contents/production-build-verification.json" --jq .sha 2>/dev/null || true)
-          if [ -n "$CURRENT" ]; then gh api -X PUT "repos/\${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
-          else gh api -X PUT "repos/\${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" >/dev/null || true;fi
+          CURRENT=$(gh api "repos/${{ github.repository }}/contents/production-build-verification.json" --jq .sha 2>/dev/null || true)
+          if [ -n "$CURRENT" ]; then gh api -X PUT "repos/${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" -f sha="$CURRENT" >/dev/null || true
+          else gh api -X PUT "repos/${{ github.repository }}/contents/production-build-verification.json" -f message="ci: production build verified" -f content="$BLOB" >/dev/null || true;fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
