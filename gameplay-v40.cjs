@@ -13,7 +13,7 @@ once('function dzGun(){', '// DEAD_ZONE_PATCH_40\n'+extra+'\nfunction dzGun(){',
 once('hero.add(g);DZ39.visualGun=g;', 'hero.add(g);DZ39.visualGun=g;dz40LoadGun(g,w,lv);','GLB weapon replacement');
 once('bmesh.scale.set(.34,.34,shotgun?2:3.4);bmesh.rotation.y=a2;bmesh.castShadow=false;bullets.push', 'dz40BulletShape(bmesh,a2);bmesh.castShadow=false;bullets.push','actual projectile cartridge');
 once('new THREE.CylinderGeometry(.035,.052,len,6)','new THREE.CylinderGeometry(.018,.024,Math.min(.42,len),6)','short subtle tracer');
-once('opacity:.9,depthWrite:false','opacity:.22,depthWrite:false','dim tracer');
+once('new THREE.MeshBasicMaterial({color,transparent:true,opacity:.9,depthWrite:false})','new THREE.MeshBasicMaterial({color,transparent:true,opacity:.22,depthWrite:false})','dim tracer');
 once('DZ39.grenades.push({visual:true,mesh:m,ttl:.07})','DZ39.grenades.push({visual:true,mesh:m,ttl:.045})','tracer lifespan');
 once('const d=D(player,z),angle=Math.atan2(player.x-z.x,player.z-z.z);z.figure.rotation.y=angle;', 'const target=dz40TargetFor(z),d=D(target,z),angle=Math.atan2(target.x-z.x,target.z-z.z);z.figure.rotation.y=angle;','target nearest teammate');
 once('hurt(z.t.damage,z);z.attack=1.15;', 'if(target.netId&&coop.active&&!coop.guest)netSend({type:"damage",id:target.netId,amount:z.t.damage});else hurt(z.t.damage,z);z.attack=1.15;','online ally receives damage');
