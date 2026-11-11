@@ -1,6 +1,10 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),file=path.join(__dirname,'index.html');
 let html=fs.readFileSync(file,'utf8');
-if(html.includes('DEAD_ZONE_PATCH_47')){console.log('v4.7 already applied')}else{
+if(html.includes('DEAD_ZONE_PATCH_47')){console.log('v4.7 already installed')}else{
 function once(a,b,label){const n=html.split(a).length-1;if(n!==1)throw Error('v4.7 '+label+' '+n);html=html.replace(a,b)}
-const code=String.raw
+once('function dz46Survivor(){',"// DEAD_ZONE_PATCH_47 rigged survivor follows selected skin\nfunction dz47ApplySkinVisual(){\n if(typeof DZ43==='undefined'||typeof DZ46==='undefined'||!hero)return;\n const skin=DZ43.skins.find(s=>s.id===DZ43.skin)||DZ43.skins[0];\n const actor=DZ46.actor;\n if(actor){\n  const tint=new THREE.Color(skin.color),accent=new THREE.Color(skin.accent);\n  actor.traverse(obj=>{\n   if(!obj.isMesh&&!obj.isSkinnedMesh)return;\n   const source=Array.isArray(obj.material)?obj.material:[obj.material],updated=[];\n   for(let mat of source){\n    if(!mat){updated.push(mat);continue}\n    if(!mat.userData?.dz47Owned){mat=mat.clone();mat.userData.dz47Owned=true;mat.userData.dz47Original=mat.color?.getHex?.()??0xffffff}\n    const name=((obj.name||'')+' '+(mat.name||'')).toLowerCase();\n    const bare=/face|skin|head|eye|teeth|hair|hand|finger/.test(name);\n    if(mat.color){mat.color.setHex(mat.userData.dz47Original);if(!bare&&skin.id!=='soldado')mat.color.lerp(/stripe|strap|trim|detail/.test(name)?accent:tint,.72);mat.needsUpdate=true}\n    if('roughness' in mat)mat.roughness=Math.max(.45,Math.min(.94,mat.roughness??.77));\n    updated.push(mat);\n   }\n   obj.material=Array.isArray(obj.material)?updated:updated[0];\n  });\n  actor.visible=true;if(hero.userData?.body)hero.userData.body.visible=false;\n } else if(hero.userData?.body)hero.userData.body.visible=true;\n if(DZ43.gear){DZ43.gear.visible=true;DZ43.gear.traverse(obj=>{if(obj.isMesh){obj.castShadow=!MOBILE_MODE;obj.receiveShadow=false}})}\n}\nfunction dz46Survivor(){",'skin sync function');
+once('hero.add(model);DZ46.actor=model;','hero.add(model);DZ46.actor=model;dz47ApplySkinVisual();','rig load sync');
+once('hero.add(gear);DZ43.gear=gear;DZ43.selectedName=skin.name;',"hero.add(gear);DZ43.gear=gear;DZ43.selectedName=skin.name;if(typeof dz47ApplySkinVisual==='function')dz47ApplySkinVisual();",'skin change sync');
+fs.writeFileSync(file,html);console.log('DEAD ZONE v4.7 six skins sync with survivor rig');
+}
