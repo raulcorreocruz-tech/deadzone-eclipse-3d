@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - ".github/workflows/check-live-v39.yml"
+      - "gameplay-v39.cjs"
   workflow_dispatch:
 permissions:
   contents: write
