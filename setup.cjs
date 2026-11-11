@@ -40,6 +40,7 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v42.cjs');
  require('./gameplay-v43.cjs');
  require('./gameplay-v44.cjs');
+ require('./gameplay-v45.cjs');
  // Legally redistributable CC0 weapon models from petroulacl/fps-asset-kit,
  // based on OpenGameArt Flat Guns West by PCL. Downloaded at build time and
  // hosted locally, so the game never depends on hotlinking external models.
@@ -118,7 +119,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
