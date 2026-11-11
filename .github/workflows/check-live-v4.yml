@@ -20,7 +20,7 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs'),crypto=require('crypto');
-          const files=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs'];
+          const files=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','custom-hud-v45.js','custom-hud-v45.css'];
           const h=crypto.createHash('sha256');
           for(const f of files){h.update(f);h.update(fs.readFileSync(f))}
           fs.appendFileSync(process.env.GITHUB_OUTPUT,'build='+JSON.parse(fs.readFileSync('package.json')).version+'-'+h.digest('hex').slice(0,12)+'\n');
@@ -36,7 +36,7 @@ jobs:
           for i in $(seq 1 42); do
             if curl -fsSL --compressed --max-time 18 -H 'Cache-Control: no-cache' "https://deadzone-eclipse-coop.onrender.com/?check=${GITHUB_RUN_ID}_${i}" -o /tmp/game.html; then
               LAST=$(node -e 'const s=require("fs").readFileSync("/tmp/game.html","utf8");console.log(s.match(/<meta name="deadzone-build" content="([^"]+)"/)?.[1]||"missing")')
-              if [ "$LAST" = "$EXPECTED" ] && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/health && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/model && [ "$(head -c 4 /tmp/model)" = glTF ]; then SUCCESS=yes;break; fi
+              if [ "$LAST" = "$EXPECTED" ] && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/health -o /tmp/health && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/assets/zombie_mummy.glb -o /tmp/model && [ "$(head -c 4 /tmp/model)" = glTF ] && curl -fsS --max-time 18 https://deadzone-eclipse-coop.onrender.com/custom-hud-v45.js -o /tmp/touch.js && grep -q "deadzone_touch_layout_v45" /tmp/touch.js; then SUCCESS=yes;break; fi
             fi
             echo "Intento $i/42: esperado=$EXPECTED actual=$LAST"
             sleep 10
