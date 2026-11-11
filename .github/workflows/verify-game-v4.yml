@@ -7,6 +7,7 @@ on:
       - "gameplay-v39.cjs"
       - "gameplay-v40.cjs"
       - "gameplay-v41.cjs"
+      - "gameplay-v42.cjs"
       - ".github/workflows/verify-game-v4.yml"
   workflow_dispatch:
 permissions:
@@ -34,13 +35,14 @@ jobs:
           const fs=require('node:fs');
           const guns=['pistol_compact','pistol_full','smg_compact','smg_full','assault_rifle','battle_rifle','shotgun_pump','shotgun_auto','sniper'];
           guns.push(...guns.map(x=>x+'_east'),'melee_sword','melee_knife','melee_blade');
+          guns.push('zombie_mummy','zombie_brute','zombie_witch','zombie_scarecrow','zombie_werewolf','survivor_soldier','dog_kenney','car_kenney');
           for(const gun of guns){
             const buffer=fs.readFileSync('assets/'+gun+'.glb');
             if(buffer.toString('ascii',0,4)!=='glTF'||buffer.byteLength<1024)throw Error('GLB inválido: '+gun);
           }
           console.log('VALIDADOS',guns.length,'MODELOS GLB');
           const src=fs.readFileSync('index.html','utf8');
-          for(const token of ['DEAD_ZONE_PATCH_39','DEAD_ZONE_PATCH_40','DEAD_ZONE_PATCH_41','dz40LoadGun(g,w,lv)','dz41Bullet(bmesh,a2,pl)']){
+          for(const token of ['DEAD_ZONE_PATCH_39','DEAD_ZONE_PATCH_40','DEAD_ZONE_PATCH_41','DEAD_ZONE_PATCH_42','dz40LoadGun(g,w,lv)','dz41Bullet(bmesh,a2,pl)','dz42InstallEnemy(enemy)']){
             if(!src.includes(token))throw Error('Parche de juego ausente: '+token);
           }
           console.log('Integración v4 validada');
