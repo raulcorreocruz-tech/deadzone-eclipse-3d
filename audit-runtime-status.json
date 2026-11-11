@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "runId": "43015504845",
+  "commit": "bac6ad348989e8033c025dff8d101b77bf5ea358",
+  "report": {
+    "passed": true,
+    "modes": [
+      {
+        "mode": "android-landscape",
+        "skinPicker": true,
+        "changelog": true,
+        "started": true,
+        "scanned": 3,
+        "rigged": 2,
+        "errors": []
+      },
+      {
+        "mode": "desktop",
+        "skinPicker": true,
+        "changelog": true,
+        "started": true,
+        "scanned": 3,
+        "rigged": 3,
+        "errors": []
+      }
+    ]
+  }
+}
