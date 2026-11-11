@@ -4,7 +4,7 @@ let html=fs.readFileSync(file,'utf8');
 if(html.includes('DEAD_ZONE_PATCH_53')){console.log('v5.3 installed')}else{
 function once(a,b,label){const n=html.split(a).length-1;if(n!==1)throw Error('v5.3 '+label+' anchor '+n);html=html.replace(a,b)}
 once('const cap=MOBILE_MODE?(qualityMode===\'low\'?1:2):4;',"const cap=MOBILE_MODE?(qualityMode==='low'?3:6):14;",'real humanoid zombie count');
-once('const actor=gltf.scene.clone(true);\\n  const bound=',"const actor=dz42SkeletonClone(gltf.scene);\\n  const bound=",'preserve skinned zombie skeleton');
+once('const actor=gltf.scene.clone(true);\n  const bound=',"const actor=dz42SkeletonClone(gltf.scene);\n  const bound=",'preserve skinned zombie skeleton');
 once("for(const kind of ['runner','gritona','trepador','toxico','invocador'])DZ42.kindFile[kind]='zombie_mummy';",
 "for(const kind of ['normal','runner','gritona','trepador','toxico','invocador','coloso','final'])DZ42.kindFile[kind]='zombie_realista';",'replace fantasy monster models with humanoid zombies');
 once("gun.rotation.z+=(family==='shotgun'?.17:family==='sniper'?.10:family==='pistol'?.14:.045)*Math.sin(t*1.8)*.15;",
