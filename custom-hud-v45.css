@@ -37,3 +37,6 @@ body.touch-mode #hud .dz-custom-control.dz45-positioned{left:var(--dz45-x)!impor
 body.touch-mode #hud .dz-control-hidden.dz45-ghost{display:grid!important}
 body.touch-mode #hud .dz-control-hidden.dz45-positioned:not(.dz45-hide){display:grid!important}
 body.touch-mode #hud .dz45-hide,body.touch-mode #hud .dz-custom-control.dz45-hide{display:none!important}
+
+/* Always expose the editor entry points on touch devices, even if extra JS initialization fails. */
+@media (pointer:coarse),(max-width:800px){#editControlsMenu,#editControlsPause{display:inline-flex!important;visibility:visible!important;opacity:1!important;min-width:170px;min-height:48px!important;align-items:center;justify-content:center;position:relative;z-index:80}}
