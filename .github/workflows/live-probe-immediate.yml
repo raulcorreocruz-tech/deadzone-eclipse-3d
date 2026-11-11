@@ -28,7 +28,10 @@ jobs:
           if grep -Fq '#cameraHelp{display:none!important}' /tmp/game.html && grep -Fq 'const zoom=MOBILE_MODE?.73:' /tmp/game.html; then FIXES="yes"; fi
           echo "LIVE STATUS HTTP=$HTTP VERSION=$VERSION FIXES=$FIXES MODEL_HTTP=$(cat /tmp/modelcode)"
           VERSION="$VERSION" HTTP="$HTTP" FIXES="$FIXES" MODEL_HTTP="$(cat /tmp/modelcode)" node -e 'const fs=require("fs");fs.writeFileSync("/tmp/live.json",JSON.stringify({liveVersion:process.env.VERSION,latestMobileFixes:process.env.FIXES==="yes",http:process.env.HTTP,modelHttp:process.env.MODEL_HTTP,checkedAt:new Date().toISOString()},null,2)+"\n")'
-          BLOB=$(base64 -w0 /tmp/live.json)
-          CURRENT=$(gh api repos/${{ github.repository }}/contents/current-live-deadzone.json --jq .sha 2>/dev/null || true)
-          if [ -n "$CURRENT" ]; then gh api -X PUT repos/${{ github.repository }}/contents/current-live-deadzone.json -f message="Current live version" -f content="$BLOB" -f sha="$CURRENT" >/dev/null
-          else gh api -X PUT repos/${{ github.repository }}/contents/current-live-deadzone.json -f message="Current live version" -f content="$BLOB" >/dev/null; fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deadzone-live-probe
+          path: /tmp/live.json
+          if-no-files-found: ignore
