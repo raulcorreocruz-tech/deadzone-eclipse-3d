@@ -21,6 +21,9 @@ once("if(playing&&!paused){tick(dt);coopTick(now);for(const mixer of activeMixer
 "if(playing&&!paused){if(DZ44.onlinePaused)dz44StopInputs();tick(dt);coopTick(now);for(const mixer of activeMixers)mixer.update(dt)}dz44UpdateButton();",'coop network continues while in pause menu');
 once("playing=true;paused=false;menuDemo=false;","playing=true;paused=false;DZ44.onlinePaused=false;menuDemo=false;",'pause reset');
 once("leaveCoop();playing=false;paused=false;$('pauseModal')","leaveCoop();playing=false;paused=false;DZ44.onlinePaused=false;$('pauseModal')",'pause quit');
+once("badge.textContent='DEAD ZONE v4.3'","badge.textContent='DEAD ZONE v4.4'",'update game menu badge');
+once("newsBtn.textContent='📰 NOVEDADES v4.3'","newsBtn.textContent='📰 NOVEDADES v4.4'",'update changelog button');
+once("const lines=[\n  'v4.3", "const lines=[\n  'v4.4 · Corregida la nitidez móvil: resolución del render, bordes suavizados y calidad automática que sí puede subir. Botón PAUSA en pantalla; en cooperativo el mundo sigue avanzando.',\n  'v4.3",'add v4.4 release news');
 html=html.replace(/(<title>[^<]*?)v4\.3([^<]*<\/title>)/i,'$1v4.4$2');
 fs.writeFileSync(file,html);
 console.log('DEAD ZONE v4.4:',changes.join(', '));
