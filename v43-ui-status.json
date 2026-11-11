@@ -1,5 +1,14 @@
 {
-  "result": "failure",
-  "runId": "42988457162",
-  "report": null
+  "result": "success",
+  "runId": "42988683738",
+  "report": {
+    "ok": true,
+    "skinOptions": 6,
+    "selectedSkin": "panda",
+    "news": true,
+    "started": true,
+    "errors": [],
+    "viewport": "915x412",
+    "checkedAt": "2026-11-11T08:39:28.304Z"
+  }
 }
