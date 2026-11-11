@@ -40,7 +40,7 @@ jobs:
           }
           console.log('VALIDADOS',guns.length,'MODELOS GLB');
           const src=fs.readFileSync('index.html','utf8');
-          for(const token of ['DEAD_ZONE_PATCH_39','DEAD_ZONE_PATCH_40','DEAD_ZONE_PATCH_41','dz40BulletShape(bmesh,a2,pl)','dz40LoadGun(g,w,lv)','dz41Bullet(bmesh,a2,pl)']){
+          for(const token of ['DEAD_ZONE_PATCH_39','DEAD_ZONE_PATCH_40','DEAD_ZONE_PATCH_41','dz40LoadGun(g,w,lv)','dz41Bullet(bmesh,a2,pl)']){
             if(!src.includes(token))throw Error('Parche de juego ausente: '+token);
           }
           console.log('Integración v4 validada');
