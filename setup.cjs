@@ -104,9 +104,20 @@ if(riggedLoaded<5)throw Error('Insufficient CC0 animated zombie/prop models: '+r
 console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props verified');
 
 
+ const version=require('./package.json').version;
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs'];
+ const sourceHash=crypto.createHash('sha256');
+ for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
+ const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
+ const gameFile=path.join(dest,'index.html');
+ const originalHtml=fs.readFileSync(gameFile,'utf8');
+ if(originalHtml.split('</head>').length!==2)throw Error('No se puede insertar la versión: head inválido');
+ fs.writeFileSync(gameFile,originalHtml.replace('</head>','<meta name="deadzone-build" content="'+buildId+'"></head>'));
+ console.log('DEAD ZONE BUILD ID',buildId);
  const allAssets=fs.readdirSync(path.join(dest,'assets')).filter(x=>x.endsWith('.glb')).sort();
  const manifest={
-  gameVersion:require('./package.json').version,
+  gameVersion:version,
+  buildId,
   sourceZipUrl:URL,
   sourceZipSha256:hashBuffer(data),
   sourceArchiveBytes:data.length,
