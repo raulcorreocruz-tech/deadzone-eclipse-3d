@@ -64,6 +64,21 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v514.cjs');
  require('./gameplay-v515.cjs');
  require('./gameplay-v514-notes.cjs');
+ // TEMPORARY PHASE2 DISCOVERY: read code anchors during ordinary Render build; remove before release.
+ const phase2html=fs.readFileSync(path.join(dest,'index.html'),'utf8');
+ for(const [needle,width] of [
+  ['const roomData=',2500],['const objects=',2500],['function makeSpot(',2500],
+  ['function spawnZombie(',2800],['function hitEnemy(',2200],['function dzTick(dt){',3400],
+  ['function dz41Corpse(',1200],['function dz52Tick(dt){',800],['function dz43ApplySkin(){',650],
+  ['const types=',2000],['function blocked(',850],['function interact(){',1600],
+  ['function updateHud(',950],['function dz55AllySkin(',900],['function dz512Tick(){',2500],
+  ['function shoot(){',1350],['const weapons=',1200],['function weaponStats(',650]
+ ]){
+  const index=phase2html.indexOf(needle);
+  if(index>=0)console.log('PHASE2_PROBE '+needle+' '+JSON.stringify(phase2html.slice(index,index+width)));
+  else console.log('PHASE2_PROBE NOT_FOUND '+needle);
+ }
+
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
