@@ -16,11 +16,11 @@ if(h.includes('DEAD_ZONE_PATCH_519')){console.log('v5.19 already installed')}els
  once('player.hp=Math.max(65,Math.ceil(player.maxHp*.48));player.ifr=3;',
       'player.hp=player.maxHp;player.ifr=3;DZ519.lastHit=-1e9;',
       'five-hit health restored on co-op revival');
- once("DZ516_NAMES.chicken?'∞':ammoFor(weaponId()).mag;",
-      "(DZ516_NAMES.chicken===weapon().name||DZ519_NAME.chicken===weapon().name)?'∞':ammoFor(weaponId()).mag;",
+ once("weapon().name===DZ516_NAMES.chicken?'∞':ammoFor(weaponId()).mag;",
+      "(weapon().name===DZ516_NAMES.chicken||weapon().name===DZ519_NAME.chicken)?'∞':ammoFor(weaponId()).mag;",
       'infinite chicken ray HUD');
- once("DZ516_NAMES.chicken?('CALOR '+Math.round(DZ516.heat)+'%'):ammoFor(weaponId()).reserve;",
-      "(DZ516_NAMES.chicken===weapon().name||DZ519_NAME.chicken===weapon().name)?('CALOR '+Math.round(DZ516.heat)+'%'):ammoFor(weaponId()).reserve;",
+ once("weapon().name===DZ516_NAMES.chicken?('CALOR '+Math.round(DZ516.heat)+'%'):ammoFor(weaponId()).reserve;",
+      "(weapon().name===DZ516_NAMES.chicken||weapon().name===DZ519_NAME.chicken)?('CALOR '+Math.round(DZ516.heat)+'%'):ammoFor(weaponId()).reserve;",
       'new overheat HUD');
  const remote="if(m.type==='remoteFire'&&coop.active&&!coop.guest&&weapons[m.weaponId]?.name===DZ516_NAMES.storm)";
  once(remote,"if(m.type==='remoteFire'&&dz519RemoteSpecial(m))return;\n"+remote,'special weapons visible in co-op');
