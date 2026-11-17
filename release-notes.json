@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.17.0",
+      "title": "FASE 3.1 · ESTABILIDAD Y RENDIMIENTO",
+      "date": "17 nov 2026",
+      "detail": "Mejora de estabilidad para partidas largas: los huracanes eléctricos y las transformaciones en gallina liberan geometrías y materiales temporales al finalizar. Al empezar una partida nueva se limpian efectos pendientes, zombis transformados, jefes de la partida anterior, calor del arma y disparos táctiles retenidos. Diagnóstico opcional de FPS reales, zombis, balas, partículas, geometrías y texturas con ?diagnostico=1. Los controles actuales y el cooperativo no se modifican."
+    },
+    {
       "version": "5.16.0",
       "title": "FASE 2 · REFUGIO, ARMAS Y JEFES",
       "date": "17 nov 2026",
