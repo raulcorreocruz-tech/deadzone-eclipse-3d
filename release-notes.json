@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.16.0",
+      "title": "FASE 2 · REFUGIO, ARMAS Y JEFES",
+      "date": "17 nov 2026",
+      "detail": "Nueva casa defendible en el campo de fútbol con puerta principal, salida trasera y ventanas de entrada para zombis. Armas nuevas: Huracán Eléctrico (5 municiones), Transmutador de Gallinas con munición infinita y sobrecalentamiento, y Cuchillo Jamonero. Nuevo personaje de sprite Palmera Tropical, sincronizable online. Jefe Elefante Doble Telépata de Guerra cada siete rondas con onda psíquica e invocación de zombis. Cadencia general de armas reducida nuevamente para mejorar la sensación de combate."
+    },
+    {
       "version": "5.15.0",
       "title": "DISPARO CONTROLADO Y APUNTADO GUIADO",
       "date": "17 nov 2026",
