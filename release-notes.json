@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.19.0",
+      "title": "CINCO GOLPES, REGENERACIÓN, RACHAS Y NUEVAS ARMAS",
+      "date": "18 nov 2026",
+      "detail": "La supervivencia requiere cinco golpes válidos desde salud completa, con 10 segundos sin daño antes de regenerar gradualmente hasta el 100 %; el daño de cada golpe escala con la vida máxima. El helicóptero vuelve a disparar automáticamente a zombis cercanos. Al bajar de la torre, búsqueda de aterrizaje despejado y dos segundos de inmunidad. Cinco armas exclusivas de caja: Crucifijos explosivos (3 cargas, se adhieren y explotan con fanfarria coral original), Rayo de pollos (munición infinita y calentamiento), Omnitrix (cuatro transformaciones seleccionables durante 30 s), Balonazos de fútbol (10 bolas encadenando rebotes) y Latigazos de Cristo (30 golpes con ralentización). El joystick de disparo se puede mover y ampliar hasta 300 % desde el editor de HUD. Los modelos visuales usan recursos ligeros adecuados para móvil; pendiente validación de partidas completas en Android físico."
+    },
+    {
       "version": "5.18.0",
       "title": "FASE 3.2 · IMPACTOS Y ANIMACIONES DE COMBATE",
       "date": "17 nov 2026",
