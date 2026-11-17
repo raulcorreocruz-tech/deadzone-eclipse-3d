@@ -57,6 +57,9 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v58.cjs');
  require('./gameplay-v59.cjs');
  require('./gameplay-v510.cjs');
+ require('./server-v511.cjs');
+ require('./gameplay-v511.cjs');
+ require('./gameplay-v512.cjs');
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
@@ -147,7 +150,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','custom-hud-v45.js','custom-hud-v45.css'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','server-v511.cjs','gameplay-v511.cjs','gameplay-v512.cjs','custom-hud-v45.js','custom-hud-v45.css'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
@@ -164,6 +167,16 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
  const expectedAvatar='19dd696e7670a0c03a32f7ca54ccd013e68415dde211dc471b32fd026788e3f9';
  if(avatar.length!==2590648||hashBuffer(avatar)!==expectedAvatar||avatar.toString('utf8',0,4)!=='glTF')throw Error('Custom avatar integrity check failed');
  fs.writeFileSync(path.join(dest,'assets','doraemon_custom.glb'),avatar);
+ // User-supplied sprite atlas: transparent 5-frame Kimeramon bitmap (zero green background).
+ const spriteUrl='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/static/1284d501-3109-414a-bba1-944ad5cb9cdc-kimeramon_sprite_atlas.png';
+ const spriteResponse=await fetch(spriteUrl,{signal:AbortSignal.timeout(45000)});
+ if(!spriteResponse.ok)throw Error('Kimeramon sprite fetch failed: HTTP '+spriteResponse.status);
+ const sprite=Buffer.from(await spriteResponse.arrayBuffer());
+ const expectedSpriteHash='e36efc37a933c366fc13abea26cab9f865339186d1584c69b350cc92e1a996f9';
+ if(sprite.length!==118248||hashBuffer(sprite)!==expectedSpriteHash||sprite.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('Kimeramon sprite integrity verification failed');
+ fs.writeFileSync(path.join(dest,'assets','kimeramon_sprite_atlas.png'),sprite);
+ console.log('DEAD ZONE Kimeramon 5-frame sprite imported:',sprite.length,'bytes');
+
  console.log('DEAD ZONE custom user avatar loaded:',avatar.length,'bytes');
  const allAssets=fs.readdirSync(path.join(dest,'assets')).filter(x=>x.endsWith('.glb')).sort();
  const manifest={
