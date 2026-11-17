@@ -1,0 +1,34 @@
+{
+  "releases": [
+    {
+      "version": "5.14.0",
+      "title": "FASE 1 · CONTROLES Y SUPERVIVENCIA",
+      "date": "17 nov 2026",
+      "detail": "Caja misteriosa animada durante 5 segundos con previsualización 3D de armas, parada y recogida con USAR; oso panda que mueve la caja; joystick derecho para apuntar y disparar en 360° manteniendo pulsado; invocación de perros sin bloquear tu arma; menú de inicio depurado. Registro obligatorio de novedades por versión."
+    },
+    {
+      "version": "5.13.0",
+      "title": "PIXEL ART Y COOPERATIVO",
+      "date": "17 nov 2026",
+      "detail": "Kimeramon en pixel art animado como personaje jugable y visible en red; servidor que sirve el sprite transparente; final de partida al caer todo el equipo; ventajas del invitado validadas en servidor; sonidos, dispersión y retroceso diferenciados por armas."
+    },
+    {
+      "version": "5.10.0",
+      "title": "APUNTADO TÁCTIL 360°",
+      "date": "15 nov 2026",
+      "detail": "Conversión del punto pulsado a dirección de disparo alrededor del personaje, corrección de interferencias del HUD y control independiente del movimiento."
+    },
+    {
+      "version": "5.9.0",
+      "title": "ESTABILIDAD MÓVIL",
+      "date": "11 nov 2026",
+      "detail": "Corrección de un error de ejecución que interrumpía el juego desde móviles; comprobación del disparo mantenido, movimiento y liberación del dedo."
+    },
+    {
+      "version": "5.6.0",
+      "title": "REANIMACIÓN COOPERATIVA",
+      "date": "11 nov 2026",
+      "detail": "Sincronización de skins en cooperativo y sistema de jugadores abatidos, reanimables tras permanecer tres segundos junto a un compañero."
+    }
+  ]
+}
