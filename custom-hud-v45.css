@@ -86,3 +86,17 @@ body.dz45-editing #hud #aimstick,body.dz45-editing #hud #fire{display:none!impor
 @media(orientation:landscape) and (max-height:460px){
  #dz45-editor .dz45-panel{width:min(310px,40vw)!important;max-height:74dvh!important;top:auto!important;bottom:6px!important}
 }
+
+/* v5.19: allow independent drag+scale customization of firing joystick. */
+html body.dz45-editing #hud #aimstick,
+html body.touch-mode.dz45-editing #hud #aimstick{
+ display:block!important;visibility:visible!important;pointer-events:auto!important;
+ opacity:var(--dz45-opacity,1)!important;touch-action:none!important;
+ z-index:10001!important;min-width:0!important;min-height:0!important;
+}
+html body.dz45-editing #hud #aimstick.dz45-positioned{
+ width:var(--dz45-size)!important;height:var(--dz45-size)!important;
+ left:var(--dz45-x)!important;top:var(--dz45-y)!important;
+ right:auto!important;bottom:auto!important;
+ transform:translate(-50%,-50%)!important;
+}
