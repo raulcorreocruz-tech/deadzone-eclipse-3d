@@ -1,7 +1,7 @@
 /* DEAD_ZONE_PATCH_45: independent mobile control editor, compatible with v3.8-v4.4. */
 (() => {
 'use strict';
-const ids=['movestick','reload','use','swap','shop','dodge','dz39-melee','dz39-grenade','dz44-pause','pauseTouch'];
+const ids=['movestick','aimstick','reload','use','swap','shop','dodge','dz39-melee','dz39-grenade','dz44-pause','pauseTouch'];
 const names={movestick:'Movimiento',aimstick:'Apuntar',fire:'Disparar',reload:'Recargar',use:'Interactuar',swap:'Cambiar arma',shop:'Tienda',dodge:'Esquivar','dz39-melee':'Golpe','dz39-grenade':'Granada','dz44-pause':'Pausa',pauseTouch:'Pausa'};
 const key='deadzone_touch_layout_v45';
 const oldKey='deadzone_touch_layout_v25';
@@ -16,7 +16,7 @@ try {
  const previous=parse(localStorage.getItem(key))||parse(localStorage.getItem(oldKey));
  if(previous)for(const o of ['portrait','landscape'])for(const [id,v] of Object.entries(previous[o]||{})){
   if(!v||typeof v!=='object'||!ids.includes(id))continue;
-  saved[o][id]={x:clamp(Number(v.x)||.5,0,1),y:clamp(Number(v.y)||.5,0,1),size:clamp(Number(v.size)||1,.5,2.2),opacity:clamp(Number(v.opacity)||1,.1,1),visible:v.visible!==false};
+  saved[o][id]={x:clamp(Number(v.x)||.5,0,1),y:clamp(Number(v.y)||.5,0,1),size:clamp(Number(v.size)||1,.5,3),opacity:clamp(Number(v.opacity)||1,.1,1),visible:v.visible!==false};
  }
 }catch{}
 const isControl=el=>el&&ids.includes(el.id);
@@ -32,7 +32,7 @@ function apply(){
   el.classList.toggle('dz45-ghost',editing);
   el.classList.toggle('dz45-hide',!editing&&d?.visible===false&&!el.id.includes('stick')&&!el.id.includes('pause'));
   if(d){
-   const size=clamp(currentSize(el)*(Number(d.size)||1),35,230);
+   const size=clamp(currentSize(el)*(Number(d.size)||1),35,360);
    const hx=size/(2*Math.max(1,innerWidth)),hy=size/(2*Math.max(1,innerHeight));
    el.style.setProperty('--dz45-x',(clamp(d.x,hx,1-hx)*100)+'vw');
    el.style.setProperty('--dz45-y',(clamp(d.y,hy,1-hy)*100)+'dvh');
@@ -50,13 +50,13 @@ function fillMissing(){
 }
 function preset(mode){
  const left=mode==='left',compact=mode==='compact',wide=orient()==='landscape',mirror=x=>left?1-x:x;
- const values={movestick:[.14,.79,compact?1:1.25],reload:[.72,wide?.38:.47,1.1],use:[.69,.65,1.05],swap:[.6,.82,1.0],shop:[.32,.83,1],dodge:[.34,.6,1.1],'dz39-melee':[.78,.25,1],'dz39-grenade':[.65,.28,1],'dz44-pause':[.5,.09,1],pauseTouch:[.5,.09,1]};
+ const values={movestick:[.14,.79,compact?1:1.25],aimstick:[.86,.79,compact?1:1.25],reload:[.72,wide?.38:.47,1.1],use:[.69,.65,1.05],swap:[.6,.82,1.0],shop:[.32,.83,1],dodge:[.34,.6,1.1],'dz39-melee':[.78,.25,1],'dz39-grenade':[.65,.28,1],'dz44-pause':[.5,.09,1],pauseTouch:[.5,.09,1]};
  for(const [id,[x,y,size]] of Object.entries(values))if($(id))draft[orient()][id]={x:id.includes('pause')?.5:mirror(x),y,size,opacity:id==='fire'?.95:.84,visible:true};
  selected='movestick';apply();sync();
 }
 function layoutPanel(){
  const root=document.createElement('div');root.id='dz45-editor';root.hidden=true;
- root.innerHTML='<div class="dz45-panel"><header><strong>🎮 EDITAR CONTROLES</strong><span id="dz45-orientation"></span><button id="dz45-fold" type="button" aria-label="Plegar panel">− PLEGAR</button></header><p>Arrastra los botones para moverlos. Selecciona uno para cambiar tamaño, opacidad y visibilidad.</p><div class="dz45-presets"><button data-preset="comfort">CÓMODO</button><button data-preset="compact">COMPACTO</button><button data-preset="left">ZURDOS</button></div><label>Control<select id="dz45-control"></select></label><label>Tamaño <output id="dz45-size-val">100%</output><input id="dz45-size" type="range" min="50" max="220" step="5" value="100"></label><label>Opacidad <output id="dz45-opacity-val">90%</output><input id="dz45-opacity" type="range" min="10" max="100" step="5" value="90"></label><label class="dz45-checkbox"><input id="dz45-visible" type="checkbox" checked> Mostrar control</label><footer><button id="dz45-reset">RESTAURAR</button><button id="dz45-cancel">CANCELAR</button><button id="dz45-save">✓ GUARDAR</button></footer></div>';
+ root.innerHTML='<div class="dz45-panel"><header><strong>🎮 EDITAR CONTROLES</strong><span id="dz45-orientation"></span><button id="dz45-fold" type="button" aria-label="Plegar panel">− PLEGAR</button></header><p>Arrastra los botones para moverlos. Selecciona uno para cambiar tamaño, opacidad y visibilidad.</p><div class="dz45-presets"><button data-preset="comfort">CÓMODO</button><button data-preset="compact">COMPACTO</button><button data-preset="left">ZURDOS</button></div><label>Control<select id="dz45-control"></select></label><label>Tamaño <output id="dz45-size-val">100%</output><input id="dz45-size" type="range" min="50" max="300" step="5" value="100"></label><label>Opacidad <output id="dz45-opacity-val">90%</output><input id="dz45-opacity" type="range" min="10" max="100" step="5" value="90"></label><label class="dz45-checkbox"><input id="dz45-visible" type="checkbox" checked> Mostrar control</label><footer><button id="dz45-reset">RESTAURAR</button><button id="dz45-cancel">CANCELAR</button><button id="dz45-save">✓ GUARDAR</button></footer></div>';
  document.body.append(root);
  $('dz45-fold').addEventListener('click',()=>{const collapsed=root.classList.toggle('dz45-collapsed');$('dz45-fold').textContent=collapsed?'⚙ ABRIR PANEL':'− PLEGAR'});
  const select=$('dz45-control');for(const el of all()){const opt=document.createElement('option');opt.value=el.id;opt.textContent=names[el.id]||el.id;select.append(opt)}
@@ -98,7 +98,7 @@ function close(save){
 }
 function stop(e){e.preventDefault();e.stopImmediatePropagation()}
 document.addEventListener('pointerdown',e=>{
- if(!editing)return;const el=e.target.closest('#movestick,#reload,#use,#swap,#shop,#dodge,#dz39-melee,#dz39-grenade,#dz44-pause,#pauseTouch');
+ if(!editing)return;const el=e.target.closest('#movestick,#aimstick,#reload,#use,#swap,#shop,#dodge,#dz39-melee,#dz39-grenade,#dz44-pause,#pauseTouch');
  if(!el)return;
  stop(e);selected=el.id;const d=draft[orient()]?.[selected];if(!d)return;
  const r=el.getBoundingClientRect();drag={pid:e.pointerId,id:el.id,dx:e.clientX-(r.left+r.width/2),dy:e.clientY-(r.top+r.height/2)};
@@ -111,7 +111,7 @@ document.addEventListener('pointermove',e=>{
 },true);
 function end(e){if(editing&&drag&&e.pointerId===drag.pid){stop(e);drag=null}}
 document.addEventListener('pointerup',end,true);document.addEventListener('pointercancel',end,true);
-document.addEventListener('click',e=>{if(editing&&e.target.closest('#movestick,#reload,#use,#swap,#shop,#dodge,#dz39-melee,#dz39-grenade,#dz44-pause,#pauseTouch'))stop(e)},true);
+document.addEventListener('click',e=>{if(editing&&e.target.closest('#movestick,#aimstick,#reload,#use,#swap,#shop,#dodge,#dz39-melee,#dz39-grenade,#dz44-pause,#pauseTouch'))stop(e)},true);
 function ensureButton(parent,id,label){
  if(!parent||$(id))return;const b=document.createElement('button');b.type='button';b.id=id;b.className='btn dz45-launch';b.textContent=label;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()});parent.append(b);
 }
