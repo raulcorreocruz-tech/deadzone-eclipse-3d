@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.18.0",
+      "title": "FASE 3.2 · IMPACTOS Y ANIMACIONES DE COMBATE",
+      "date": "17 nov 2026",
+      "detail": "Mejora física visual de proyectiles y zombis: partículas de impacto según material/arma, retroceso de los enemigos orientado por dirección del impacto y fuerza limitada por masa/tamaño, reacción corporal amortiguada sin alterar hitboxes ni escala, y aterrizaje más suave de cadáveres al caer. Se limitan las partículas y las ráfagas simultáneas para proteger FPS en Android. Se preservan los controles móviles de doble joystick, el modo online, las skins y la reanimación. Fase 3.3 pendiente: pruebas reales en Android, perfiles gráficos y diagnóstico de sincronización cooperativa."
+    },
+    {
       "version": "5.17.0",
       "title": "FASE 3.1 · ESTABILIDAD Y RENDIMIENTO",
       "date": "17 nov 2026",
