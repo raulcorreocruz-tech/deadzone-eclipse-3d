@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.15.0",
+      "title": "DISPARO CONTROLADO Y APUNTADO GUIADO",
+      "date": "17 nov 2026",
+      "detail": "Cadencia de disparo reducida y equilibrada por familia de armas, conservando diferencias de cada modelo. En móvil, el joystick derecho sustituye completamente al disparo por pulsación en la pantalla: apunta en 360°, muestra una línea luminosa desde el personaje, ofrece una leve ayuda de fijación a zombis situados en esa dirección y dispara mientras se mantenga inclinado; al soltarlo, deja de disparar. El joystick izquierdo continúa reservado al movimiento."
+    },
+    {
       "version": "5.14.0",
       "title": "FASE 1 · CONTROLES Y SUPERVIVENCIA",
       "date": "17 nov 2026",
