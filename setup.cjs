@@ -63,22 +63,9 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./server-v513.cjs');
  require('./gameplay-v514.cjs');
  require('./gameplay-v515.cjs');
+ require('./gameplay-v516.cjs');
+ require('./server-v516.cjs');
  require('./gameplay-v514-notes.cjs');
- // TEMPORARY PHASE2 DISCOVERY: read code anchors during ordinary Render build; remove before release.
- const phase2html=fs.readFileSync(path.join(dest,'index.html'),'utf8');
- for(const [needle,width] of [
-  ['const roomData=',2500],['const objects=',2500],['function makeSpot(',2500],
-  ['function spawnZombie(',2800],['function hitEnemy(',2200],['function dzTick(dt){',3400],
-  ['function dz41Corpse(',1200],['function dz52Tick(dt){',800],['function dz43ApplySkin(){',650],
-  ['const types=',2000],['function blocked(',850],['function interact(){',1600],
-  ['function updateHud(',950],['function dz55AllySkin(',900],['function dz512Tick(){',2500],
-  ['function shoot(){',1350],['const weapons=',1200],['function weaponStats(',650]
- ]){
-  const index=phase2html.indexOf(needle);
-  if(index>=0)console.log('PHASE2_PROBE '+needle+' '+JSON.stringify(phase2html.slice(index,index+width)));
-  else console.log('PHASE2_PROBE NOT_FOUND '+needle);
- }
-
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
@@ -169,7 +156,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','server-v511.cjs','gameplay-v511.cjs','gameplay-v512.cjs','server-v513.cjs','gameplay-v514.cjs','gameplay-v515.cjs','gameplay-v514-notes.cjs','release-notes.json','custom-hud-v45.js','custom-hud-v45.css'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','server-v511.cjs','gameplay-v511.cjs','gameplay-v512.cjs','server-v513.cjs','gameplay-v514.cjs','gameplay-v515.cjs','gameplay-v516.cjs','server-v516.cjs','assets-v516.cjs','assets/war_elephant.png.b64','assets/tropical_palm.png.b64','gameplay-v514-notes.cjs','release-notes.json','custom-hud-v45.js','custom-hud-v45.css'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
@@ -194,6 +181,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
  const expectedSpriteHash='e36efc37a933c366fc13abea26cab9f865339186d1584c69b350cc92e1a996f9';
  if(sprite.length!==118248||hashBuffer(sprite)!==expectedSpriteHash||sprite.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('Kimeramon sprite integrity verification failed');
  fs.writeFileSync(path.join(dest,'assets','kimeramon_sprite_atlas.png'),sprite);
+ require('./assets-v516.cjs');
  console.log('DEAD ZONE Kimeramon 5-frame sprite imported:',sprite.length,'bytes');
 
  console.log('DEAD ZONE custom user avatar loaded:',avatar.length,'bytes');
