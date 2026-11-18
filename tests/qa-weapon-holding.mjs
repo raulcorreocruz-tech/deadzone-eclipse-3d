@@ -17,18 +17,12 @@ try{
   if(spec.skin!=='soldado'&&state.holding.pixelHeldMeshes<1)throw Error('Pixel character has no equipped gun '+JSON.stringify(state));
   if(spec.skin!=='soldado'&&state.mask?.visibleLegacyMeshes>0)throw Error('Soldier accidentally visible over sprite '+JSON.stringify(state));
   if(spec.skin==='shin_chan'){
-   await page.evaluate(()=>{
-    const a=buildActor(mats.player,1,'player');a.position.set(-22,0,-30);scene.add(a);
-    a.userData.dz55Skin='shin_chan';a.userData.dz535Weapon='MP7';allies.set('qa-held-weapon',a);
-   });
+   await page.evaluate(()=>window.__DZ535_TEST.spawn());
    await page.waitForFunction(()=>window.__DZ535_STATUS?.remotePixelWeapons>=1,null,{timeout:12000});
-   const remote=await page.evaluate(()=>{
-    const a=allies.get('qa-held-weapon'),r=DZ535.actors.get(a);
-    return {remote:window.__DZ535_STATUS?.remoteWeapons,skinVisible:!!dz531PixelSprite(a),weaponName:r?.weapon,mesh:r?.kind,meshCount:r?.mount.children.length}
-   });
+   const remote=await page.evaluate(()=>window.__DZ535_TEST.snapshot());
    if(remote.weaponName!=='MP7'||remote.meshCount<1)throw Error('Remote player did not equip his weapon '+JSON.stringify(remote));
    state.remote=remote;
-   await page.evaluate(()=>{const a=allies.get('qa-held-weapon');a?.parent?.remove(a);allies.delete('qa-held-weapon')});
+   await page.evaluate(()=>window.__DZ535_TEST.cleanup());
   }
   const critical=errors.filter(e=>/ReferenceError|TypeError|SyntaxError|Cannot access|not defined/i.test(e));
   if(critical.length)throw Error(spec.label+' JavaScript '+critical.join('; ').slice(0,600));
