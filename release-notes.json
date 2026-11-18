@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.9",
+      "title": "AVISOS MÁS PEQUEÑOS · FULLSCREEN Y PAUSA SIN DUPLICADOS",
+      "date": "18 nov 2026",
+      "detail": "Los textos temporales de recarga, zombis alertados, oleadas y otros avisos se muestran pequeños en la esquina superior izquierda, sin tapar el centro de juego. El botón flotante de pantalla completa se oculta cuando ya existe uno en el menú principal o de pausa. Los botones flotantes de pausa desaparecen mientras está abierta la ventana, que mantiene las opciones dentro de su cajetín. Se mantiene el nuevo sistema multitáctil y el disparo exclusivo del botón FUEGO. La edición visual definitiva se validará en móvil real."
+    },
+    {
       "version": "5.25.8",
       "title": "CONTROLES MÓVILES · MULTITÁCTIL REAL Y DISPARO INDEPENDIENTE",
       "date": "18 nov 2026",

@@ -8,6 +8,7 @@ on:
       - '.github/workflows/smoke-live-mobile.yml'
       - 'gameplay-v526.cjs'
       - 'gameplay-v527.cjs'
+      - 'gameplay-v528.cjs'
       - 'gameplay-v525.cjs'
       - 'package.json'
 permissions:

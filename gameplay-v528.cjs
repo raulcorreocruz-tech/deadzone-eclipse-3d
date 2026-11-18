@@ -1,0 +1,12 @@
+'use strict';
+// DEAD_ZONE_PATCH_528: compact alerts and context-aware fullscreen/pause controls.
+const fs=require('node:fs'),path=require('node:path'),file=path.join(__dirname,'index.html');
+let h=fs.readFileSync(file,'utf8');
+if(h.includes('DEAD_ZONE_PATCH_528'))console.log('Dead Zone v5.25.9 UI already patched');
+else{
+ if(h.split('</head>').length!==2)throw Error('v5.25.9 no single head');
+ const css="<style id=\"dz528-clean-hud\">\n#hud #toast{position:fixed!important;left:max(12px,env(safe-area-inset-left,0px))!important;top:calc(env(safe-area-inset-top,0px) + 70px)!important;right:auto!important;bottom:auto!important;transform:none!important;max-width:min(235px,32vw)!important;padding:6px 10px!important;text-align:left!important;border-radius:8px!important;font:750 11px/1.3 system-ui,sans-serif!important;letter-spacing:.2px!important;white-space:normal!important;pointer-events:none!important;box-shadow:0 3px 12px #0007!important;z-index:19!important}\n#dz521-wave,#dz521-wave.dz521-on{position:fixed!important;left:max(12px,env(safe-area-inset-left,0px))!important;top:calc(env(safe-area-inset-top,0px) + 109px)!important;right:auto!important;transform:none!important;font:800 11px/1.3 system-ui,sans-serif!important;letter-spacing:.2px!important;padding:5px 9px!important;max-width:235px!important;white-space:normal!important;box-shadow:0 3px 12px #0007!important}\nbody:has(#mainMenu:not(.hidden)) #dz-exit-fullscreen,body:has(#pauseModal:not(.hidden)) #dz-exit-fullscreen{display:none!important}\nbody:has(#pauseModal:not(.hidden)) #dz44-pause,body:has(#pauseModal:not(.hidden)) #pauseTouch{display:none!important}\n#pauseModal .panel .buttons{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px}\n#pauseModal .panel .buttons .btn{position:static!important;transform:none!important}\n@media(pointer:coarse),(max-width:800px){\n#hud #toast{top:calc(env(safe-area-inset-top,0px) + 48px)!important;max-width:min(180px,35vw)!important;font-size:10px!important;padding:4px 7px!important}\n#dz521-wave,#dz521-wave.dz521-on{top:calc(env(safe-area-inset-top,0px) + 83px)!important;max-width:min(180px,35vw)!important;font-size:10px!important;padding:4px 7px!important}\n}</style><!-- DEAD_ZONE_PATCH_528 -->";
+ h=h.replace('</head>',css+'</head>');
+ fs.writeFileSync(file,h);
+ console.log('DEAD ZONE 5.25.9: small corner notices, no overlapping fullscreen/pause buttons');
+}
