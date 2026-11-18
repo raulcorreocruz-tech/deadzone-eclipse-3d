@@ -33,6 +33,20 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  else if(fs.existsSync(packageLockPath))fs.unlinkSync(packageLockPath);
  if(require('./package.json').version!==releaseVersion)throw Error('El ZIP ha sobrescrito la versión del proyecto');
  console.log('DEAD ZONE: manifiesto del repositorio preservado; versión',releaseVersion);
+
+ // First-party, pinned Three.js ES modules. Avoid mobile dependency on external CDN/ISP filters.
+ const pinnedThree=path.join(dest,'node_modules','three');
+ const buildSource=path.join(pinnedThree,'build','three.module.js');
+ const addonsSource=path.join(pinnedThree,'examples','jsm');
+ if(!fs.existsSync(buildSource)||!fs.existsSync(addonsSource))throw Error('Three.js 0.160.1 missing from npm dependencies');
+ const threePackage=JSON.parse(fs.readFileSync(path.join(pinnedThree,'package.json'),'utf8'));
+ if(threePackage.version!=='0.160.1')throw Error('Incorrect pinned Three.js version: '+threePackage.version);
+ const vendorRoot=path.join(dest,'vendor','three');
+ fs.mkdirSync(path.join(vendorRoot,'build'),{recursive:true});
+ fs.copyFileSync(buildSource,path.join(vendorRoot,'build','three.module.js'));
+ fs.cpSync(addonsSource,path.join(vendorRoot,'examples','jsm'),{recursive:true});
+ console.log('DEAD ZONE local Three.js 0.160.1 modules prepared, no CDN required to start');
+
  // Apply tested additive gameplay patch before Render publishes the new game.
  require('./gameplay-v39.cjs');
  require('./gameplay-v40.cjs');
@@ -72,12 +86,16 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  require('./gameplay-v522.cjs');
  require('./gameplay-v523.cjs');
  require('./gameplay-v524.cjs');
+ require('./gameplay-v525.cjs');
  require('./server-v516.cjs');
  require('./server-v520.cjs');
  require('./server-v523.cjs');
+ require('./server-v525.cjs');
  require('./gameplay-v514-notes.cjs');
  // Verify browser module syntax before deployment, not only that the build task completed.
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
+ if(/https:\/\/(?:cdn\.jsdelivr\.net|unpkg\.com)\/npm\/three@0\.160\.1/.test(compiledHtml))throw Error('External 3D CDN import remained in browser build');
+ if(!compiledHtml.includes('./vendor/three/build/three.module.js'))throw Error('Self-hosted Three.js import missing');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
  const scriptEnd=compiledHtml.indexOf('</script>',scriptStart);
  const moduleScripts=scriptStart>=0&&scriptEnd>scriptStart?[[null,compiledHtml.slice(scriptStart+'<script type="module">'.length,scriptEnd)]]:[];
@@ -166,7 +184,7 @@ console.log('DEAD ZONE v4.2: '+riggedLoaded+'/8 animated monsters and props veri
 
 
  const version=require('./package.json').version;
- const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','server-v511.cjs','gameplay-v511.cjs','gameplay-v512.cjs','server-v513.cjs','gameplay-v514.cjs','gameplay-v515.cjs','gameplay-v516.cjs','gameplay-v517.cjs','gameplay-v518.cjs','gameplay-v519.cjs','gameplay-v520.cjs','gameplay-v521.cjs','gameplay-v522.cjs','gameplay-v523.cjs','gameplay-v524.cjs','server-v516.cjs','server-v520.cjs','server-v523.cjs','assets-v516.cjs','assets/war_elephant.png.b64','assets/tropical_palm.png.b64','gameplay-v514-notes.cjs','release-notes.json','custom-hud-v45.js','custom-hud-v45.css'];
+ const sourceFiles=['package.json','setup.cjs','gameplay-v39.cjs','gameplay-v40.cjs','gameplay-v41.cjs','gameplay-v42.cjs','gameplay-v43.cjs','gameplay-v44.cjs','gameplay-v45.cjs','gameplay-v46.cjs','gameplay-v47.cjs','gameplay-v48.cjs','gameplay-v49.cjs','gameplay-v50.cjs','gameplay-v51.cjs','gameplay-v52.cjs','gameplay-v53.cjs','gameplay-v54.cjs','gameplay-v55.cjs','server-v55.cjs','gameplay-v56.cjs','gameplay-v57.cjs','gameplay-v58.cjs','gameplay-v59.cjs','gameplay-v510.cjs','server-v511.cjs','gameplay-v511.cjs','gameplay-v512.cjs','server-v513.cjs','gameplay-v514.cjs','gameplay-v515.cjs','gameplay-v516.cjs','gameplay-v517.cjs','gameplay-v518.cjs','gameplay-v519.cjs','gameplay-v520.cjs','gameplay-v521.cjs','gameplay-v522.cjs','gameplay-v523.cjs','gameplay-v524.cjs','gameplay-v525.cjs','server-v516.cjs','server-v520.cjs','server-v523.cjs','server-v525.cjs','assets-v516.cjs','assets/war_elephant.png.b64','assets/tropical_palm.png.b64','gameplay-v514-notes.cjs','release-notes.json','custom-hud-v45.js','custom-hud-v45.css'];
  const sourceHash=crypto.createHash('sha256');
  for(const name of sourceFiles){sourceHash.update(name);sourceHash.update(fs.readFileSync(path.join(dest,name)))}
  const buildId=version+'-'+sourceHash.digest('hex').slice(0,12);
