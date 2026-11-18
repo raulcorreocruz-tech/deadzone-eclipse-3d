@@ -1,0 +1,18 @@
+name: Audit live room and fire pipeline
+on:
+  push:
+    branches: ["feature/firemodes-helicopter-live-rooms-zombie-walk-v52517"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund && node setup.cjs
+      - run: node tests/inspect-room-control.cjs
