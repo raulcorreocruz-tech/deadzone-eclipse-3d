@@ -20,6 +20,7 @@ try{
   if(spec.skin==='shin_chan'){
    await page.evaluate(()=>window.__DZ535_TEST.spawn());
    await page.waitForFunction(()=>window.__DZ535_STATUS?.remotePixelWeapons>=1,null,{timeout:12000});
+   await page.waitForFunction(()=>window.__DZ535_TEST.snapshot()?.mesh?.endsWith('.glb'),null,{timeout:17000});
    const remote=await page.evaluate(()=>window.__DZ535_TEST.snapshot());
    if(remote.weaponName!=='MP7'||remote.meshCount<1)throw Error('Remote player did not equip his weapon '+JSON.stringify(remote));
    state.remote=remote;
