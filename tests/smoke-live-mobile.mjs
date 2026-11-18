@@ -55,6 +55,8 @@ for (const mobile of [true,false]) {
   const start=page.locator('#start');
   if(await start.count()){await start.scrollIntoViewIfNeeded();await start.click({timeout:10000});await page.waitForTimeout(4800);}
   await page.waitForFunction(()=>window.__DZ530_STATUS?.selected==='shin_chan'&&window.__DZ530_STATUS?.spriteVisible,null,{timeout:15000});
+  const visualMask=await page.evaluate(()=>window.__DZ531_VISUAL_DEBUG);
+  if(!visualMask?.pixelSprite||visualMask.visibleLegacyMeshes!==0)throw Error('Pixel skin must hide all old soldier meshes: '+JSON.stringify(visualMask));
   const after=await page.evaluate(()=>({menuHidden:document.querySelector('#mainMenu')?.classList.contains('hidden'),hudHidden:document.querySelector('#hud')?.classList.contains('hidden'),feedback:document.querySelector('#dz-start-feedback')?.textContent||'',canvas:!!document.querySelector('#game canvas'),loadedScripts:[...document.scripts].map(s=>s.type+':'+(s.src||'inline')).slice(-8)}));
   let touchTest=null;
   if(mobile&&after.menuHidden&&!after.hudHidden){

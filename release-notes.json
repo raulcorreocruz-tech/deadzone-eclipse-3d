@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.12",
+      "title": "CORREGIDO: SOLDADO 3D OCULTO BAJO TODAS LAS SKINS PIXEL ART",
+      "date": "18 nov 2026",
+      "detail": "Un pase de renderizado oculta todos los meshes del modelo antiguo del superviviente justo antes de dibujar el fotograma si hay una skin pixel-art visible. Se conservan los sprites seleccionados (Mewtwo, Timmy, Raphael, Agunimon, Cleft, Shin Chan, Peter y Kimeramon), el marcador de jugador y la restauración del modelo 3D al cambiar de skin. También se aplica a los aliados de cooperativo. El diagnóstico permite verificar que quedan exactamente cero meshes de soldado visibles. Las animaciones, armas y físicas de jugador se mantienen."
+    },
+    {
       "version": "5.25.11",
       "title": "SEIS NUEVOS PERSONAJES JUGABLES · MEWTWO, TIMMY, RAPHAEL, AGUNIMON, CLEFT Y SHIN CHAN",
       "date": "18 nov 2026",
