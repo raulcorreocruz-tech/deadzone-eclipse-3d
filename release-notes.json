@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.22.0",
+      "title": "FASE 4.2 · ATMÓSFERA DEL ECLIPSE Y SONIDO AMBIENTAL",
+      "date": "18 nov 2026",
+      "detail": "Ambientación escalonada según ronda con fondos y niebla que oscurecen el escenario progresivamente, respetando el evento de niebla espesa. Relámpagos ocasionales a partir de la sexta ronda mediante pulsos cortos de una luz existente, con efecto más ligero al activar reducción de efectos. Señales de tormenta y ecos ambientales originales sintetizados usando el contexto de audio ya desbloqueado del juego, sin pistas musicales ni archivos de sonido externos y con nuevo control AMBIENTE SONORO activado/silenciado en pausa (se guarda por dispositivo). Destello de boca de fuego reutilizable para armas convencionales, sin generar nuevas mallas por disparo. Implementación de bajo coste para Android, sin cambios en el apuntado, reglas de cinco golpes, tienda exclusiva de armas, sincronización online ni ajustes de calidad. Pendientes las pruebas reales en Android y la Fase 4.3 de preparación de APK."
+    },
+    {
       "version": "5.21.0",
       "title": "FASE 4.1 · PULIDO VISUAL Y RESPUESTA DEL COMBATE",
       "date": "18 nov 2026",
