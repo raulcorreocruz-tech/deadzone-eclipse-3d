@@ -42,7 +42,7 @@ window.__DZ536_QA={
  },
  walk(){
   this.prepare();const e=zombies[0];const x=e.x,z=e.z;
-  e.x=x+.17;e.z=z+.11;DZ536.lastRender=gameTime-.04;dz536ZombieFrame();
+  dz536ZombieFrame();e.x=x+.17;e.z=z+.11;DZ536.lastRender=gameTime-.04;dz536ZombieFrame();
   return {walking:DZ536.zombieWalk,animated:DZ536.animatedWalk}
  },
  heli(){
