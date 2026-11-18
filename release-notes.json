@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.19",
+      "date": "18 nov 2026",
+      "title": "MÓVILES MÁS FLUIDOS · 50 USOS CUERPO A CUERPO · FPS ADAPTATIVOS",
+      "detail": "Las ocho armas cuerpo a cuerpo ahora utilizan exactamente 50 golpes de munición total cada una (sin reserva), cada ataque consume un uso incluso si falla; sin recarga mediante R, con reposición hasta 50 por 450 puntos en Tienda y reposición limitada por mejora Pack-a-Punch. Los modos de apuntado automático solo gastan golpes cuando hay enemigos al alcance. Rendimiento móvil mejorado con límite de densidad de píxeles, autoajuste de resolución gradual que baja rápido si caen los FPS y sube despacio cuando es estable, optimización del apuntado automático (sin comprobaciones cuadráticas), actualización de animaciones lejanas por intervalos, seguimiento de FPS y menos asignaciones de memoria para manos y armas. Nuevo interruptor en Opciones para la estabilización automática; calidad manual y controles se respetan. No se modifican cuentas, amigos, partidas ni la base de datos Supabase."
+    },
+    {
       "version": "5.25.18",
       "date": "18 nov 2026",
       "title": "HUD LIMPIO · SALAS EN VIVO · HISTORIAL DE PARTIDAS · CHAT DE VOZ Y ESCRITO",
