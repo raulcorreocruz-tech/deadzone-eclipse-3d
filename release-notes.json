@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.12",
+      "title": "ARSENAL DE 49 ARMAS · IDENTIDAD VISUAL Y SONIDOS DIFERENCIADOS",
+      "date": "18 nov 2026",
+      "detail": "Se integran perfiles visuales y sonoros propios para las 49 armas, incluidos especiales, cuerpo a cuerpo y Reliquia del Eclipse. Se mantienen los modelos GLB CC0 existentes como base y se añaden detalles geométricos individuales, con efectos de disparo/recarga/equipamiento generados mediante Web Audio sin descargar efectos de terceros. No se incorporan los GLB ni audios originales del catálogo de Sketchfab/Pixabay: sus fichas eran referencias de escucha y visualización, no archivos licenciados directamente disponibles. Sin cambios de daño, puntos, apuntado ni controles; se requiere prueba real en móvil."
+    },
+    {
       "version": "5.25.11",
       "title": "SEIS NUEVOS PERSONAJES JUGABLES · MEWTWO, TIMMY, RAPHAEL, AGUNIMON, CLEFT Y SHIN CHAN",
       "date": "18 nov 2026",
