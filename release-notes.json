@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.5",
+      "title": "HOTFIX DEL MOTOR · MODO MÓVIL COMPATIBLE CON TODOS LOS SCRIPTS",
+      "date": "18 nov 2026",
+      "detail": "Se elimina la declaración duplicada MOBILE_MODE que impedía compilar el módulo 3D; el juego descargado ya dispone de la suya. Se añade una detección de dispositivo móvil global en la cabecera, antes de cargar la escena, para evitar ReferenceError en scripts independientes. La compilación comprueba que la bandera esté disponible antes de iniciar Three.js. Se mantienen las notas de novedades obligatorias y la generación automática de APK de pruebas. Pendiente validar el arranque en un móvil Android real."
+    },
+    {
       "version": "5.25.4",
       "title": "HOTFIX ANDROID · VARIABLE DEL MOTOR DEFINIDA ANTES DE INICIAR",
       "date": "18 nov 2026",

@@ -22,10 +22,6 @@ else{
  }
  if(!importsPatched)throw Error('v5.25 local Three.js imports: source no longer contains expected CDN mapping');
 
- // The 3D script receives the mobile flag before any imports/engine code.
- // A script-level anchor is stable even when earlier patches rewrite the imports.
- const mobileFlag="const MOBILE_MODE=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||(/Android|iPhone|iPad/i).test(navigator.userAgent);";
- once('<script type="module">','<script type="module">\n'+mobileFlag,'inject mobile flag before 3D engine');
  // Defer start feedback. A two-frame check often races the orientation/fullscreen transition on mobile.
  once("requestAnimationFrame(()=>requestAnimationFrame(checkStarted))","setTimeout(checkStarted,MOBILE_MODE?8000:3000)",'remove premature mobile startup error');
  once("feedback('La partida no ha arrancado. Prueba a recargar; si persiste, consulta el aviso del motor.',true);",
@@ -57,7 +53,10 @@ else{
  // Patch adds a one-time visible new-version indicator, not a destructive overhaul of the existing Novelties dialog.
  once('function dzGun(){',updates+'\nfunction dzGun(){','new version badge runtime');
  const banner=".dz525-new-update{border:2px solid #ffc678!important;box-shadow:0 0 14px #e49c6460!important;animation:dz525-news-pulse 2.6s ease-in-out 3}\n@keyframes dz525-news-pulse{50%{box-shadow:0 0 21px #ffbc906b}}\n@media(prefers-reduced-motion:reduce){.dz525-new-update{animation:none}}";
- h=h.replace('</head>','<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}</script><style id="dz525-stability-style">'+banner+'</style><!-- DEAD_ZONE_PATCH_525 --></head>');
+ // Keep the bundled module's existing const MOBILE_MODE declaration.
+ // Publish the flag globally for independent inline and classic scripts.
+ const globalMobile='<script id="dz525-mobile-compat">window.MOBILE_MODE=window.matchMedia("(pointer:coarse)").matches||navigator.maxTouchPoints>0||/Android|iPhone|iPad/i.test(navigator.userAgent);</script>';
+ h=h.replace('</head>',globalMobile+'<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}</script><style id="dz525-stability-style">'+banner+'</style><!-- DEAD_ZONE_PATCH_525 --></head>');
  if(/https:\/\/(?:cdn\.jsdelivr\.net|unpkg\.com)\/npm\/three@0\.160\.1/.test(h))throw Error('v5.25 legacy Three.js remote module import remains');
  fs.writeFileSync(file,h);
  console.log('DEAD ZONE 5.25: '+importsPatched+' external Three.js links self-hosted; Android startup guarded, release alerts auto-updated');
