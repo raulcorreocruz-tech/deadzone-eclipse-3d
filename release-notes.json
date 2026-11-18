@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.4",
+      "title": "HOTFIX ANDROID · VARIABLE DEL MOTOR DEFINIDA ANTES DE INICIAR",
+      "date": "18 nov 2026",
+      "detail": "Se ajusta el parche MOBILE_MODE para introducir la detección de móvil justo al abrir el módulo JavaScript del juego 3D, antes de cualquier otra función o acceso a WebGL, usando una ubicación estable aunque las versiones anteriores modifiquen la importación de Three.js. Evita el ReferenceError de arranque reportado en Android. La compilación valida que MOBILE_MODE esté definido antes de su primer uso; se conserva el historial de novedades y la publicación automática de APK por versión."
+    },
+    {
       "version": "5.25.3",
       "title": "REPARACIÓN DEL MOTOR ANDROID · MOBILE_MODE INICIALIZADO AL CARGAR",
       "date": "18 nov 2026",

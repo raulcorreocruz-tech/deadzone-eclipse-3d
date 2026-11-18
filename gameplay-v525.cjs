@@ -22,13 +22,10 @@ else{
  }
  if(!importsPatched)throw Error('v5.25 local Three.js imports: source no longer contains expected CDN mapping');
 
- // Use an independent, early, module-scope mobile flag. The base game has
- // changed its touch detection declaration across versions, so do not
- // depend on any exact touchDevice source text or declare this after WebGL.
- const threeImport="import * as THREE from '"+localBuild+"';";
+ // The 3D script receives the mobile flag before any imports/engine code.
+ // A script-level anchor is stable even when earlier patches rewrite the imports.
  const mobileFlag="const MOBILE_MODE=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||(/Android|iPhone|iPad/i).test(navigator.userAgent);";
- once(threeImport,threeImport+"\n"+mobileFlag,'early module-scope mobile detection');
-
+ once('<script type="module">','<script type="module">\n'+mobileFlag,'inject mobile flag before 3D engine');
  // Defer start feedback. A two-frame check often races the orientation/fullscreen transition on mobile.
  once("requestAnimationFrame(()=>requestAnimationFrame(checkStarted))","setTimeout(checkStarted,MOBILE_MODE?8000:3000)",'remove premature mobile startup error');
  once("feedback('La partida no ha arrancado. Prueba a recargar; si persiste, consulta el aviso del motor.',true);",
