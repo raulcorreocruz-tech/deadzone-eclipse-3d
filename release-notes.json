@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.22",
+      "date": "19 nov 2026",
+      "title": "ANDROID: HUD LEGIBLE, CÁMARA SIN MUROS, BALAS MÁS CLARAS · ESPECIALES SOLO EN ARSENAL",
+      "detail": "Basado en gameplay móvil real (12,7 s, 2712×1220): las cinco armas nuevas Lanzachanclas, Fumaweed, Portal de Rick y Morty, Invocación de Ghoul y Pokeballs solo se pueden conseguir en el Arsenal y quedan excluidas de la caja aleatoria; sus precios se validan también para invitados desde el servidor. Corrección de cámara y zoom sin acumulación de distancia, muros delanteros de recorte automático conservando colisiones, interfaz móvil reordenada para que Pausa no cubra munición ni salud y contador FPS con salto correcto. La línea de apuntado deja de cruzar toda la pantalla y se oculta con armas cuerpo a cuerpo. Sombras dinámicas desactivadas en calidad móvil Automática, resolución máxima moderada, partículas limitadas, sangre más discreta, efectos luminosos reutilizables y menor frecuencia de colisiones de habilidades especiales. La calidad gráfica manual y los controles personalizados se respetan. Las mejoras no garantizan un FPS fijo en todos los dispositivos."
+    },
+    {
       "version": "5.25.21",
       "date": "18 nov 2026",
       "title": "ZOOM AJUSTABLE · ZOMBIS DESATASCADOS · ARMAS ESPECIALES",
