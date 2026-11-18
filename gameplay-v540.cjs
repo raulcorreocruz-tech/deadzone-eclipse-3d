@@ -23,7 +23,7 @@ else{
  once('new THREE.Vector3(.55,1.81,0),rElbow','DZ540_SHOULDER_R,rElbow','reuse right shoulder vector');
  once('new THREE.Vector3(-.55,1.81,0),lElbow','DZ540_SHOULDER_L,lElbow','reuse left shoulder vector');
  once('const z=zombies.filter(z=>D({x:t.mesh.position.x,z:t.mesh.position.z},z)<13).sort((a,b)=>D(t.mesh.position,a)-D(t.mesh.position,b))[0];','const z=dz540NearestEnemy(t.mesh.position,13);','turret tracking without sorting enemies each frame');
- once('const target=zombies.sort((a,b)=>D(dog.mesh.position,a)-D(dog.mesh.position,b))[0];','const target=dz540NearestEnemy(dog.mesh.position);','dogs choose nearest enemy without mutating zombie order');
+ if(h.includes('const target=zombies.sort((a,b)=>D(dog.mesh.position,a)-D(dog.mesh.position,b))[0];'))once('const target=zombies.sort((a,b)=>D(dog.mesh.position,a)-D(dog.mesh.position,b))[0];','const target=dz540NearestEnemy(dog.mesh.position);','dogs choose nearest enemy without mutating zombie order');
  h=h.replace('</head>','<!-- DEAD_ZONE_PATCH_540: adaptive DPR, cached aim, distant zombie animation LOD, mobile frame cap --></head>');
  fs.writeFileSync(file,h);console.log('DEAD ZONE 5.25.19: mobile render load and target/animation hot loops optimized');
 }
