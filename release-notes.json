@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.0",
+      "title": "CORRECCIÓN ARRANQUE ANDROID · MOTOR 3D LOCAL · NOVEDADES Y APK",
+      "date": "18 nov 2026",
+      "detail": "Corregida la comprobación anticipada que mostraba el aviso «La partida no ha arrancado» al pulsar Iniciar en móvil. Three.js 0.160.1 ahora se suministra desde el propio servidor del juego y no depende de los CDN externos: GLTFLoader, SkeletonUtils y el motor se sirven bajo vendor/three. En Android el contexto WebGL arranca sin antialias costoso y con escala de resolución inicial limitada para reducir fallos al crear la escena; el audio no bloquea el inicio si el dispositivo impide crear AudioContext. Los elementos decorativos de la versión 5.24 no son críticos para arrancar y sus excepciones se aíslan. El botón Novedades identifica cada nueva versión; el archivo release-notes.json es obligatorio para cada versión y se utiliza como fuente única de cambios. La APK de pruebas utilizará compilación automatizada por versión (GitHub Actions) y cargará contenido web actualizado al abrirse; Android no permite sustituir silenciosamente la APK sin distribución y firma gestionadas. Sigue pendiente validar con una prueba real en el Xiaomi 13T Pro y confirmar que GitHub Actions produzca un APK descargable."
+    },
+    {
       "version": "5.24.0",
       "title": "LA GRITONA, FPS CONFIGURABLES Y ELEMENTOS 3D INCONFUNDIBLES",
       "date": "18 nov 2026",
