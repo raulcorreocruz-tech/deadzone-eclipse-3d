@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.15",
+      "title": "MODELOS 3D DESCARGADOS Y SONIDOS REALES · ARSENAL CC0",
+      "date": "18 nov 2026",
+      "detail": "El juego incorpora modelos GLB auténticos y locales de un pack CC0 con geometría detallada para 41 de las 49 armas. Cada arma con equivalente GLB puede cargar su archivo propio, con fallback procedimental. Las otras ocho (habilidades, armas fantásticas y motosierra) mantienen su representación 3D anterior para no introducir un modelo erróneo. Se añaden grabaciones reales CC0 de armas de fuego y efectos Kenney CC0 para las 49 armas, con recargas y equipamiento grabados, mientras que el audio sintetizado permanece de respaldo. El objetivo es ofrecer equivalentes legales: los modelos exactos enlazados en Sketchfab y los audios de Pixabay del catálogo previo siguen sin importarse por faltar archivos accesibles/autorizados. Carga diferida y animaciones GLB reales; sin cambios en daño, controles ni Rayquaza. Validación física en móvil pendiente."
+    },
+    {
       "version": "5.25.14",
       "title": "ARSENAL DE 49 ARMAS · MODELOS DIFERENCIADOS Y SONIDOS PROPIOS",
       "date": "18 nov 2026",
