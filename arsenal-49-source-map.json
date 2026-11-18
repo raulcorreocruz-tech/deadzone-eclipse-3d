@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "license": "CC0 1.0",
+  "modelSource": "https://3dassets.dev/api/v1/packs/mega-weapon-pack",
+  "soundSources": [
+    "https://github.com/petroulacl/fps-asset-kit",
+    "https://github.com/GeorgeQLe/assets-sfx-combat"
+  ],
+  "note": "Las fichas Sketchfab/Pixabay anteriores no aportan archivos ni autorizacion de descarga automatica. Modelos CC0 originales del pack y sonidos CC0 grabados como sustitutos.",
+  "weapons": [
+    {
+      "name": "M1911",
+      "model": "Service Pistol",
+      "sound": "pistol",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "MP7",
+      "model": "PDW With Brace",
+      "sound": "smg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "PDW-57",
+      "model": "Bullpup SMG",
+      "sound": "smg2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Vector K10",
+      "model": "Folding Stock SMG",
+      "sound": "smg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "MSMC",
+      "model": "Side Magazine SMG",
+      "sound": "smg2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Chicom CQB",
+      "model": "Classic Straight Magazine SMG",
+      "sound": "smg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Skorpion EVO",
+      "model": "Integrally Suppressed SMG",
+      "sound": "smg2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Peacekeeper",
+      "model": "Carbine Length SMG",
+      "sound": "smg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "MTAR",
+      "model": "Bullpup Rifle",
+      "sound": "rifle",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Type 25",
+      "model": "Short Carbine",
+      "sound": "rifle2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "SWAT-556",
+      "model": "Standard Assault Rifle",
+      "sound": "rifle",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "M27",
+      "model": "Long Barrel Rifle",
+      "sound": "rifle2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "SCAR-H",
+      "model": "Battle Rifle",
+      "sound": "rifle",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "SMR",
+      "model": "Semi Auto Marksman Rifle",
+      "sound": "rifle2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "M8A1",
+      "model": "Piston Carbine",
+      "sound": "rifle",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "AN-94",
+      "model": "Folding Stock Rifle",
+      "sound": "rifle2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "FAL OSW",
+      "model": "Wood Stock Rifle",
+      "sound": "rifle",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "R-870 MCS",
+      "model": "Pump Shotgun",
+      "sound": "shotgun",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "S12",
+      "model": "Magazine Fed Shotgun",
+      "sound": "shotgun2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "KSG",
+      "model": "Bullpup Shotgun",
+      "sound": "shotgun",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "M1216",
+      "model": "Semi Automatic Shotgun",
+      "sound": "shotgun2",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "MK 48",
+      "model": "General Purpose Machine Gun",
+      "sound": "lmg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "LSAT",
+      "model": "Drum Fed Squad Gun",
+      "sound": "lmg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "QBB LSW",
+      "model": "Top Fed Light Machine Gun",
+      "sound": "lmg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "HAMR",
+      "model": "Heavy Tri Rail Carbine",
+      "sound": "lmg",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Tirachinas",
+      "model": null,
+      "sound": "melee",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Rayos eléctricos",
+      "model": "Flare Pistol",
+      "sound": "electric",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Lanzallamas",
+      "model": "Shoulder Rocket Launcher",
+      "sound": "flame",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Arma de hielo",
+      "model": "Target Pistol",
+      "sound": "ice",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Cañón de gravedad",
+      "model": "Revolving Grenade Launcher",
+      "sound": "gravity",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Lanzaperiódicos",
+      "model": "Break Grenade Launcher",
+      "sound": "special",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Invocación de perros",
+      "model": null,
+      "sound": "magic",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Helicóptero artillado",
+      "model": null,
+      "sound": "lmg",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Huracán Eléctrico",
+      "model": "Disposable Launcher Tube",
+      "sound": "electric",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Transmutador de Gallinas",
+      "model": "Compact Anti Tank Tube",
+      "sound": "magic",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Crucifijos explosivos",
+      "model": null,
+      "sound": "explosion",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Rayo de pollos",
+      "model": "Underbarrel Grenade Launcher",
+      "sound": "laser",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Omnitrix",
+      "model": null,
+      "sound": "magic",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Balonazos de fútbol",
+      "model": "Sawn Off Shotgun",
+      "sound": "melee",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Latigazos de Cristo",
+      "model": null,
+      "sound": "melee",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Katana",
+      "model": "Curved Sword",
+      "sound": "blade",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Bate eléctrico",
+      "model": "Baseball Bat",
+      "sound": "electric",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Motosierra",
+      "model": null,
+      "sound": "saw",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Cuchillo mejorable",
+      "model": "Combat Knife",
+      "sound": "blade",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Garras de Wolverine",
+      "model": null,
+      "sound": "blade",
+      "source": "Modelo especial propio: no existe correspondencia fiable con el pack CC0"
+    },
+    {
+      "name": "Tres espadas de Zoro",
+      "model": "Straight Sword",
+      "sound": "blade",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Espadas del Caos de Kratos",
+      "model": "Curved Sword",
+      "sound": "blade",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Cuchillo jamonero",
+      "model": "Bowie Knife",
+      "sound": "blade",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    },
+    {
+      "name": "Reliquia del Eclipse",
+      "model": "Anti Materiel Rifle",
+      "sound": "electric",
+      "source": "3dassets.dev Mega Weapon Pack CC0; modelo original similar, NO réplica exacta"
+    }
+  ]
+}
