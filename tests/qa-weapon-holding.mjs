@@ -10,7 +10,8 @@ try{
   await page.locator('#start').waitFor({timeout:25000});
   await page.locator('#start').click();
   await page.waitForFunction(spec=>window.__DZ535_STATUS?.localMode===(spec.skin==='soldado'?'3d':'sprite'),spec,{timeout:22000});
-  await page.waitForTimeout(1000);
+  await page.waitForFunction(()=>window.__DZ535_STATUS?.localGunVisible,{timeout:22000});
+  await page.waitForTimeout(700);
   const state=await page.evaluate(()=>({holding:window.__DZ535_STATUS,mask:window.__DZ531_VISUAL_DEBUG,arsenal:window.__DZ534_STATUS}));
   if(!state.holding?.localGunVisible)throw Error(spec.label+' gun invisible '+JSON.stringify(state));
   if(spec.skin==='soldado'&&state.holding.gripSegments!==4)throw Error('Hands not holding weapon '+JSON.stringify(state));
