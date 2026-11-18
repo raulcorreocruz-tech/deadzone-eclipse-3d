@@ -24,9 +24,29 @@ for (const mobile of [true,false]) {
   const start=page.locator('#start');
   if(await start.count()){await start.scrollIntoViewIfNeeded();await start.click({timeout:10000});await page.waitForTimeout(4800);}
   const after=await page.evaluate(()=>({menuHidden:document.querySelector('#mainMenu')?.classList.contains('hidden'),hudHidden:document.querySelector('#hud')?.classList.contains('hidden'),feedback:document.querySelector('#dz-start-feedback')?.textContent||'',canvas:!!document.querySelector('#game canvas'),loadedScripts:[...document.scripts].map(s=>s.type+':'+(s.src||'inline')).slice(-8)}));
-  const report={name,prior,after,errors:errors.slice(0,12),requests:requests.slice(0,12)};
+  let touchTest=null;
+  if(mobile&&after.menuHidden&&!after.hudHidden){
+    const nodes=await page.evaluate(()=>{
+      const center=id=>{const el=document.getElementById(id),rect=el?.getBoundingClientRect();if(!rect)return null;return {x:Math.round(rect.left+rect.width/2),y:Math.round(rect.top+rect.height/2),display:getComputedStyle(el).display};};
+      return {move:center('movestick'),aim:center('aimstick'),fire:center('fire'),reload:center('reload'),ammo:document.querySelector('#ammo')?.textContent};
+    });
+    touchTest={nodes,events:'not-run'};
+    if(!nodes.move||!nodes.fire||nodes.fire.display==='none'||!nodes.aim||nodes.aim.display==='none')throw Error('Mobile move/aim/fire controls must all be visible');
+    const cdp=await context.newCDPSession(page);
+    const a={x:nodes.move.x,y:nodes.move.y,id:11},b={x:nodes.fire.x,y:nodes.fire.y,id:12};
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[a]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{...a,x:a.x+18,y:a.y-20}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...a,x:a.x+18,y:a.y-20},b]});
+    await page.waitForTimeout(300);
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[{...a,x:a.x+18,y:a.y-20}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    touchTest.events='two-finger-move-and-fire';
+    touchTest.ammoAfter=await page.locator('#ammo').textContent();
+    await cdp.detach();
+  }
+    const report={name,prior,after,touchTest,errors:errors.slice(0,12),requests:requests.slice(0,12)};
   console.log('DEAD_ZONE_SMOKE '+JSON.stringify(report));
-  if(!after.menuHidden||after.hudHidden||errors.some(e=>/ReferenceError|SyntaxError|Cannot access|is not defined/.test(e)))failures++;
+  if(!after.menuHidden||after.hudHidden||errors.some(e=>/^JS /.test(e)||/ReferenceError|SyntaxError|Cannot access|is not defined/.test(e)))failures++;
  }catch(e){failures++;console.error('DEAD_ZONE_SMOKE_EXCEPTION '+name+' '+String(e).slice(0,1500)+' errors='+errors.join(' | '));}
  finally {await context.close();}
 }
