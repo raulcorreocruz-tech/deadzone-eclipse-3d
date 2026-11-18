@@ -8,7 +8,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const file=path.join(__dirname,'index.html');
 let h=fs.readFileSync(file,'utf8');
-if(h.includes('DEAD_ZONE_PATCH_531')) {
+if(h.includes('DEAD_ZONE_PATCH_533')) {
  console.log('DEAD ZONE arsenal 49 ya instalado');
 } else {
  function once(a,b,label){
@@ -29,7 +29,7 @@ if(h.includes('DEAD_ZONE_PATCH_531')) {
  ];
  if(names.length!==49||new Set(names).size!==49)throw Error('Se requieren 49 armas únicas');
  const runtime=String.raw`
-// DEAD_ZONE_PATCH_531 — perfiles de los 49 nombres y sustitución opcional de recursos licenciados.
+// DEAD_ZONE_PATCH_533 — perfiles de los 49 nombres y sustitución opcional de recursos licenciados.
 const DZ533_NAMES=${JSON.stringify(names)};
 const DZ533_SET=new Set(DZ533_NAMES);
 const DZ533={loaded:false,overrides:{},sfx:new Map(),loading:new Set(),failed:new Set(),lastSound:0,activeName:''};
@@ -184,7 +184,7 @@ window.__DZ533_STATUS={total:DZ533_NAMES.length,missing:weapons.filter(w=>!DZ533
 `;
  once('function dzGun(){',runtime+'\nfunction dzGun(){','runtime');
  // Añadir identificador estático visible al diagnóstico de compilación.
- h=h.replace('</head>','<!-- DEAD_ZONE_PATCH_531: 49 armas diferenciadas, GLB CC0 + geometría, sonido original sin hotlinks --></head>');
+ h=h.replace('</head>','<!-- DEAD_ZONE_PATCH_533: 49 armas diferenciadas, GLB CC0 + geometría, sonido original sin hotlinks --></head>');
  fs.writeFileSync(file,h);
  console.log('DEAD ZONE 49 armas: visuales diferenciados y sonidos Web Audio originales');
 }
