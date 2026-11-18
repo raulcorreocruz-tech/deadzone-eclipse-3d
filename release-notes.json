@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.23.0",
+      "title": "FASE SOCIAL · AMIGOS, INVITACIONES Y HISTORIAL",
+      "date": "18 nov 2026",
+      "detail": "Nuevo panel AMIGOS en menú y pausa. Registro e inicio de sesión con usuario propio (3–16 caracteres) y contraseña cifrada mediante scrypt; token de sesión aleatorio guardado localmente. Solicitudes de amistad que requieren aceptación, eliminación de amigos y búsqueda por nombre exacto, sin exponer contraseñas. Estados online/offline y última conexión mediante presencia actualizada aproximadamente cada 18 segundos. Invitaciones de anfitrión a amigos aceptados con caducidad de 15 minutos: el receptor puede incorporarse con un botón que introduce el código automáticamente en la interfaz cooperativa existente. Historial compartido con amigos, para partidas cooperativas que finalizan por derrota total del equipo y partidas en solitario declaradas por el propio dispositivo (estas últimas no son resultados verificados por servidor). Las invitaciones solo pueden salir de una sala cuyo anfitrión se haya vinculado con una sesión válida. Almacenamiento JSON local en el servidor como primera versión; sin disco persistente o base de datos externa los perfiles y el historial no sobreviven necesariamente a un redeploy en Render. Pendiente validación real multicliente y contratación/conexión de persistencia duradera."
+    },
+    {
       "version": "5.22.0",
       "title": "FASE 4.2 · ATMÓSFERA DEL ECLIPSE Y SONIDO AMBIENTAL",
       "date": "18 nov 2026",
