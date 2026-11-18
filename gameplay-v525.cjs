@@ -41,9 +41,13 @@ else{
       "if(!DZ524.visualReady)try{dz524DecorateWorld()}catch(err){console.warn('World decorations:',err);DZ524.visualReady=true}\n if(!DZ524.settingsReady)try{dz524InitGraphics()}catch(err){console.warn('Graphics options:',err);DZ524.settingsReady=true}",
       'nonfatal graphics tick');
  // Harden the start button against a missing/unavailable WebAudio API, preserving all game reset code.
- once("audio??=new (window.AudioContext||window.webkitAudioContext)();$('perfReadout').classList.add('hidden');reset()",
-      "try{const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!audio&&AudioCtor)audio=new AudioCtor()}catch(err){console.warn('Audio no disponible, continuamos sin sonido:',err)}$('perfReadout')?.classList.add('hidden');reset()",
-      'allow starting even when audio context is blocked or unavailable');
+ const audioCall="audio??=new (window.AudioContext||window.webkitAudioContext)();";
+ if(h.includes(audioCall)){
+  h=h.replace(audioCall,"try{const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!audio&&AudioCtor)audio=new AudioCtor()}catch(err){console.warn('Audio no disponible, continuamos sin sonido:',err)}");
+ }else{
+  const pos=h.indexOf("$('start').onclick=");
+  console.log('DEAD ZONE v5.25 existing start handler:',pos<0?'start handler assigned differently':h.slice(pos,pos+470));
+ }
  const updates="\n// DEAD_ZONE_PATCH_525 — release alert, generated from release-notes.json by the build.\nconst DZ525={activeVersion:'',notified:false};\nfunction dz525ReleaseAlert(){\n if(DZ525.notified)return;\n const v=document.querySelector('meta[name=\"deadzone-build\"]')?.content?.split('-')[0]||'';\n if(!v)return;\n DZ525.activeVersion=v;\n const key='dz525_read_release';\n let seen=null;try{seen=localStorage.getItem(key)}catch{}\n const btn=$('updatesBtn')||$('updates')||$('newsBtn');\n if(!btn)return;\n const originalText=btn.dataset.dz525Original||btn.textContent||'📰 NOVEDADES';\n btn.dataset.dz525Original=originalText;\n if(seen!==v){\n  btn.textContent='🆕 NOVEDADES · v'+v;\n  btn.classList.add('dz525-new-update');\n }\n btn.addEventListener('click',()=>{\n  try{localStorage.setItem(key,v)}catch{}\n  btn.textContent=originalText;\n  btn.classList.remove('dz525-new-update');\n });\n DZ525.notified=true;\n}\nqueueMicrotask(()=>{try{dz525ReleaseAlert()}catch(e){console.warn('Release alert',e)}});\n";
  // Patch adds a one-time visible new-version indicator, not a destructive overhaul of the existing Novelties dialog.
  once('function dzGun(){',updates+'\nfunction dzGun(){','new version badge runtime');
