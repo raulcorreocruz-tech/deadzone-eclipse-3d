@@ -33,6 +33,16 @@ for (const mobile of [true,false]) {
   await peter.click();
   const storedSkin=await page.evaluate(()=>localStorage.getItem('deadzone_skin_v43'));
   if(storedSkin!=='peter_griffin')throw Error('Selecting Peter Griffin did not persist');
+  const options=[['mewtwo','Mewtwo'],['timmy_turner','Timmy Turner'],['raphael_tmnt','Raphael'],['agunimon','Agunimon'],['cleft','Cleft'],['shin_chan','Shin Chan']];
+  for(const [id,label] of options){
+   const btn=page.locator('#dz43SkinsPanel button').filter({hasText:label});
+   if(await btn.count()!==1)throw Error('Missing or duplicate new skin '+label);
+   await btn.click();
+   if(await page.evaluate(()=>localStorage.getItem('deadzone_skin_v43'))!==id)throw Error('Skin selection was not saved: '+id);
+  }
+  const extraAtlas=await page.request.get(new URL('/assets/deadzone_playables_6x4.png',base).toString(),{timeout:20000});
+  if(!extraAtlas.ok()||!String(extraAtlas.headers()['content-type']||'').includes('image/png'))throw Error('Extra sprite atlas HTTP '+extraAtlas.status());
+
   await page.locator('#dz43SkinsPanel button').filter({hasText:'CERRAR'}).click();
   const prior=await page.evaluate(()=>({build:document.querySelector('meta[name="deadzone-build"]')?.content||'',mobileMode:typeof MOBILE_MODE==='undefined'?'missing':String(MOBILE_MODE),canvas:!!document.querySelector('#game canvas'),startAssigned:typeof document.querySelector('#start')?.onclick,buttons:[...document.querySelectorAll('#mainMenu button')].filter(x=>/gr[aá]fic|ajustes/i.test(x.textContent)).map(x=>x.textContent)}));
   const settingsButton=page.locator('#dz526-prestart-graphics');
@@ -44,6 +54,7 @@ for (const mobile of [true,false]) {
   if(await settingsButton.count()!==1)throw Error('Missing pre-start graphics button');
   const start=page.locator('#start');
   if(await start.count()){await start.scrollIntoViewIfNeeded();await start.click({timeout:10000});await page.waitForTimeout(4800);}
+  await page.waitForFunction(()=>window.__DZ530_STATUS?.selected==='shin_chan'&&window.__DZ530_STATUS?.spriteVisible,null,{timeout:15000});
   const after=await page.evaluate(()=>({menuHidden:document.querySelector('#mainMenu')?.classList.contains('hidden'),hudHidden:document.querySelector('#hud')?.classList.contains('hidden'),feedback:document.querySelector('#dz-start-feedback')?.textContent||'',canvas:!!document.querySelector('#game canvas'),loadedScripts:[...document.scripts].map(s=>s.type+':'+(s.src||'inline')).slice(-8)}));
   let touchTest=null;
   if(mobile&&after.menuHidden&&!after.hudHidden){

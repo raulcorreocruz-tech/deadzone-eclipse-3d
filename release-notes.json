@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.11",
+      "title": "SEIS NUEVOS PERSONAJES JUGABLES · MEWTWO, TIMMY, RAPHAEL, AGUNIMON, CLEFT Y SHIN CHAN",
+      "date": "18 nov 2026",
+      "detail": "Se incorporan seis skins jugables distintas a partir de los sprites aportados: Mewtwo, Timmy Turner, Raphael (TMNT), Agunimon, Cleft y Shin Chan. Las dos imágenes idénticas de Mewtwo se deduplican. Atlas PNG transparente 4 poses por personaje: reposo, desplazamiento, ataque y daño, alternando fotogramas según el estado disponible. Incluye miniaturas reales en el selector, selección persistente y visualización de aliados en cooperativo. Sin ventajas jugables ni cambios de estadísticas. Créditos de sprites visibles según proceda (Only4, Belial, UndeadKoter). Rayquaza y la sala Monopoly se dejan para fases posteriores; no se presentan como personajes jugables. Las animaciones dependen de los fotogramas disponibles y algunas reutilizan poses."
+    },
+    {
       "version": "5.25.10",
       "title": "PETER GRIFFIN JUGABLE · 8 POSES PIXEL ART",
       "date": "18 nov 2026",
