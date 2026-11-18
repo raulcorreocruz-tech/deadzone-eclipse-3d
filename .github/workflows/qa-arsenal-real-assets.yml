@@ -9,6 +9,7 @@ on:
       - "arsenal-49-source-map.json"
       - "setup.cjs"
       - "package.json"
+      - "tests/arsenal-real-assets.mjs"
       - ".github/workflows/qa-arsenal-real-assets.yml"
   workflow_dispatch:
 permissions:
@@ -58,3 +59,15 @@ jobs:
           curl --fail --silent -I http://127.0.0.1:3000/assets/arsenal/sfx/pistol.wav
           curl --fail --silent -I http://127.0.0.1:3000/assets/arsenal/models/model-33296.glb
           if curl --fail --silent http://127.0.0.1:3000/assets/arsenal/../../setup.cjs; then echo 'Directory traversal served' && exit 1; fi
+      - name: Probar modelo en PC y móvil con Chromium
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          node tests/arsenal-real-assets.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deadzone-real-arsenal-screenshots
+          path: |
+            arsenal-cc0-desktop.png
+            arsenal-cc0-mobile.png
+          if-no-files-found: ignore
