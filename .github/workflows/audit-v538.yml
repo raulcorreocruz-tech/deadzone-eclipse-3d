@@ -1,0 +1,20 @@
+name: Audit menus social storage voice and HUD
+on:
+  push:
+    branches: ["feature/clean-hud-social-leaderboard-voice-chat-v52518"]
+    paths:
+      - "tests/inspect-v538.cjs"
+      - ".github/workflows/audit-v538.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: npm install --no-audit --no-fund && node setup.cjs
+      - run: node tests/inspect-v538.cjs
