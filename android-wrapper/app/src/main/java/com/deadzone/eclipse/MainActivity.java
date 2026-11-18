@@ -53,13 +53,25 @@ public final class MainActivity extends Activity {
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
         game.setWebChromeClient(new WebChromeClient());
         game.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                // Keep the already-installed APK's web game and What's New up to date.
+                view.evaluateJavascript(
+                    "if(navigator.serviceWorker){navigator.serviceWorker.getRegistrations()"
+                    + ".then(rs=>rs.forEach(r=>r.update().catch(()=>{})))"
+                    + ".catch(()=>{})};window.dz525CheckForUpdates?.()",
+                    null
+                );
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 if (!request.isForMainFrame()) return false;
@@ -90,7 +102,7 @@ public final class MainActivity extends Activity {
         });
         setContentView(game);
         if (savedInstanceState == null || game.restoreState(savedInstanceState) == null) {
-            game.loadUrl(GAME_URL);
+            game.loadUrl(GAME_URL + "&launch=" + System.currentTimeMillis());
         }
     }
 
@@ -113,7 +125,10 @@ public final class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         fullScreen();
-        if (game != null) game.onResume();
+        if (game != null) {
+            game.onResume();
+            game.evaluateJavascript("window.dz525CheckForUpdates?.()", null);
+        }
     }
 
     @Override
