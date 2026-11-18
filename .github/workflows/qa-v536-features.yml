@@ -1,0 +1,54 @@
+name: QA shooting modes helicopter live rooms and zombies
+on:
+  push:
+    branches: ["feature/firemodes-helicopter-live-rooms-zombie-walk-v52517"]
+    paths:
+      - "setup.cjs"
+      - "package.json"
+      - "gameplay-v536.cjs"
+      - "gameplay-v537.cjs"
+      - "server-v536.cjs"
+      - "tests/qa-live-rooms.mjs"
+      - "tests/qa-v536-game.mjs"
+      - "tests/qa-v536-instrument.cjs"
+      - ".github/workflows/qa-v536-features.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comprobar sintaxis
+        run: |
+          node --check gameplay-v536.cjs
+          node --check gameplay-v537.cjs
+          node --check server-v536.cjs
+          node --check tests/qa-live-rooms.mjs
+          node --check tests/qa-v536-game.mjs
+          node --check tests/qa-v536-instrument.cjs
+      - name: Construir juego completo
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+      - name: Probar listado y conexión de salas con WebSocket real
+        run: |
+          PORT=3000 node server.js >/tmp/dz536-server.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:3000/health >/dev/null && break; sleep 1; done
+          node tests/qa-live-rooms.mjs
+      - name: Probar controles, zombis y helicóptero en Chromium PC y móvil
+        run: |
+          node tests/qa-v536-instrument.cjs
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          node tests/qa-v536-game.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dz536-qa-screenshots
+          path: dz536-*.png
+          if-no-files-found: ignore
