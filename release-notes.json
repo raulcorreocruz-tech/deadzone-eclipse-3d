@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.8",
+      "title": "CONTROLES MÓVILES · MULTITÁCTIL REAL Y DISPARO INDEPENDIENTE",
+      "date": "18 nov 2026",
+      "detail": "El joystick izquierdo sigue moviendo al personaje, mientras el joystick derecho gira su vista sin disparar automáticamente. El botón FUEGO es el único disparador táctil: los rifles y pistolas semiautomáticos disparan una sola vez por pulsación, y las demás armas usan su cadencia normal. Se desactiva el apuntado magnético a zombis para que cada proyectil siga la dirección elegida. Recargar, Usar, Cambiar arma, Tienda y Esquivar responden en pointerdown de manera independiente mientras otro dedo mantiene el movimiento. El editor de controles mantiene su distribución previa. Pendiente validación en teléfono físico."
+    },
+    {
       "version": "5.25.7",
       "title": "ARRANQUE ANDROID CORREGIDO · VARIABLE LOWMEMORY INICIALIZADA A TIEMPO",
       "date": "18 nov 2026",
