@@ -12,3 +12,9 @@ function report(file,needles,before=330,after=2000){
 }
 report('server.js',["const rooms=","rooms=new Map","function members(","m.type==='join'","m.type==='create'","m.type==='start'","m.type==='snapshot'","m.type==='state'","m.type==='room","m.type==='ready'","const server=http.createServer","const wss=","new WebSocket.Server","new WebSocketServer","if(room.running)","room.running","room.players.set(","room.players.delete(","function safeSend","function sendRoom"],200,1750);
 report('index.html',["function dzFireStreak(){","function dz515Assist(","function dz527AimOnly(){","const DZ527=","function dz524","function dz42Tick","function dz42Play","function dzModelTick(){","m.type==='joined'","m.type==='start'","m.type==='snapshot'","m.type==='lobby'","function joinRoom","function startGame","function netSend","const coop=","const allies=","function dz531MaskLegacy","function dz519HeliTick","function dz535Frame","const touch=","function shoot(){","function dz527Install()"],100,1500);
+
+
+const h=fs.readFileSync('index.html','utf8');
+for(const [needle,length] of [['function joinCoop(mode){',6600],['function dzModelTick(){',3000],['function dz524OpenGraphics(){',2700],['function dz515Assist(raw){',1500],['function dz527AimOnly(){',1900],["if(m.type==='started')",900],["if(m.type==='lobby')",800]]){
+ const p=h.indexOf(needle);if(p>=0)console.log('\n[FULL FOCUS]',needle,'\n',h.slice(p,p+length));
+}
