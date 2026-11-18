@@ -1,0 +1,42 @@
+name: QA armas en manos y sprites
+on:
+  push:
+    branches: ["fix/visual-holding-guns-v52516"]
+    paths:
+      - "setup.cjs"
+      - "package.json"
+      - "gameplay-v535.cjs"
+      - "tests/qa-weapon-holding.mjs"
+      - ".github/workflows/qa-weapon-holding.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comprobar sintaxis
+        run: |
+          node --check gameplay-v535.cjs
+          node --check setup.cjs
+      - name: Construir juego 3D con GLB y audio real
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+      - name: Servir juego local y probar PC, móvil, cooperativo
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          PORT=3000 node server.js >/tmp/weapon-holding.log 2>&1 &
+          for i in $(seq 1 30); do curl --fail --silent http://127.0.0.1:3000/health >/dev/null && break; sleep 1; done
+          node tests/qa-weapon-holding.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots-weapon-holding
+          path: weapons-held-*.png
+          if-no-files-found: ignore
