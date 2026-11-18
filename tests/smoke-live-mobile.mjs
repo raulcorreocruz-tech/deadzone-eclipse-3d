@@ -1,4 +1,6 @@
 import { chromium } from 'playwright';
+import { readFileSync } from 'node:fs';
+const expectedVersion=JSON.parse(readFileSync(new URL('../package.json', import.meta.url),'utf8')).version;
 const base = process.env.DZ_URL || 'https://deadzone-eclipse-coop.onrender.com/';
 const browser = await chromium.launch({headless:true,executablePath:process.env.DZ_CHROME_PATH||'/usr/bin/google-chrome',args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
 let failures=0;
@@ -13,6 +15,25 @@ for (const mobile of [true,false]) {
  try {
   await page.goto(base+'?smoke='+Date.now(),{waitUntil:'domcontentloaded',timeout:75000});
   await page.waitForTimeout(4500);
+  let actualVersion=await page.locator('meta[name="deadzone-build"]').getAttribute('content').catch(()=>null);
+  for(let retry=0;retry<4 && !String(actualVersion||'').startsWith(expectedVersion+'-');retry++){
+   await page.waitForTimeout(3000);
+   await page.goto(base+'?smoke='+Date.now()+'&v='+expectedVersion+'&retry='+retry,{waitUntil:'domcontentloaded',timeout:75000});
+   await page.waitForTimeout(2500);
+   actualVersion=await page.locator('meta[name="deadzone-build"]').getAttribute('content').catch(()=>null);
+  }
+  if(!String(actualVersion||'').startsWith(expectedVersion+'-'))throw Error('Live build mismatch expected '+expectedVersion+', got '+actualVersion);
+  const avatarResponse=await page.request.get(new URL('/assets/peter_griffin_atlas.png',base).toString(),{timeout:25000});
+  if(!avatarResponse.ok()||!String(avatarResponse.headers()['content-type']||'').includes('image/png'))throw Error('Peter skin PNG is not served correctly: HTTP '+avatarResponse.status());
+  const skinOpen=page.locator('#dz43SkinsButton');
+  if(await skinOpen.count()!==1)throw Error('Skin selector is missing');
+  await skinOpen.click();
+  const peter=page.locator('#dz43SkinsPanel button').filter({hasText:'Peter Griffin'});
+  if(await peter.count()!==1)throw Error('Peter Griffin is not present exactly once in skin selector');
+  await peter.click();
+  const storedSkin=await page.evaluate(()=>localStorage.getItem('deadzone_skin_v43'));
+  if(storedSkin!=='peter_griffin')throw Error('Selecting Peter Griffin did not persist');
+  await page.locator('#dz43SkinsPanel button').filter({hasText:'CERRAR'}).click();
   const prior=await page.evaluate(()=>({build:document.querySelector('meta[name="deadzone-build"]')?.content||'',mobileMode:typeof MOBILE_MODE==='undefined'?'missing':String(MOBILE_MODE),canvas:!!document.querySelector('#game canvas'),startAssigned:typeof document.querySelector('#start')?.onclick,buttons:[...document.querySelectorAll('#mainMenu button')].filter(x=>/gr[aá]fic|ajustes/i.test(x.textContent)).map(x=>x.textContent)}));
   const settingsButton=page.locator('#dz526-prestart-graphics');
   if(await settingsButton.count()===1){
