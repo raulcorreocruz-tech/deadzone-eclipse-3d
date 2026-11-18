@@ -1,0 +1,60 @@
+name: QA arsenal real GLB y audio CC0
+on:
+  push:
+    branches: ["feature/arsenal-glb-y-sfx-reales-20261118"]
+    paths:
+      - "real-arsenal-assets.cjs"
+      - "gameplay-v534.cjs"
+      - "server-v535.cjs"
+      - "arsenal-49-source-map.json"
+      - "setup.cjs"
+      - "package.json"
+      - ".github/workflows/qa-arsenal-real-assets.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comprobar scripts y catálogo de 49 armas
+        run: |
+          node --check real-arsenal-assets.cjs
+          node --check gameplay-v534.cjs
+          node --check server-v535.cjs
+          node --check setup.cjs
+          node - <<'NODE'
+          const list=require('./arsenal-49-source-map.json');
+          if(list.weapons.length!==49||new Set(list.weapons.map(w=>w.name)).size!==49)throw Error('No hay 49 armas únicas');
+          console.log('ARSENAL',list.weapons.length,'armas');
+          NODE
+      - name: Instalar dependencias y compilar con descarga CC0
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+      - name: Confirmar archivos GLB y SFX descargados
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),m=require('./assets/arsenal/manifest.json');
+          if(m.version!==2||m.license!=='CC0 1.0 Universal')throw Error('Licencia incorrecta');
+          if(m.stats.mappedGLB<30||m.stats.realAudioSamples<12)throw Error('Descarga insuficiente '+JSON.stringify(m.stats));
+          for(const a of Object.values(m.models).filter(Boolean)){
+           const b=fs.readFileSync(a.path);
+           if(b.toString('ascii',0,4)!=='glTF'||b.readUInt32LE(8)!==b.length)throw Error('GLB corrupto '+a.path);
+          }
+          if(Object.keys(m.soundProfiles).length!==49)throw Error('Falta mapeo de sonidos');
+          console.log('GLB reales',m.stats.uniqueGLB,'armas',m.stats.mappedGLB,'sonidos',m.stats.realAudioSamples);
+          NODE
+      - name: Probar endpoints locales de modelos y audio
+        run: |
+          PORT=3000 node server.js > /tmp/dz-arsenal-server.log 2>&1 &
+          for i in $(seq 1 30); do curl --fail --silent http://127.0.0.1:3000/health >/dev/null && break; sleep 1; done
+          curl --fail --silent -I http://127.0.0.1:3000/assets/arsenal/manifest.json
+          curl --fail --silent -I http://127.0.0.1:3000/assets/arsenal/sfx/pistol.wav
+          curl --fail --silent -I http://127.0.0.1:3000/assets/arsenal/models/model-33296.glb
+          if curl --fail --silent http://127.0.0.1:3000/assets/arsenal/../../setup.cjs; then echo 'Directory traversal served' && exit 1; fi
