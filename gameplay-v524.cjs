@@ -2,8 +2,8 @@
 const fs=require('node:fs'),path=require('node:path'),file=path.join(__dirname,'index.html');
 let h=fs.readFileSync(file,'utf8');
 if(!h.includes('DEAD_ZONE_PATCH_524')){
- const names=['let qualityMode=','const qLevels=','function frame(now)','if(MOBILE_MODE&&now-lastMobileFrame','if(z.kind===','zombies.push(enemy);','readout.classList.remove','renderer.render(scene,camera);','function updateQuality('];
- for(const n of names){const at=h.indexOf(n);console.log('DZ524 SOURCE INSPECT',n,'at',at,at<0?'':h.slice(Math.max(0,at-90),at+520).replace(/\\n/g,' '))}
+ const names=['let qualityMode=','function preferredScale()','function applyQuality(','function updateQualityLabel()','qualityStatus','qualitySelect','pauseQuality','function frame(now)','if(MOBILE_MODE&&now-lastMobileFrame','if(z.kind===\'gritona\'','zombies.push(enemy);','renderer.render(scene,camera);','const gfx=','const qualityLevels='];
+ for(const n of names){const at=h.indexOf(n);console.log('DZ524 SOURCE INSPECT',n,'at',at,at<0?'':h.slice(Math.max(0,at-90),at+1250).replace(/\\n/g,' '))}
 }
 
 if(h.includes('DEAD_ZONE_PATCH_524'))console.log('Dead Zone 5.24 already patched');
