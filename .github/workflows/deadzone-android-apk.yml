@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - 'android-wrapper/**'
+      - 'gameplay-v*.cjs'
+      - 'server-v*.cjs'
+      - 'setup.cjs'
+      - 'package.json'
+      - 'release-notes.json'
       - '.github/workflows/deadzone-android-apk.yml'
 
 permissions:
@@ -39,6 +44,9 @@ jobs:
 
       - name: Android platform and build tools
         run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set APK version from current game release
+        run: node android-wrapper/sync-version.cjs
 
       - name: Compile the debug APK
         run: gradle -p android-wrapper :app:assembleDebug --no-daemon --stacktrace
