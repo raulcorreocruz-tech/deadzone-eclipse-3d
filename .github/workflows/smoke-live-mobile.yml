@@ -1,0 +1,25 @@
+name: Diagnostic Android gameplay startup (live)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/smoke-live-mobile.mjs'
+      - '.github/workflows/smoke-live-mobile.yml'
+permissions:
+  contents: read
+jobs:
+  android-browser-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Inspect live game on Android and desktop
+        run: node tests/smoke-live-mobile.mjs
