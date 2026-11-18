@@ -18,9 +18,7 @@ try{
   if(!mobile){await page.keyboard.down('j');await page.waitForTimeout(350);await page.keyboard.up('j')}
   else{
    const fire=page.locator('#fire');
-   await fire.dispatchEvent('pointerdown',{pointerId:17,pointerType:'touch',isPrimary:true,bubbles:true});
-   await page.waitForTimeout(400);
-   await fire.dispatchEvent('pointerup',{pointerId:17,pointerType:'touch',isPrimary:true,bubbles:true});
+   await fire.tap();
   }
   await page.waitForTimeout(350);
   const shot=await page.evaluate(()=>window.__DZ534_STATUS);
