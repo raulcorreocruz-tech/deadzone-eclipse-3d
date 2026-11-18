@@ -20,6 +20,7 @@ jobs:
       - name: Install Playwright Chromium
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1
-          npx playwright install --with-deps chromium
+          command -v google-chrome
+          google-chrome --version
       - name: Inspect live game on Android and desktop
         run: node tests/smoke-live-mobile.mjs
