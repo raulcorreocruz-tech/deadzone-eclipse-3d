@@ -88,6 +88,26 @@ else boot();
  const improved="feedback(window.__dz526LastError?'Error del motor: '+window.__dz526LastError:'No se ha iniciado. Abre Ajustes gráficos, elige BAJA y reinicia; si continúa, revisa el error técnico.',true);";
  if(html.split(current).length!==2)throw Error('Expected prior delayed-start diagnostic from v5.25 exactly once');
  html=html.replace(current,improved);
+ // A patch may add this alias near dzGun(), after initial mobile settings read it.
+ // Desktop short-circuits the reference; Android throws a TDZ ReferenceError.
+ // Move its one declaration immediately after Three.js import, before any mobile setup.
+ const tag='<script type="module">';
+ const moduleStart=html.indexOf(tag);
+ const moduleEnd=html.indexOf('</script>',moduleStart);
+ if(moduleStart<0||moduleEnd<=moduleStart)throw Error('Cannot locate game module for lowMemory repair');
+ let moduleCode=html.slice(moduleStart+tag.length,moduleEnd);
+ const memoryDefs=[...moduleCode.matchAll(/\b(?:const|let|var)\s+lowMemory\s*=\s*[^;\n]+;/g)];
+ if(memoryDefs.length!==1)throw Error('Expected exactly one lowMemory declaration, got '+memoryDefs.length);
+ const declaration=memoryDefs[0][0];
+ moduleCode=moduleCode.replace(declaration,'');
+ const import3d=/import\s+\*\s+as\s+THREE\s+from\s+['"][^'"]+['"];\s*/.exec(moduleCode);
+ if(!import3d)throw Error('Cannot insert early lowMemory declaration: 3D import missing');
+ moduleCode=moduleCode.replace(import3d[0],import3d[0]+'\n'+declaration+'\n');
+ const firstMemory=moduleCode.indexOf('lowMemory');
+ const earlyMemory=/\b(?:const|let|var)\s+lowMemory\s*=/.exec(moduleCode);
+ if(!earlyMemory||firstMemory!==earlyMemory.index+earlyMemory[0].indexOf('lowMemory'))
+  throw Error('lowMemory is still accessed before initialization');
+ html=html.slice(0,moduleStart+tag.length)+moduleCode+html.slice(moduleEnd);
  if(html.split('</head>').length!==2)throw Error('Missing head location for preboot settings');
  html=html.replace('</head>',preflight+css+'<!-- DEAD_ZONE_PATCH_526 --></head>');
  fs.writeFileSync(file,html);

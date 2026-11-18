@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.7",
+      "title": "ARRANQUE ANDROID CORREGIDO · VARIABLE LOWMEMORY INICIALIZADA A TIEMPO",
+      "date": "18 nov 2026",
+      "detail": "La comprobación real de inicio con Chromium emulando Android mostró que el motor lanzaba 'Cannot access lowMemory before initialization' antes de registrar el botón Iniciar partida; el escritorio sí arrancaba. Se corrige moviendo la única declaración lowMemory al comienzo del módulo 3D, tras importar Three.js y antes del primer acceso, evitando la zona temporal muerta de JavaScript. La compilación comprueba el orden de declaración. Se mantiene el botón Ajustes gráficos previo a la partida (calidad, FPS, resolución, sombras, GPU estable) y el diagnóstico que conserva la excepción técnica. La APK de prueba se genera para esta versión. Pendiente prueba física en el teléfono."
+    },
+    {
       "version": "5.25.6",
       "title": "AJUSTES GRÁFICOS ANTES DE JUGAR Y DIAGNÓSTICO DE ARRANQUE",
       "date": "18 nov 2026",
