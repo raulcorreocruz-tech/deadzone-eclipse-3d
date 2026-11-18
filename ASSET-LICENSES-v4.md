@@ -38,3 +38,11 @@ Las mallas se clonan mediante SkeletonUtils para conservar los esqueletos. En An
 **Físicas de muerte:** son un sistema cinemático de desplome y deslizamiento (hasta cinco cuerpos temporales en móvil), con clip `Death` cuando el modelo lo trae. No se trata de un ragdoll articulado de físicas completas.
 
 Este contenido es gratuito bajo las licencias referidas. La apariencia es estilizada; no son modelos AAA fotorrealistas.
+
+## v5.25.12 — 49 armas: estado real de modelos y sonidos
+
+- Se mantienen los **18 GLB de armas y 3 GLB de cuerpo a cuerpo CC0** incorporados en versiones previas (no hay 49 GLB comerciales exactos).
+- Las 49 armas reciben geometría 3D adicional creada dentro del juego para diferenciar siluetas y accesorios. La estética es una aproximación, no un port de los modelos de *Call of Duty* u otras franquicias.
+- Los disparos, recargas y sonidos de equipamiento añadidos son **síntesis original Web Audio** ejecutada localmente; no se incluyen descargas ni copias de Pixar, Sketchfab, Pixabay, Freesound ni de juegos comerciales.
+- Las fichas externas del catálogo visual son **referencias de selección**: ver un modelo o escucharlo en la web original no concede automáticamente licencia de distribución. Para usar un modelo o audio específico se necesitan el archivo original, los derechos de uso y la atribución cuando proceda.
+- Móvil: se mantienen modelos GLB en carga diferida, sin streaming de modelos desde dominios externos. Se recomienda probar FPS, memoria y volumen de sonidos en dispositivos reales.
