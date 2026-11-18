@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.21",
+      "date": "18 nov 2026",
+      "title": "ZOOM AJUSTABLE · ZOMBIS DESATASCADOS · ARMAS ESPECIALES",
+      "detail": "Opciones: zoom de cámara 65–180 %, guardado localmente. Mejora de navegación con escapatoria lateral al atascarse. Balas y fogonazos más visibles, ajuste de posición de armas sobre sprites. Lanzachanclas (10/100, trampas de daño progresivo), Fumaweed (1 carga, fusión durante 20 s), Portal de Rick y Morty (3 portales letales), Invocación de Ghoul (1 carga, dura 2 rondas), Pokeballs (6/36, convierte un zombi en aliado durante la ronda). Efectos 3D ligeros pensados para Android; funcionalidades especiales requieren pruebas en partidas cooperativas."
+    },
+    {
       "version": "5.25.20",
       "date": "18 nov 2026",
       "title": "MONOPOLY JUGABLE · DISPAROS COOP INVITADO · ANDROID",
