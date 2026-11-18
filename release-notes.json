@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.13",
+      "title": "RAYQUAZA, JEFE ALEATORIO · EMBESTIDA, ENERGÍA Y TORMENTA ELÉCTRICA",
+      "date": "18 nov 2026",
+      "detail": "Rayquaza aparece aleatoriamente desde la ronda 5 en partidas individuales, con un 15-34% de probabilidad por ronda y al menos dos rondas de separación entre apariciones. Utiliza seis fotogramas reales transparentes extraídos del spritesheet de Pokémon Pinball GBA aportado. Es un enemigo con vida, recibe el daño de las armas habituales, tiene barra propia de HP, embestida, ráfaga de tres proyectiles y descargas de área precedidas de marcas amarillas. Al morir suma 2500 puntos por derrota (más los puntos normales por impactos) y limpia efectos. La compatibilidad de Rayquaza en cooperativo queda pendiente de sincronización de estado entre jugadores; para evitar duplicidades sólo aparece en partidas individuales. Se conserva la corrección que oculta el soldado 3D debajo de skins pixel-art."
+    },
+    {
       "version": "5.25.12",
       "title": "CORREGIDO: SOLDADO 3D OCULTO BAJO TODAS LAS SKINS PIXEL ART",
       "date": "18 nov 2026",

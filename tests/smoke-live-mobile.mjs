@@ -56,6 +56,17 @@ for (const mobile of [true,false]) {
   if(await start.count()){await start.scrollIntoViewIfNeeded();await start.click({timeout:10000});await page.waitForTimeout(4800);}
   await page.waitForFunction(()=>window.__DZ530_STATUS?.selected==='shin_chan'&&window.__DZ530_STATUS?.spriteVisible,null,{timeout:15000});
   const visualMask=await page.evaluate(()=>window.__DZ531_VISUAL_DEBUG);
+  const rayAsset=await page.request.get(new URL('/assets/rayquaza_boss_atlas.png',base).toString(),{timeout:20000});
+  if(!rayAsset.ok()||!String(rayAsset.headers()['content-type']||'').includes('image/png'))throw Error('Rayquaza atlas HTTP '+rayAsset.status());
+  await page.evaluate(()=>window.dispatchEvent(new Event('dz532-smoke-spawn')));
+  await page.waitForFunction(()=>window.__DZ532_STATUS?.spriteVisible===true,null,{timeout:12000});
+  let rayStatus=await page.evaluate(()=>window.__DZ532_STATUS);
+  if(!rayStatus?.alive||rayStatus.hp<=0||rayStatus.maxHp<3500)throw Error('Rayquaza boss not alive or missing HP '+JSON.stringify(rayStatus));
+  await page.evaluate(()=>window.dispatchEvent(new Event('dz532-smoke-kill')));
+  await page.waitForFunction(()=>window.__DZ532_STATUS?.defeated===1&&window.__DZ532_STATUS?.alive===false,null,{timeout:6000});
+  rayStatus=await page.evaluate(()=>window.__DZ532_STATUS);
+  if(rayStatus?.alive)throw Error('Rayquaza did not die after HP zero');
+
   if(!visualMask?.pixelSprite||visualMask.visibleLegacyMeshes!==0)throw Error('Pixel skin must hide all old soldier meshes: '+JSON.stringify(visualMask));
   const after=await page.evaluate(()=>({menuHidden:document.querySelector('#mainMenu')?.classList.contains('hidden'),hudHidden:document.querySelector('#hud')?.classList.contains('hidden'),feedback:document.querySelector('#dz-start-feedback')?.textContent||'',canvas:!!document.querySelector('#game canvas'),loadedScripts:[...document.scripts].map(s=>s.type+':'+(s.src||'inline')).slice(-8)}));
   let touchTest=null;
