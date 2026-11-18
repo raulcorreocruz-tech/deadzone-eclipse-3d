@@ -6,7 +6,7 @@ if(h.includes('DEAD_ZONE_PATCH_541')){console.log('v541 already installed');}
 else{
  const anchor='function dzGun(){';
  if(h.split(anchor).length!==2)throw Error('v541: runtime anchor not unique');
- const runtime=String.raw\`
+ const runtime=String.raw`
 // DEAD_ZONE_PATCH_541 — guest fire delivery, Monopoly playable area and Android load scaling.
 const DZ541={sentFire:0,recoveredFire:0,shots:0,world:null,open:false,lastPortal:-99,
   collected:new Set(),round:-1,visuals:[],qualitySamples:0,qualitySeconds:0,qualityLast:0};
@@ -141,7 +141,7 @@ dz540FrameMonitor=function(now,dt){dz541OldTick(now,dt);dz541Tick(dt)};
 queueMicrotask(()=>{try{dz541World()}catch(e){console.warn('Monopoly region',e)}});
 window.__DZ541_STATUS=()=>({guest:!!coop?.guest,connected:coop.ws?.readyState===1,shots:DZ541.shots,fireMessages:DZ541.sentFire,recovered:DZ541.recoveredFire,
  monopolyOpen:DZ541.open,collected:DZ541.collected.size,zoneReady:!!DZ541.world,mobileScale:renderScale});
-\`;
+`;
  h=h.replace(anchor,runtime+'\n'+anchor);
  h=h.replace('</head>','<!-- DEAD_ZONE_PATCH_541: guest shooting recovery, interactive Monopoly sector, mobile load control --></head>');
  fs.writeFileSync(file,h);console.log('DEAD ZONE v5.25.20: guest fire relay recovery, Monopoly portal + playable tile rewards, Android scaling');
