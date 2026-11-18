@@ -14,7 +14,7 @@ on:
       - '.github/workflows/deadzone-android-apk.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: deadzone-android-apk-main
@@ -39,11 +39,19 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-
+      # Ubuntu GitHub runners already include command-line tools. setup-android@v3
+      # asks sdkmanager for a removed "tools" package and fails in 2026.
       - name: Android platform and build tools
-        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n1)"
+          test -x "$SDKMANAGER"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "Using Android SDK manager: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" --install "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set APK version from current game release
         run: node android-wrapper/sync-version.cjs
@@ -54,10 +62,35 @@ jobs:
       - name: Verify generated APK
         run: test -s android-wrapper/app/build/outputs/apk/debug/app-debug.apk
 
+      - name: Prepare versioned APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          mkdir -p dist
+          cp android-wrapper/app/build/outputs/apk/debug/app-debug.apk "dist/DeadZone-Eclipse-Android-v$VERSION-debug.apk"
+          test -s "dist/DeadZone-Eclipse-Android-v$VERSION-debug.apk"
+
       - name: Publish downloadable APK
         uses: actions/upload-artifact@v4
         with:
-          name: DeadZone-Eclipse-Android-debug-APK
-          path: android-wrapper/app/build/outputs/apk/debug/app-debug.apk
+          name: DeadZone-Eclipse-Android-v${{ env.VERSION }}-APK
+          path: dist/*.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish versioned APK on GitHub Releases
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="android-v$VERSION"
+          FILE="dist/DeadZone-Eclipse-Android-v$VERSION-debug.apk"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --clobber
+          else
+            gh release create "$TAG" "$FILE" --target "$GITHUB_SHA" --title "DEAD ZONE: ECLIPSE Android v$VERSION (pruebas)" --notes "APK Android compilada automáticamente para DEAD ZONE v$VERSION. El juego web se actualiza al abrir la APK con Internet. La instalación de una APK nativa nueva requiere autorización de Android. Esta versión usa firma debug de pruebas; puede requerir desinstalación si difiere de la firma de la aplicación instalada." --prerelease
+          fi
