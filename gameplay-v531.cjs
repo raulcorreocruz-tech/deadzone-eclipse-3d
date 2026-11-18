@@ -3,7 +3,7 @@
  * DEAD ZONE 5.25.12 — arsenal visual / audio para las 49 armas.
  * No redistribuye archivos de Sketchfab/Pixabay. Mantiene los GLB CC0 locales,
  * añade firmas visuales por arma y efectos Web Audio originales.
- * Soporta futuros archivos licenciados con el manifiesto arsenal-assets.json.
+ * Los archivos externos exactos se incorporarán solo si se obtienen con licencia compatible.
  */
 const fs=require('node:fs'),path=require('node:path');
 const file=path.join(__dirname,'index.html');
