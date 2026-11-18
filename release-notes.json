@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.20.0",
+      "title": "FASE 3.3 · ARMAS EXCLUSIVAS DE ARMERÍA Y OPTIMIZACIÓN MÓVIL",
+      "date": "18 nov 2026",
+      "detail": "Las cinco armas especiales de la v5.19 — Crucifijos explosivos, Rayo de pollos, Omnitrix, Balonazos de fútbol y Latigazos de Cristo — pasan a comprarse únicamente en la Armería. Quedan fuera de la selección de la caja misteriosa y tienen precios fijos de 5.500, 5.400, 7.200, 4.200 y 3.900 puntos, respectivamente. Permite reequipar armas ya adquiridas y reabastecer cargadores agotados mediante recompra. Las compras de los invitados en cooperativo pasan por la comprobación de puntos y estado del jugador en el servidor, con confirmación y gestión de errores. Fase 3.3: auto-restauración de calidad gráfica en Android tras periodos largos de FPS estables y diagnósticos opcionales de estados de red y sincronización (sin afirmar que midan ping real). Se conservan los controles actuales de doble joystick, salud de cinco golpes y perks existentes; falta validación en un móvil real."
+    },
+    {
       "version": "5.19.0",
       "title": "CINCO GOLPES, REGENERACIÓN, RACHAS Y NUEVAS ARMAS",
       "date": "18 nov 2026",
