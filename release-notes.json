@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.16",
+      "date": "18 nov 2026",
+      "title": "ARMAS EN LAS MANOS · PERSONAJES 3D, PIXEL ART Y COOPERATIVO",
+      "detail": "Se corrige el arma flotando junto al personaje: los modelos 3D presentan una postura de agarre con dos manos y antebrazos; el arma equipada sigue el avatar al girar y caminar. En las skins pixel art aparece el propio modelo de arma delante del sprite sin volver a mostrar el soldado 3D. Los compañeros online visualizan sus armas sincronizadas con el nombre recibido por red, con GLB CC0 o modelo de respaldo. Se oculta el arma antigua duplicada. No se modifican daño ni inventario. La postura es un sistema de agarre visual, no un rig IK animado de dedos; prueba física en móvil pendiente."
+    },
+    {
       "version": "5.25.15",
       "title": "MODELOS 3D DESCARGADOS Y SONIDOS REALES · ARSENAL CC0",
       "date": "18 nov 2026",
