@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.6",
+      "title": "AJUSTES GRÁFICOS ANTES DE JUGAR Y DIAGNÓSTICO DE ARRANQUE",
+      "date": "18 nov 2026",
+      "detail": "Ahora existe un botón Ajustes gráficos en el menú inicial que funciona aunque la escena 3D no haya cargado: permite elegir Automática/Baja/Media/Alta/Ultra, limitar FPS, ajustar resolución y sombras, mostrar contador de FPS y activar GPU estable. Las preferencias se guardan y se aplican al reiniciar el menú, antes de empezar la partida. Se impide que el aviso genérico de arranque oculte la última excepción JavaScript real; el propio menú informa del error del motor cuando existe. La APK se recompila automáticamente por versión. La ejecución real en un dispositivo Android físico sigue pendiente de validación."
+    },
+    {
       "version": "5.25.5",
       "title": "HOTFIX DEL MOTOR · MODO MÓVIL COMPATIBLE CON TODOS LOS SCRIPTS",
       "date": "18 nov 2026",
