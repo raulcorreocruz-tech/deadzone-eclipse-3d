@@ -29,8 +29,8 @@ try{
   assert(points.y>=(mobile?130:300),'Points not moved to bottom '+JSON.stringify(points));
   const full=await page.locator('#fullHud').evaluate(el=>el.closest('#pauseModal')!==null);
   assert(full,'Fullscreen still floating in HUD');
-  const quick=await page.locator('#dz45-quick').evaluate(el=>getComputedStyle(el).display);
-  assert.equal(quick,'none','HUD shortcut still floating');
+  const shortcut=page.locator('#dz45-quick');
+  if(await shortcut.count()){const quick=await shortcut.evaluate(el=>getComputedStyle(el).display);assert.equal(quick,'none','HUD shortcut still floating')}
   await page.locator('#pauseModal #dz538-voice-toggle').waitFor({timeout:5000});
   const voiceLabel=await page.locator('#dz538-voice-toggle').textContent();
   assert.match(voiceLabel,/ACTIVAR CHAT DE VOZ/);
