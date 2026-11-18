@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.14",
+      "title": "ARSENAL DE 49 ARMAS · MODELOS DIFERENCIADOS Y SONIDOS PROPIOS",
+      "date": "18 nov 2026",
+      "detail": "Se incluyen detalles y siluetas 3D individuales para las 49 armas del catálogo, sobre los GLB CC0 ya integrados, y nuevos sonidos de disparo, equipamiento y recarga generados con Web Audio. Incluye especiales, cuerpo a cuerpo y Reliquia del Eclipse. No se incorporan archivos exactos de Sketchfab, Pixabay ni Freesound porque las páginas de vista previa no son descargas licenciadas verificadas. Continúan las correcciones pixel art y el jefe Rayquaza de v5.25.12-13. Sin modificaciones de controles, daño ni hitboxes. Pendiente validación física en móvil."
+    },
+    {
       "version": "5.25.13",
       "title": "RAYQUAZA, JEFE ALEATORIO · EMBESTIDA, ENERGÍA Y TORMENTA ELÉCTRICA",
       "date": "18 nov 2026",

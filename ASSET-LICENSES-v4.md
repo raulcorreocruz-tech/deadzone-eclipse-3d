@@ -38,3 +38,7 @@ Las mallas se clonan mediante SkeletonUtils para conservar los esqueletos. En An
 **Físicas de muerte:** son un sistema cinemático de desplome y deslizamiento (hasta cinco cuerpos temporales en móvil), con clip `Death` cuando el modelo lo trae. No se trata de un ragdoll articulado de físicas completas.
 
 Este contenido es gratuito bajo las licencias referidas. La apariencia es estilizada; no son modelos AAA fotorrealistas.
+
+## v5.25.14 — Arsenal 49, estado de licencias
+
+Los 49 perfiles del arsenal se apoyan en los 18 GLB CC0 de armas de fuego y los 3 GLB CC0 de armas blancas ya integrados en el juego, junto con geometría adicional creada en Three.js para distinguir siluetas. Los efectos de disparo/recarga/equipamiento son síntesis original Web Audio, no copias de videojuegos ni descargas de los audios del catálogo. **No se han importado los modelos exactos de Sketchfab** ni pistas de Pixabay/Freesound; sus páginas eran referencias, no autorizaciones de redistribución. Para sustituirlos se necesita obtener archivos GLB y pistas de sonido con licencia compatible y créditos cuando proceda. No se modifica el personaje pixel art ni el jefe Rayquaza.
