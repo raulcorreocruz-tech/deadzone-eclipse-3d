@@ -1,0 +1,21 @@
+name: Verify deployed Dead Zone v5.25.17 live
+on:
+  push:
+    branches: ["verify/live-web-v52517-20261118"]
+    paths:
+      - ".github/workflows/verify-production-live-v52517.yml"
+      - "tests/verify-production-public-v52517.mjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verificar versión y funciones publicadas en Render (HTTP + WebSocket)
+        run: node tests/verify-production-public-v52517.mjs
