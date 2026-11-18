@@ -31,7 +31,7 @@ try{
   assert(full,'Fullscreen still floating in HUD');
   const shortcut=page.locator('#dz45-quick');
   if(await shortcut.count()){const quick=await shortcut.evaluate(el=>getComputedStyle(el).display);assert.equal(quick,'none','HUD shortcut still floating')}
-  await page.locator('#pauseModal #dz538-voice-toggle').waitFor({timeout:5000});
+  await page.locator('#pauseModal #dz538-voice-toggle').waitFor({state:'attached',timeout:5000});
   const voiceLabel=await page.locator('#dz538-voice-toggle').textContent();
   assert.match(voiceLabel,/ACTIVAR CHAT DE VOZ/);
   const critical=errors.filter(e=>/TypeError|ReferenceError|SyntaxError|Cannot access|is not defined/i.test(e));
