@@ -96,11 +96,12 @@ const URL='https://822d30f2-065e-4c8c-b3f9-5523c88f93ca.sandbox.floot.app/_cdn/s
  const compiledHtml=fs.readFileSync(path.join(dest,'index.html'),'utf8');
  if(/https:\/\/(?:cdn\.jsdelivr\.net|unpkg\.com)\/npm\/three@0\.160\.1/.test(compiledHtml))throw Error('External 3D CDN import remained in browser build');
  if(!compiledHtml.includes('./vendor/three/build/three.module.js'))throw Error('Self-hosted Three.js import missing');
- if(!compiledHtml.includes('const MOBILE_MODE=touchDevice;'))throw Error('Mobile game runtime must define MOBILE_MODE from touchDevice before using the 3D engine');
+ const mobileDeclaration="const MOBILE_MODE=matchMedia('(pointer:coarse)')";
  const mobileModule=compiledHtml.slice(compiledHtml.indexOf('<script type="module">'));
- const bindingIndex=mobileModule.indexOf('const MOBILE_MODE=touchDevice;');
- const firstUsage=mobileModule.indexOf('MOBILE_MODE');
- if(bindingIndex<0||firstUsage!==bindingIndex+6)throw Error('MOBILE_MODE used before declaration during Android game startup');
+ const bindingIndex=mobileModule.indexOf(mobileDeclaration);
+ if(bindingIndex<0)throw Error('MOBILE_MODE missing from browser module on Android');
+ const firstMobileUse=mobileModule.indexOf('MOBILE_MODE');
+ if(firstMobileUse!==bindingIndex+6)throw Error('MOBILE_MODE used before its declaration in the browser module');
  const scriptStart=compiledHtml.indexOf('<script type="module">');
  const scriptEnd=compiledHtml.indexOf('</script>',scriptStart);
  const moduleScripts=scriptStart>=0&&scriptEnd>scriptStart?[[null,compiledHtml.slice(scriptStart+'<script type="module">'.length,scriptEnd)]]:[];

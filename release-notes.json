@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.3",
+      "title": "REPARACIÓN DEL MOTOR ANDROID · MOBILE_MODE INICIALIZADO AL CARGAR",
+      "date": "18 nov 2026",
+      "detail": "Se corrige el arranque de Android cuando aparece «Uncaught ReferenceError: MOBILE_MODE is not defined». Se declara MOBILE_MODE al inicio del módulo 3D, inmediatamente después de importar Three.js y antes de cualquier acceso a WebGL o a los parches del juego. Se elimina la dependencia del nombre interno y de la posición de la detección touchDevice, que cambia al aplicar otros parches. Se ajusta la comprobación de compilación para detener la publicación si el indicador móvil no está declarado antes de usarse. Continúa la generación automática de APK con novedades por versión; falta prueba física de una partida en Android."
+    },
+    {
       "version": "5.25.2",
       "title": "CORRECCIÓN ERROR MOBILE_MODE · ARRANQUE DEL MOTOR ANDROID",
       "date": "18 nov 2026",

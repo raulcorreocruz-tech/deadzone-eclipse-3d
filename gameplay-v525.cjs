@@ -5,11 +5,6 @@ let h=fs.readFileSync(file,'utf8');
 if(h.includes('DEAD_ZONE_PATCH_525'))console.log('Dead Zone 5.25 already patched');
 else{
  function once(a,b,label){const count=h.split(a).length-1;if(count!==1)throw Error('v5.25 '+label+' expected once, found '+count);h=h.replace(a,b)}
- // MOBILE_MODE was referenced by legacy gameplay patches, but the original game
- // exposes its detection only as touchDevice. Define the alias in the SAME module
- // immediately after touchDevice is initialized (before any WebGL initialization).
- const touchDetection="const touchDevice=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||(/Android|iPhone|iPad/i).test(navigator.userAgent);";
- once(touchDetection,touchDetection+'const MOBILE_MODE=touchDevice;','declare mobile mode before engine startup');
  const vendor='vendor/three';
  const localBuild='./'+vendor+'/build/three.module.js';
  const localAddons='./'+vendor+'/examples/jsm/';
@@ -26,6 +21,14 @@ else{
   if(count){h=h.split(remote).join(local);importsPatched+=count}
  }
  if(!importsPatched)throw Error('v5.25 local Three.js imports: source no longer contains expected CDN mapping');
+
+ // Use an independent, early, module-scope mobile flag. The base game has
+ // changed its touch detection declaration across versions, so do not
+ // depend on any exact touchDevice source text or declare this after WebGL.
+ const threeImport="import * as THREE from '"+localBuild+"';";
+ const mobileFlag="const MOBILE_MODE=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||(/Android|iPhone|iPad/i).test(navigator.userAgent);";
+ once(threeImport,threeImport+"\n"+mobileFlag,'early module-scope mobile detection');
+
  // Defer start feedback. A two-frame check often races the orientation/fullscreen transition on mobile.
  once("requestAnimationFrame(()=>requestAnimationFrame(checkStarted))","setTimeout(checkStarted,MOBILE_MODE?8000:3000)",'remove premature mobile startup error');
  once("feedback('La partida no ha arrancado. Prueba a recargar; si persiste, consulta el aviso del motor.',true);",
