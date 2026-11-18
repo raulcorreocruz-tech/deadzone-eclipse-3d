@@ -16,4 +16,8 @@ else{
  once(oldState,newState,'remember last player state for late join');
  // No sensitive data: public directory returns only session status and optional public nicknames.
  const hook='const server=http.createServer((req,res)=>{';
- const middleware=String.raw
+ const middleware="\n// DEAD_ZONE_SERVER_536 — public, short-lived room directory (server is authoritative).\nfunction dz536ServeRooms(req,res){\n let pathname;try{pathname=new URL(req.url,'https://game.invalid').pathname}catch{return false}\n if(pathname!=='/api/live-rooms')return false;\n if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405,{'Allow':'GET, HEAD'});res.end();return true}\n const roomList=[...rooms.values()].filter(room=>room.players.size>0&&room.players.size<=maxPlayers).slice(0,100).map(room=>({\n  code:room.code,players:room.players.size,capacity:maxPlayers,\n  state:room.running?'playing':'lobby',wave:room.running?(room.lastWave||1):0,\n  host:room.players.get(room.host)?.name||'SUPERVIVIENTE',\n  joining:room.players.size<maxPlayers\n }));\n const body=JSON.stringify({rooms:roomList,online:clients.size,limit:maxPlayers,updatedAt:Date.now()});\n res.writeHead(200,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store, max-age=0','Content-Length':Buffer.byteLength(body),'X-Content-Type-Options':'nosniff'});\n res.end(req.method==='HEAD'?'':body);return true;\n}\n";
+ once(hook,middleware+'\n'+hook+'if(dz536ServeRooms(req,res))return;','room-listing endpoint');
+ fs.writeFileSync(file,s);
+ console.log('Dead Zone v536: public live directory; instant joins with validated snapshot');
+}
