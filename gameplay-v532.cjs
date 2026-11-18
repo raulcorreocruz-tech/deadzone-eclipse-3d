@@ -9,7 +9,11 @@ else{
  once('function startRound(){if(player.dead)return;wave++;','function startRound(){if(player.dead)return;wave++;dz532BossRound();','random boss wave roll');
  once('function tick(dt){gameTime+=dt;','function tick(dt){gameTime+=dt;dz532BossTick(dt);','boss actions per frame');
  once('function killEnemy(z){','function killEnemy(z){dz532BossKilled(z);','boss elimination and reward');
- once('function reset(){','function reset(){dz532Reset();','boss and effect cleanup on restart');
+ const mainStart=h.indexOf('<script type="module">');
+ const mainEnd=h.indexOf('</script>',mainStart);
+ const resetAt=h.indexOf('function reset(){',mainStart);
+ if(mainStart<0||mainEnd<mainStart||resetAt<mainStart||resetAt>=mainEnd)throw Error('Cannot find main game reset function');
+ h=h.slice(0,resetAt)+h.slice(resetAt).replace('function reset(){','function reset(){dz532Reset();');
  once('function dz531EnsurePixelOnly(){','function dz531EnsurePixelOnly(){if(DZ532.active?.dz532Sprite)dz531MaskLegacy(DZ532.active.figure,true);','hide boss dummy 3D actor too');
  h=h.replace('</head>','<!-- DEAD_ZONE_PATCH_532: Rayquaza randomized boss, energy blasts and area warnings --></head>');
  fs.writeFileSync(file,h);console.log('DEAD ZONE v5.25.13: Rayquaza boss ready, 6 animated frames');
