@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.10",
+      "title": "PETER GRIFFIN JUGABLE · 8 POSES PIXEL ART",
+      "date": "18 nov 2026",
+      "detail": "Se incorpora Peter Griffin como skin seleccionable a partir del spritesheet adjuntado por el jugador (estilo NES). Se usa una hoja de ocho poses sin fondo: reposo, cinco cuadros de movimiento y dos poses de acción; la secuencia cambia al caminar, disparar o recargar y se invierte horizontalmente al mirar a la izquierda. Se mantiene el resto de skins y se contempla el personaje remoto en cooperativo. Crédito al creador original del spritesheet aportado, que permite el uso con atribución; falta identificar su nombre exacto. Se conservan los controles multitáctiles y la interfaz compacta. Pendiente prueba física en móvil."
+    },
+    {
       "version": "5.25.9",
       "title": "AVISOS MÁS PEQUEÑOS · FULLSCREEN Y PAUSA SIN DUPLICADOS",
       "date": "18 nov 2026",

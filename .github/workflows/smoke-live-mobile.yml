@@ -9,6 +9,8 @@ on:
       - 'gameplay-v526.cjs'
       - 'gameplay-v527.cjs'
       - 'gameplay-v528.cjs'
+      - 'gameplay-v529.cjs'
+      - 'assets/peter_griffin_atlas.png'
       - 'gameplay-v525.cjs'
       - 'package.json'
 permissions:
