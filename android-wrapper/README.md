@@ -10,6 +10,18 @@ Esta es una **APK de prueba / debug** para Android. Incluye una actividad WebVie
 - **Seguridad:** HTTPS obligatorio, solo el dominio del juego permanece dentro de la app; los enlaces a otros sitios se abren en el navegador del móvil. Sin acceso a archivos locales ni permisos de cámara/micrófono.
 - **Contenido:** se actualiza desde el despliegue web; esta APK no incorpora recursos GLB ni audios para jugar sin conexión.
 
+
+## Actualizaciones desde Dead Zone v5.25
+
+Hay **dos tipos de actualización**:
+
+1. **Contenido del juego (automático):** la APK usa una WebView con el juego hospedado en Render. Al abrirla, carga la web y el servidor de Three.js actualizados. Mientras esté abierta, comprueba en segundo plano el endpoint \`/api/release-info\` cada 90 segundos. Si aparece una nueva versión durante una partida, avisa y espera; si el usuario está en el menú principal, actualiza la página sin reinstalar la aplicación.
+2. **Archivo APK nativo (generación automática, instalación manual):** GitHub Actions se ejecuta cuando cambian los parches del juego, el manifiesto, las notas de versión o el proyecto Android. \`sync-version.cjs\` alinea \`versionName\` y \`versionCode\` con \`package.json\` antes de compilar y conserva el resultado en **Actions > Artifacts**.
+
+**Importante:** Android no permite reemplazar silenciosamente la APK instalada sin un canal de actualizaciones confiable y una firma estable. Cada compilación de debug de GitHub Actions puede firmarse con una clave diferente, por lo que al instalar otra APK de debug podría ser necesario desinstalar primero la anterior (con posible pérdida de datos locales). Para actualizaciones binaras en el mismo dispositivo sin perder datos, es necesario configurar una clave de firma persistente mediante secretos de GitHub y un sistema como Google Play In-App Updates (con confirmación del usuario).
+
+Las novedades de cada versión residen en \`release-notes.json\`; el proceso de despliegue no permite publicar una versión sin sus notas correspondientes.
+
 ## Obtener el APK desde GitHub Actions
 
 1. Abre la pestaña **Actions** del repositorio.
