@@ -5,6 +5,11 @@ let h=fs.readFileSync(file,'utf8');
 if(h.includes('DEAD_ZONE_PATCH_525'))console.log('Dead Zone 5.25 already patched');
 else{
  function once(a,b,label){const count=h.split(a).length-1;if(count!==1)throw Error('v5.25 '+label+' expected once, found '+count);h=h.replace(a,b)}
+ // MOBILE_MODE was referenced by legacy gameplay patches, but the original game
+ // exposes its detection only as touchDevice. Define the alias in the SAME module
+ // immediately after touchDevice is initialized (before any WebGL initialization).
+ const touchDetection="const touchDevice=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||(/Android|iPhone|iPad/i).test(navigator.userAgent);";
+ once(touchDetection,touchDetection+'const MOBILE_MODE=touchDevice;','declare mobile mode before engine startup');
  const vendor='vendor/three';
  const localBuild='./'+vendor+'/build/three.module.js';
  const localAddons='./'+vendor+'/examples/jsm/';

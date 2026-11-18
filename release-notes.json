@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.2",
+      "title": "CORRECCIÓN ERROR MOBILE_MODE · ARRANQUE DEL MOTOR ANDROID",
+      "date": "18 nov 2026",
+      "detail": "Resuelto el ReferenceError MOBILE_MODE is not defined que impedía arrancar el motor en Android: la variable usada por los módulos de juego y ajustes gráficos ahora se declara como alias de la detección original touchDevice, antes de configurar WebGL o iniciar la partida. Se añade una comprobación de regresión durante la compilación para impedir publicar versiones que vuelvan a omitir esta declaración. Se mantiene el aviso de nuevas versiones y la generación automática de APK de pruebas, cuyo contenido web se actualiza al abrir con Internet. Pendiente comprobar una partida completa sobre un móvil Android real."
+    },
+    {
       "version": "5.25.1",
       "title": "INICIO MÓVIL MÁS ESTABLE · NOVEDADES VISIBLES · APK AUTOMÁTICA",
       "date": "18 nov 2026",
