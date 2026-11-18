@@ -21,7 +21,7 @@ else{
   fireButton.classList.remove('pressed');
  }
  fireButton.addEventListener('pointerdown',e=>{
-  if(editingLayout||!playing||paused||DZ527.firePointer!==null)return;
+  if(((typeof editingLayout!=='undefined')&&editingLayout)||!playing||paused||DZ527.firePointer!==null)return;
   e.preventDefault();e.stopImmediatePropagation();DZ527.firePointer=e.pointerId;
   try{fireButton.setPointerCapture(e.pointerId)}catch{}
   // The aim stick is the only source of direction. This control only fires.
@@ -34,9 +34,9 @@ else{
   fireButton.addEventListener(kind,dz527ReleaseFire);
  function dz527Action(id,callback){
   const button=$(id);if(!button)return;
-  button.onclick=e=>{if(e.detail===0&&!editingLayout)callback();}; // keyboard accessibility
+  button.onclick=e=>{if(e.detail===0&&!(typeof editingLayout!=='undefined'&&editingLayout))callback();}; // keyboard accessibility
   button.addEventListener('pointerdown',e=>{
-   if(editingLayout||!playing||paused)return;
+   if(((typeof editingLayout!=='undefined')&&editingLayout)||!playing||paused)return;
    e.preventDefault();e.stopImmediatePropagation();
    if(DZ527.actionFingers.has(e.pointerId))return;
    DZ527.actionFingers.set(e.pointerId,id);
