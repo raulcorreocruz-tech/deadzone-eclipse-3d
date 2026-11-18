@@ -1,6 +1,6 @@
 {
   "name": "deadzone-eclipse-3d",
-  "version": "5.25.15",
+  "version": "5.25.16",
   "private": true,
   "scripts": {
     "build": "node setup.cjs",
