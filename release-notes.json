@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.17",
+      "date": "18 nov 2026",
+      "title": "3 SISTEMAS DE DISPARO · HELICÓPTERO RESTAURADO · SALAS EN VIVO · ZOMBIS ANIMADOS",
+      "detail": "En Opciones puedes elegir Manual (joystick + FUEGO), Joystick con detección (dispara únicamente con zombis visibles alineados con el láser) y Automático (selecciona el zombi visible cercano y dispara). El modo queda guardado y se cambia durante la partida. El helicóptero utiliza ahora sus propios dos cañones con trazadoras visibles desde el aire y cadencia autónoma, sin gastar balas o bloquear el arma del superviviente; al finalizar restaura el arma, visibilidad y controles. El explorador 🌐 SALAS EN VIVO muestra partidas con plazas, permite unirse directamente desde el lobby o una partida comenzada con instantánea validada de ronda, enemigos y puertas, y admite enlaces ?sala=CODIGO. Las animaciones zombi priorizan la acción de caminar real del modelo GLB y tienen movimiento de piernas/brazos, balanceo y pasos de respaldo, sin incrementar la velocidad de persecución. Máximo 4 participantes. Pendiente comprobar el despliegue público y partida multijugador real en distintos dispositivos."
+    },
+    {
       "version": "5.25.16",
       "date": "18 nov 2026",
       "title": "ARMAS EN LAS MANOS · PERSONAJES 3D, PIXEL ART Y COOPERATIVO",
