@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.21.0",
+      "title": "FASE 4.1 · PULIDO VISUAL Y RESPUESTA DEL COMBATE",
+      "date": "18 nov 2026",
+      "detail": "Nueva interfaz de supervivencia con cinco segmentos visibles de salud (incluida curación parcial), contador de diez segundos antes de regeneración y aviso cuando se recupera vida. Señal visual ligera de impactos sobre los zombis en la posición de pantalla correspondiente a su cuerpo, y efecto temporal en los bordes de pantalla al recibir daño. Aviso de ronda con animación breve y tres notas originales sintetizadas; no se usan grabaciones ni temas con derechos. Opción EFECTOS VISUALES NORMALES/REDUCIDOS en pausa, persistida por dispositivo, compatible con preferencias de movimiento reducido y móviles de poca memoria. Son mejoras de interfaz y presentación, sin modificar controles, daño, caja misteriosa, armería, cooperativo, reglas de cinco golpes ni ajustes gráficos de la Fase 3.3. Pendiente validación real en móvil y compilación APK en etapa posterior."
+    },
+    {
       "version": "5.20.0",
       "title": "FASE 3.3 · ARMAS EXCLUSIVAS DE ARMERÍA Y OPTIMIZACIÓN MÓVIL",
       "date": "18 nov 2026",
