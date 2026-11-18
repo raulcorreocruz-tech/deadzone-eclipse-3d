@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.18",
+      "date": "18 nov 2026",
+      "title": "HUD LIMPIO · SALAS EN VIVO · HISTORIAL DE PARTIDAS · CHAT DE VOZ Y ESCRITO",
+      "detail": "Se simplifica la interfaz: puntuación compacta abajo a la derecha; botón de pantalla completa y editor de HUD dentro de Pausa, retirando controles redundantes del juego. En el menú principal queda una sola entrada a Salas en vivo, con creación, lista y acceso al cooperativo. Novedades reúne el historial completo de versiones sin el panel antiguo duplicado. Leaderboard muestra récords y un historial paginado de partidas individuales y cooperativas completadas, sin sobrescribir las de jugadores con el mismo nombre. El lobby incluye chat escrito validado y limitado por frecuencia; durante la partida multijugador se habilita chat de voz opcional mediante WebRTC, con permiso de micrófono y señalización por el servidor existente (sin grabación). Usuarios, amigos y resultados admiten DZ_DATA_DIR para disco persistente, pero el plan gratuito actual de Render no dispone de disco persistente: la permanencia real requiere configurar un almacenamiento duradero externo o un servicio de pago. Voz P2P usa STUN, por lo que algunas redes requerirán TURN para funcionar."
+    },
+    {
       "version": "5.25.17",
       "date": "18 nov 2026",
       "title": "3 SISTEMAS DE DISPARO · HELICÓPTERO RESTAURADO · SALAS EN VIVO · ZOMBIS ANIMADOS",
