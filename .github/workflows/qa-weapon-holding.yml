@@ -1,0 +1,51 @@
+name: QA armas en manos y sprites
+on:
+  push:
+    branches: ["fix/visual-holding-guns-v52516"]
+    paths:
+      - "setup.cjs"
+      - "package.json"
+      - "gameplay-v535.cjs"
+      - "tests/qa-weapon-holding.mjs"
+      - ".github/workflows/qa-weapon-holding.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comprobar sintaxis
+        run: |
+          node --check gameplay-v535.cjs
+          node --check setup.cjs
+      - name: Construir juego 3D con GLB y audio real
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+      - name: Instrumentación de compañero de prueba solo en CI
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const file='index.html',html=fs.readFileSync(file,'utf8'),needle='function dzGun(){';
+          if(html.split(needle).length!==2)throw Error('Unable to inject temporary QA hooks');
+          const qa="window.__DZ535_TEST={spawn(){const a=buildActor(mats.player,1,'player');a.position.set(-22,0,-30);scene.add(a);a.userData.dz55Skin='shin_chan';a.userData.dz535Weapon='MP7';allies.set('qa-held-weapon',a)},snapshot(){const a=allies.get('qa-held-weapon'),r=DZ535.actors.get(a);return {remote:window.__DZ535_STATUS?.remoteWeapons,skinVisible:!!dz531PixelSprite(a),weaponName:r?.weapon,mesh:r?.kind,meshCount:r?.mount.children.length}},cleanup(){const a=allies.get('qa-held-weapon');a?.parent?.remove(a);allies.delete('qa-held-weapon')}};";
+          fs.writeFileSync(file,html.replace(needle,qa+'\n'+needle));
+          NODE
+      - name: Servir juego local y probar PC, móvil, cooperativo
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          PORT=3000 node server.js >/tmp/weapon-holding.log 2>&1 &
+          for i in $(seq 1 30); do curl --fail --silent http://127.0.0.1:3000/health >/dev/null && break; sleep 1; done
+          node tests/qa-weapon-holding.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots-weapon-holding
+          path: weapons-held-*.png
+          if-no-files-found: ignore
