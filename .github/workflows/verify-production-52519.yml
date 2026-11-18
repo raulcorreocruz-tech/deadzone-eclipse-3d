@@ -1,0 +1,28 @@
+name: Verify public v5.25.19 mobile FPS and melee
+on:
+  push:
+    branches: ["verify/public-mobile-v52519-20261118"]
+    paths:
+      - "tests/verify-production-52519.mjs"
+      - ".github/workflows/verify-production-52519.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-save playwright@1.56.1 --no-audit --no-fund
+      - name: Validate Render, Supabase, PC and mobile
+        run: node tests/verify-production-52519.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-deadzone-v52519
+          path: production-52519-*.png
+          if-no-files-found: ignore
