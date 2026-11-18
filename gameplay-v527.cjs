@@ -56,7 +56,7 @@ else{
  dz527Action('swap',swap);
  dz527Action('shop',openShop);
  dz527Action('dodge',dodge);
- $('pauseTouch').onclick=()=>{if(playing&&!paused)pause()};
+ const pauseTouch=$('pauseTouch');if(pauseTouch)pauseTouch.onclick=()=>{if(playing&&!paused)pause()};
  window.addEventListener('blur',()=>{dz527ReleaseFire();DZ527.actionFingers.clear()});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)dz527ReleaseFire()});
  
