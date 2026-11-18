@@ -1,10 +1,10 @@
 {
   "name": "deadzone-eclipse-3d",
-  "version": "5.25.17",
+  "version": "5.25.18",
   "private": true,
   "scripts": {
     "build": "node setup.cjs",
-    "start": "node server.js"
+    "start": "node cloud-start.cjs"
   },
   "engines": {
     "node": ">=20"
