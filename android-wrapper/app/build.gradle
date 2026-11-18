@@ -9,8 +9,8 @@ android {
         applicationId 'com.deadzone.eclipse'
         minSdk 26
         targetSdk 35
-        versionCode 1
-        versionName '5.22.0-android-preview'
+        versionCode 5025000
+        versionName '5.25.0'
     }
 
     buildTypes {
