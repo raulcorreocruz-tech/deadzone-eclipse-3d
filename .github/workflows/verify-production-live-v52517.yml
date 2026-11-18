@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/verify-production-live-v52517.yml"
       - "tests/verify-production-public-v52517.mjs"
+      - "tests/verify-public-browser-v52517.mjs"
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,3 +20,13 @@ jobs:
           node-version: "22"
       - name: Verificar versión y funciones publicadas en Render (HTTP + WebSocket)
         run: node tests/verify-production-public-v52517.mjs
+      - name: Navegador real en PC y móvil
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          node tests/verify-public-browser-v52517.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captura-juego-publicado-v52517
+          path: public-deadzone-*.png
+          if-no-files-found: ignore
