@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.24.0",
+      "title": "LA GRITONA, FPS CONFIGURABLES Y ELEMENTOS 3D INCONFUNDIBLES",
+      "date": "18 nov 2026",
+      "detail": "La Gritona solo puede invocar 30 zombis normales como máximo a lo largo de su vida; a la vez no pueden existir más de 30 zombis vivos invocados por Gritonas en el escenario. Se distingue por un tocado oscuro con corona rosa rojiza, marcadores luminosos y un aviso visual cuando invoca. Nuevo panel de opciones gráficas en menú principal y pausa, con calidad Automática/Baja/Media/Alta/Ultra y limitador de 30/60/120/144 FPS independiente, contador real opcional, escala de resolución del 50–160 % y control de sombras; todos los ajustes se guardan en el dispositivo. La caja misteriosa incorpora una tapa distinta, herrajes metálicos, un cristal luminoso y cartel reconocible; armería, Pack-a-Punch, torreta, altar, moto y barricada reciben siluetas 3D y señales propias para localizarse mejor. Los FPS configurados son objetivos, sujetos a la frecuencia de la pantalla, la batería y la capacidad del dispositivo; la calidad Ultra puede no ser apropiada para móviles. Se conservan las armas y el sistema de amigos, sin cambios de protocolo de cooperativo."
+    },
+    {
       "version": "5.23.0",
       "title": "FASE SOCIAL · AMIGOS, INVITACIONES Y HISTORIAL",
       "date": "18 nov 2026",
