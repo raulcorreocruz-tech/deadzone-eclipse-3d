@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.1",
+      "title": "INICIO MÓVIL MÁS ESTABLE · NOVEDADES VISIBLES · APK AUTOMÁTICA",
+      "date": "18 nov 2026",
+      "detail": "Se amplía a ocho segundos la comprobación de arranque inicial en Android para evitar avisos falsos durante la inicialización de WebGL. Se añade el import map de Three.js alojado en nuestro servidor: los cargadores GLTF/SkeletonUtils pueden resolver el módulo three en el navegador sin depender de CDN. El botón real de NOVEDADES ahora muestra la versión actual y destaca cada actualización no leída; se registra como leída al abrir las novedades, aunque la interfaz previa detenga la propagación de clics. El build exige una entrada nueva en release-notes.json para cada versión. El flujo de GitHub Actions compila y publica la APK de prueba de forma automática; la actualización del juego web llega a la APK instalada cuando se abre con Internet. La instalación de una nueva APK requiere aprobación y una firma Android compatible. Pendiente prueba física de inicio de partida en el dispositivo y validación de la compilación Android en GitHub Actions."
+    },
+    {
       "version": "5.25.0",
       "title": "CORRECCIÓN ARRANQUE ANDROID · MOTOR 3D LOCAL · NOVEDADES Y APK",
       "date": "18 nov 2026",
