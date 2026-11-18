@@ -122,7 +122,7 @@ async function pool(jobs,parallel=5){
 }
 async function build(){
  fs.mkdirSync(modelDir,{recursive:true});fs.mkdirSync(audioDir,{recursive:true});
- const manifest={version:2,pack:PACK,license:'CC0 1.0 Universal',attributionRequired:false,models:{},sounds:{},failures:[],generatedAt:new Date().toISOString()};
+ const manifest={version:2,pack:PACK,license:'CC0 1.0 Universal',attributionRequired:false,models:{},sounds:{},soundProfiles:Object.fromEntries(library.weapons.map(w=>[w.name,w.sound])),failures:[],generatedAt:new Date().toISOString()};
  const json=JSON.parse((await getWithRetry(PACK,16_000_000)).toString('utf8'));
  const pack=json.data;
  if(pack?.licenseLabel!=='CC0 1.0 Universal'||!Array.isArray(pack.assets))throw Error('CC0 pack manifest not validated');
