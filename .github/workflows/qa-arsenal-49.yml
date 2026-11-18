@@ -1,0 +1,44 @@
+name: QA Arsenal 49 — sintaxis y catálogo
+on:
+  push:
+    branches: ["feature/arsenal-49-identidades-3d-audio-20261118"]
+    paths:
+      - "gameplay-v531.cjs"
+      - "setup.cjs"
+      - "package.json"
+      - ".github/workflows/qa-arsenal-49.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Sintaxis del parche e integridad de scripts
+        run: |
+          node --check gameplay-v531.cjs
+          node --check setup.cjs
+          node - <<'NODE'
+          const fs = require('fs'), cp = require('child_process'), os = require('os'), path = require('path');
+          const dir = fs.mkdtempSync(path.join(os.tmpdir(),'dz-arsenal-'));
+          fs.copyFileSync('gameplay-v531.cjs',path.join(dir,'gameplay-v531.cjs'));
+          fs.writeFileSync(path.join(dir,'index.html'),'<html><head></head><body><script type="module">\nfunction dzGun(){}\n</script></body></html>');
+          cp.execFileSync(process.execPath,[path.join(dir,'gameplay-v531.cjs')],{stdio:'inherit'});
+          const html=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+          const src=html.match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
+          if(!src)throw Error('Falta script inyectado');
+          cp.execFileSync(process.execPath,['--check','--input-type=module'],{input:src,stdio:['pipe','inherit','inherit']});
+          const m=src.match(/const DZ531_NAMES=(\[[^;]+\]);/);
+          if(!m)throw Error('Falta catálogo');
+          const names=JSON.parse(m[1]);
+          if(names.length!==49||new Set(names).size!==49)throw Error('Deben ser exactamente 49 armas diferentes');
+          for(const hook of ['dz531Visual','dz531Synth','dz512Sound','dz48Reload','dz40FinishGun']){
+            if(!src.includes(hook))throw Error('Falta '+hook);
+          }
+          console.log('QA arsenal verificado:',names.length,'perfiles únicos');
+          NODE
