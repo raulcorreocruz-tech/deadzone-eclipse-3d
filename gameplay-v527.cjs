@@ -9,13 +9,11 @@ else{
  const oldFire="if(trigger&&(MOBILE_MODE||weapon().fireMode!=='semi'||!triggerLatch)){shoot();if(weapon().fireMode==='semi'&&!MOBILE_MODE)triggerLatch=true;}";
  const newFire="if(trigger&&(!MOBILE_MODE||DZ527.firePointer!==null)&&(weapon().fireMode!=='semi'||!triggerLatch)){shoot();if(weapon().fireMode==='semi')triggerLatch=true;}";
  once(oldFire,newFire,'only fire from actual fire button');
- const start=h.indexOf('let firePointer=null;');
- const endMark="$('dodge').onclick=dodge;";
- const end=h.indexOf(endMark,start)+endMark.length;
- if(start<0||end<start||end-start>4800||!h.slice(start,end).includes("$('fire').addEventListener"))throw Error('v5.25.8 cannot isolate native mobile button handlers');
  const input=String.raw`
  // DEAD_ZONE_PATCH_527: unique pointer ownership per interactive control.
  const DZ527={firePointer:null,actionFingers:new Map(),pressed:new Set()};
+ function dz527Install(){
+ if(!MOBILE_MODE)return;
  const fireButton=$('fire');
  function dz527ReleaseFire(e){
   if(e&&DZ527.firePointer!==e.pointerId)return;
@@ -24,13 +22,14 @@ else{
  }
  fireButton.addEventListener('pointerdown',e=>{
   if(editingLayout||!playing||paused||DZ527.firePointer!==null)return;
-  e.preventDefault();DZ527.firePointer=e.pointerId;
+  e.preventDefault();e.stopImmediatePropagation();DZ527.firePointer=e.pointerId;
   try{fireButton.setPointerCapture(e.pointerId)}catch{}
   // The aim stick is the only source of direction. This control only fires.
   touch.shoot=true;triggerLatch=false;fireButton.classList.add('pressed');
   shoot();
   if(weapon().fireMode==='semi')triggerLatch=true;
- },{passive:false});
+ },{capture:true,passive:false});
+ fireButton.addEventListener('click',e=>{if(e.detail){e.preventDefault();e.stopImmediatePropagation()}},true);
  for(const kind of ['pointerup','pointercancel','lostpointercapture'])
   fireButton.addEventListener(kind,dz527ReleaseFire);
  function dz527Action(id,callback){
@@ -38,13 +37,14 @@ else{
   button.onclick=e=>{if(e.detail===0&&!editingLayout)callback();}; // keyboard accessibility
   button.addEventListener('pointerdown',e=>{
    if(editingLayout||!playing||paused)return;
-   e.preventDefault();e.stopPropagation();
+   e.preventDefault();e.stopImmediatePropagation();
    if(DZ527.actionFingers.has(e.pointerId))return;
    DZ527.actionFingers.set(e.pointerId,id);
    button.classList.add('pressed');
    try{button.setPointerCapture(e.pointerId)}catch{}
    callback(); // fires immediately, even if a different finger holds MOVE
-  },{passive:false});
+  },{capture:true,passive:false});
+  button.addEventListener('click',e=>{if(e.detail){e.preventDefault();e.stopImmediatePropagation()}},true);
   for(const kind of ['pointerup','pointercancel','lostpointercapture'])
    button.addEventListener(kind,e=>{
     if(DZ527.actionFingers.get(e.pointerId)!==id)return;
@@ -59,8 +59,10 @@ else{
  $('pauseTouch').onclick=()=>{if(playing&&!paused)pause()};
  window.addEventListener('blur',()=>{dz527ReleaseFire();DZ527.actionFingers.clear()});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)dz527ReleaseFire()});
+ 
+ }
+ queueMicrotask(dz527Install);
  `;
- h=h.slice(0,start)+input+h.slice(end);
  const aiming=String.raw`
  function dz527AimOnly(){
   if(!MOBILE_MODE)return;
@@ -84,7 +86,7 @@ else{
   DZ515.halo.visible=false;
  }
  `;
- once('function dzGun(){',aiming+'\nfunction dzGun(){','add view-only right-stick');
+ once('function dzGun(){',aiming+'\n'+input+'\nfunction dzGun(){','add independent touch handlers and view-only right-stick');
  const css=String.raw`<style id="dz527-mobile-input">
  @media(pointer:coarse),(max-width:800px){
  html body #hud #aimstick,html body.touch-mode #hud #aimstick{display:block!important;visibility:visible!important;pointer-events:auto!important;touch-action:none!important;z-index:13!important}
