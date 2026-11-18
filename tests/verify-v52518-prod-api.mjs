@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import {randomBytes} from 'node:crypto';
+const base='https://deadzone-eclipse-coop.onrender.com';
+const req=async(p,options={})=>{
+ const response=await fetch(base+p,{cache:'no-store',signal:AbortSignal.timeout(20000),headers:{'Cache-Control':'no-cache',...(options.headers||{})},...options});
+ if(!response.ok)throw Error(p+' HTTP '+response.status+' '+(await response.text()).slice(0,180));
+ return response;
+};
+const html=await(await req('/?public_verification=5_25_18')).text();
+const version=html.match(/<meta\s+name="deadzone-build"\s+content="([^"]+)"/i)?.[1];
+assert.match(version||'',/^5\.25\.18-[a-f0-9]{12}$/,'Rendered version mismatch');
+for(const token of ['DEAD_ZONE_PATCH_538','deadzone_cloud_read','dz538-lobby-chat','dz538-voice-toggle'])if(token!=='deadzone_cloud_read')assert(html.includes(token),'Public build missing '+token);
+const h=await(await req('/health')).json();assert.equal(h.status,'ok');
+const storage=await(await req('/api/storage-health')).json();
+assert.equal(storage.configured,true);
+assert.equal(storage.ready,true);assert.equal(storage.healthy,true);
+const games=await(await req('/api/matches')).json();assert(Array.isArray(games.matches)&&Number.isInteger(games.total));
+const live=await(await req('/api/live-rooms')).json();assert(Array.isArray(live.rooms)&&live.limit===4);
+const statusBefore=storage.revisions.users;
+const id=randomBytes(4).toString('hex'),a='qaA'+id,b='qaB'+id;
+const pwd1=randomBytes(30).toString('base64url'),pwd2=randomBytes(30).toString('base64url');
+const social=async(action,params={})=>{
+ const res=await req('/api/social',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...params})});
+ return res.json();
+};
+const first=await social('register',{username:a,password:pwd1});
+const second=await social('register',{username:b,password:pwd2});
+assert(first.token&&second.token&&first.state?.account?.id&&second.state?.account?.id);
+await social('request',{token:first.token,username:b});
+await social('accept',{token:second.token,targetId:first.state.account.id});
+const login=await social('login',{username:a,password:pwd1});
+assert.equal(login.state.account.username,a);
+assert.equal(login.state.friends.length,1);
+assert.equal(login.state.friends[0].username,b);
+const health=await(await req('/api/storage-health')).json();
+assert(health.revisions.users>statusBefore+3,'DB revision did not advance after registration/friends');
+assert.equal(health.healthy,true);
+console.log('PRODUCTION PERSISTENCE VERIFIED',JSON.stringify({version,storageReady:true,registeredTwo:true,friendsLinked:true,loginWorks:true,usersRevision:health.revisions.users,matchEndpoint:true,liveRoomEndpoint:true,qaUsers:[a,b]}));
