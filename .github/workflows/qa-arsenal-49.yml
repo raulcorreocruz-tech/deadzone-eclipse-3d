@@ -13,7 +13,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,4 +41,17 @@ jobs:
             if(!src.includes(hook))throw Error('Falta '+hook);
           }
           console.log('QA arsenal verificado:',names.length,'perfiles únicos');
+          NODE
+      - name: Compilación real con assets y parches anteriores
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+          node - <<'NODE'
+          const fs=require('fs');
+          const h=fs.readFileSync('index.html','utf8');
+          if(!h.includes('DEAD_ZONE_PATCH_531'))throw Error('No aparece la nueva integración en el juego compilado');
+          if(!h.includes('window.__DZ531_STATUS'))throw Error('No se ha incorporado el diagnóstico de arsenal');
+          const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+          if(pkg.version!=='5.25.12')throw Error('Versión de juego incorrecta');
+          console.log('Build completo v5.25.12 correcto');
           NODE
