@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node setup.cjs",
-    "start": "node server.js"
+    "start": "node cloud-start.cjs"
   },
   "engines": {
     "node": ">=20"
