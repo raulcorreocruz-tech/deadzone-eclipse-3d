@@ -10,8 +10,9 @@ else{
  const newFire="if(trigger&&(!MOBILE_MODE||DZ527.firePointer!==null)&&(weapon().fireMode!=='semi'||!triggerLatch)){shoot();if(weapon().fireMode==='semi')triggerLatch=true;}";
  once(oldFire,newFire,'only fire from actual fire button');
  const start=h.indexOf('let firePointer=null;');
- const end=h.indexOf('function scoreLocal(){',start);
- if(start<0||end<=start||end-start>2400)throw Error('v5.25.8 cannot locate native mobile button handlers');
+ const endMark="$('dodge').onclick=dodge;";
+ const end=h.indexOf(endMark,start)+endMark.length;
+ if(start<0||end<start||end-start>4800||!h.slice(start,end).includes("$('fire').addEventListener"))throw Error('v5.25.8 cannot isolate native mobile button handlers');
  const input=String.raw`
  // DEAD_ZONE_PATCH_527: unique pointer ownership per interactive control.
  const DZ527={firePointer:null,actionFingers:new Map(),pressed:new Set()};
