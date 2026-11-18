@@ -1,0 +1,47 @@
+name: QA v5.25.18 clean HUD, social, ranking, voice and chat
+on:
+  push:
+    branches: ["feature/clean-hud-social-leaderboard-voice-chat-v52518"]
+    paths:
+      - "setup.cjs"
+      - "package.json"
+      - "gameplay-v538.cjs"
+      - "server-v538.cjs"
+      - "tests/qa-v538-server.mjs"
+      - "tests/qa-v538-ui.mjs"
+      - ".github/workflows/qa-v538-features.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Syntax check
+        run: |
+          node --check gameplay-v538.cjs
+          node --check server-v538.cjs
+          node --check tests/qa-v538-server.mjs
+          node --check tests/qa-v538-ui.mjs
+      - name: Build game including assets
+        run: |
+          npm install --no-audit --no-fund
+          node setup.cjs
+      - name: Test accounts, friends, leaderboards, lobby chat and isolated WebRTC signaling
+        run: node tests/qa-v538-server.mjs
+      - name: Test gameplay UI on Chromium PC and mobile
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          PORT=3000 node server.js >/tmp/v538-game.log 2>&1 &
+          for i in $(seq 1 45); do curl -fsS http://127.0.0.1:3000/health >/dev/null && break; sleep 1; done
+          node tests/qa-v538-ui.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v538-ui-proof
+          path: v538-*.png
+          if-no-files-found: ignore
