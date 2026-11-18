@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.20",
+      "date": "18 nov 2026",
+      "title": "MONOPOLY JUGABLE · DISPAROS COOP INVITADO · ANDROID",
+      "detail": "Nueva área Monopoly con portal de acceso por 1800 puntos, tablero 3D, casillas de recompensa +120 puntos por ronda y puerta de regreso. Recuperación de paquetes de disparo cuando un invitado efectúa un tiro válido y el controlador anterior no lo transmitió al anfitrión, evitando duplicados. Nueva adaptación de resolución para oleadas intensas en Android, respetando la calidad manual."
+    },
+    {
       "version": "5.25.19",
       "date": "18 nov 2026",
       "title": "MÓVILES MÁS FLUIDOS · 50 USOS CUERPO A CUERPO · FPS ADAPTATIVOS",
