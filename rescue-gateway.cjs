@@ -16,6 +16,9 @@ const {WebSocketServer,WebSocket}=require('ws');
 const HOST=String(process.env.UPSTREAM_URL||'https://deadzone-eclipse-coop.onrender.com').replace(/\/$/,'');
 const VERSION='5.25.24';
 const PORT=Number(process.env.PORT||10000);
+const SNAPSHOT=path.join(__dirname,'snapshot');
+const ENGINE_SNAPSHOT=path.join(SNAPSHOT,'index.html');
+const ASSET_MIME={'.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.glb':'model/gltf-binary','.ogg':'audio/ogg','.mp3':'audio/mpeg','.wav':'audio/wav','.css':'text/css; charset=utf-8'};
 const VALID_SKINS=new Set(['soldado','panda','rapero','vaquero','boxeador','infectado','doraemon','kimeramon','peter_griffin','mewtwo','timmy_turner','raphael_tmnt','agunimon','cleft','shin_chan','palmera']);
 const FX_TYPES=new Set(['shot','turret','blast','storm','grenade','chicken','beam','explosion','special']);
 const ARMORY={cross:5500,chicken:5400,omni:7200,football:4200,whip:3900,slippers:2600,fumaweed:4500,rickportal:3700,ghoul:4100,pokeballs:3100};
@@ -44,21 +47,33 @@ function patchClient(html){
  return html;
 }
 async function gameHtml(){
- const now=Date.now();
- if(clientHtml&&now-clientAt<300000)return clientHtml;
+ if(clientHtml)return clientHtml;
  if(loading)return loading;
  loading=(async()=>{
-  const response=await fetch(HOST+'/',{signal:AbortSignal.timeout(60000)});
-  if(!response.ok)throw Error('Original engine inaccessible: HTTP '+response.status);
-  const source=await response.text();
+  let source,sourceLabel='origin';
+  // This committed copy survives Render cold starts and upstream HTTP 429 responses.
+  if(fs.existsSync(ENGINE_SNAPSHOT)){
+   source=fs.readFileSync(ENGINE_SNAPSHOT,'utf8');
+   sourceLabel='repository-snapshot';
+  }else{
+   let lastError;
+   for(let attempt=0;attempt<5;attempt++){
+    try{
+     const response=await fetch(HOST+'/',{signal:AbortSignal.timeout(30000)});
+     if(!response.ok)throw Error('HTTP '+response.status);
+     source=await response.text();break
+    }catch(error){lastError=error;await new Promise(r=>setTimeout(r,1500*(attempt+1)))}
+   }
+   if(!source)throw Error('Original engine inaccessible: '+lastError?.message);
+  }
   if(source.length<100000||source.length>1500000)throw Error('Original engine has unexpected size '+source.length);
-  const patched=patchClient(source);
-  clientHtml=Buffer.from(patched,'utf8');clientAt=now;lastBaseStatus='ok';
-  console.log('DEAD ZONE RECOVERED',VERSION,'bytes',clientHtml.length,'source',source.length);
+  clientHtml=Buffer.from(patchClient(source),'utf8');clientAt=Date.now();lastBaseStatus=sourceLabel;
+  console.log('DEAD ZONE ENGINE READY',VERSION,'source',sourceLabel,'bytes',clientHtml.length);
   return clientHtml;
  })().catch(err=>{
   lastBaseStatus=err.message;
-  if(clientHtml)return clientHtml;throw err
+  if(clientHtml)return clientHtml;
+  throw err;
  }).finally(()=>{loading=null});
  return loading;
 }
@@ -185,6 +200,15 @@ wss.on('connection',ws=>{console.log('GATEWAY WS connected to bridge');
 });
 async function proxyHttp(req,res){
  const u=new URL(req.url,HOST);
+ // Immutable local snapshot of the engine's critical JS and models; no origin request.
+ if(['GET','HEAD'].includes(req.method) && /^\/(?:assets|vendor)\//.test(u.pathname)){
+  const local=path.resolve(SNAPSHOT,'.'+decodeURIComponent(u.pathname));
+  if(local.startsWith(SNAPSHOT+path.sep)&&fs.existsSync(local)&&fs.statSync(local).isFile()){
+   const stat=fs.statSync(local);res.writeHead(200,{'content-type':ASSET_MIME[path.extname(local).toLowerCase()]||'application/octet-stream','content-length':stat.size,'cache-control':'public, max-age=3600'});
+   if(req.method==='HEAD')res.end();else fs.createReadStream(local).pipe(res);
+   return;
+  }
+ }
  const headers={};
  for(const h of ['content-type','authorization','cookie','accept','range','user-agent'])if(req.headers[h])headers[h]=req.headers[h];
  let payload;
