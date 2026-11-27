@@ -53,7 +53,7 @@ for(const mobile of [false,true]){
   const fired=await page.evaluate(()=>window.__DZ546_TEST_SHOT);
   if(!fired?.fired||!(fired.after.bullets>fired.before.bullets||fired.after.mag<fired.before.mag))throw Error('Weapon did not fire a real projectile '+JSON.stringify(fired));
   await page.keyboard.down('KeyW');await page.waitForTimeout(350);
-  const action=await page.evaluate(()=>mobile?window.__DZ546_STATUS?.action:window.__DZ545_STATUS?.localAction);
+  const action=await page.evaluate(isMobile=>isMobile?window.__DZ546_STATUS?.action:window.__DZ545_STATUS?.localAction,mobile);
   await page.keyboard.up('KeyW');
   if(action!==1&&action!==2)throw Error('Rubo movement animation failed: '+action);
   await page.keyboard.press('KeyB');
