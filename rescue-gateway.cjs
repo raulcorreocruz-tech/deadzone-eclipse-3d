@@ -48,6 +48,8 @@ function patchClient(html){
   if(target<0)throw Error('Missing sprite extension anchor');
   html=html.slice(0,target)+v545+'\n'+html.slice(target);
  }
+ // Avoid stale Cloudflare HTTP 429 responses cached under the original module URL.
+ html=html.replaceAll("from 'three/addons/utils/SkeletonUtils.js'","from './vendor/three/examples/jsm/utils/SkeletonUtils.js?revision=52525'");
  html=html.replace(/(<meta name="deadzone-build" content=")[^"]+(")/,'$1'+VERSION+'-recovered$2');
  html=html.replace('</head>','<meta name="deadzone-recovery" content="relay-v2"><!-- DEAD_ZONE_RECOVERY_GATEWAY_544 --></head>');
  return html;
