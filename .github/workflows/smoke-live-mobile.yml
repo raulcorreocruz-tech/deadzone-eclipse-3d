@@ -17,6 +17,9 @@ on:
       - 'assets/deadzone_playables_6x4.png'
       - 'assets/peter_griffin_atlas.png'
       - 'gameplay-v525.cjs'
+      - 'cloud-start.cjs'
+      - 'degraded-server.cjs'
+      - 'tests/degraded-server.test.cjs'
       - 'package.json'
 permissions:
   contents: read
@@ -34,5 +37,7 @@ jobs:
           npm install --no-save --no-audit --no-fund playwright@1.56.1
           command -v google-chrome
           google-chrome --version
+      - name: Verify safe degraded solo mode
+        run: node tests/degraded-server.test.cjs
       - name: Inspect live game on Android and desktop
         run: node tests/smoke-live-mobile.mjs

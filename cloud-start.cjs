@@ -8,7 +8,18 @@ const path=require('node:path'),os=require('node:os'),{DeadZoneCloud}=require('.
   const dir=process.env.DZ_DATA_DIR||path.join(os.tmpdir(),'deadzone-cloud-persistent');
   process.env.DZ_DATA_DIR=dir;
   const cloud=new DeadZoneCloud({url:process.env.DZ_SUPABASE_URL,key:process.env.DZ_SUPABASE_ANON_KEY,secret:process.env.DZ_SUPABASE_PERSIST_SECRET,dir});
-  const state=await cloud.initialize();
+  // Keep the playable web client accessible if the remote durable DB is paused.
+  // Never start the account/multiplayer server without confirmed Supabase data.
+  let dzRecoveryServer=null;
+  let state;
+  while(true){
+   try{state=await cloud.initialize();break}
+   catch(err){
+    console.error('DEAD ZONE remote persistence unavailable:',err.message,'— retrying without accepting account writes');
+    if(!dzRecoveryServer)dzRecoveryServer=require('./degraded-server.cjs').startDegradedServer();
+    await new Promise(resolve=>setTimeout(resolve,20000));
+   }
+  }
   globalThis.__deadZoneCloud=cloud;
   // Best-effort migration of publicly visible legacy top scores on first ever DB boot.
   // The old private user-password database cannot be exported via its public API.
@@ -29,5 +40,12 @@ const path=require('node:path'),os=require('node:os'),{DeadZoneCloud}=require('.
   console.log('Dead Zone Supabase persistence READY',JSON.stringify({url:new URL(cloud.url).host,users:state.users.data.length,scores:state.scores.data.length,revisions:cloud.revisions}));
  }else if(process.env.NODE_ENV==='production')throw Error('Production requires durable Supabase persistence; refusing ephemeral account storage');
  else console.log('Development fallback: local volatile files; no Supabase configured');
+ if(dzRecoveryServer){
+  await new Promise(resolve=>{
+   dzRecoveryServer.close(resolve);
+   dzRecoveryServer.closeAllConnections();
+  });
+  console.log('DEAD ZONE durable cloud recovered; starting full accounts and multiplayer server');
+ }
  require('./server.js');
 })().catch(err=>{console.error('DEAD ZONE STORAGE START FAILED:',err.message);process.exitCode=1});

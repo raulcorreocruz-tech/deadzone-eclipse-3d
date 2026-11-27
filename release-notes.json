@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.23",
+      "date": "27 nov 2026",
+      "title": "RECUPERACIÓN DE SERVIDOR Y PROTECCIÓN ANTE PAUSAS DE SUPABASE",
+      "detail": "Se corrige el fallo de disponibilidad provocado por una base de datos Supabase pausada o inaccesible. El servidor expone temporalmente el modo individual con recursos locales seguros mientras se recupera la conexión, sin permitir escritura, inicio de sesión ni cooperativo sin persistencia confirmada. Una vez Supabase vuelve a responder, recarga los datos existentes y activa automáticamente el servidor completo sin crear cuentas vacías. La base de datos original fue reactivada sin borrar datos. Se añaden pruebas automáticas de respuesta saludable, recursos de juego accesibles, bloqueo de APIs y protección de archivos fuente."
+    },
+    {
       "version": "5.25.22",
       "date": "19 nov 2026",
       "title": "ANDROID: HUD LEGIBLE, CÁMARA SIN MUROS, BALAS MÁS CLARAS · ESPECIALES SOLO EN ARSENAL",
