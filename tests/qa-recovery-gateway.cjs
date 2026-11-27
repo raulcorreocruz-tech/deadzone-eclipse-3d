@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(require('node:path').join(__dirname,'..','rescue-gateway.cjs'),'utf8');
+new vm.Script(source,{filename:'rescue-gateway.cjs'});
+assert(source.includes('DEAD_ZONE_RECOVERY_GATEWAY_544'));
+assert(source.includes("new WebSocket(HOST.replace"));
+assert(source.includes("type:'dz544CashResult'"));
+assert(source.includes("type:'dz544Fx'"));
+assert(source.includes("const v544=JSON.parse"));
+console.log('GATEWAY SOURCE QA PASSED');
