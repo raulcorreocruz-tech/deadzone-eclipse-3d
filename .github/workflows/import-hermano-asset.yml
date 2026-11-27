@@ -1,0 +1,45 @@
+name: Import Brother Pixel Sprite into DEAD ZONE
+on:
+  workflow_dispatch:
+  push:
+    branches: [recovery-gateway]
+    paths:
+      - '.github/workflows/import-hermano-asset.yml'
+permissions:
+  contents: write
+jobs:
+  import-asset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: recovery-gateway
+      - name: Fetch and verify the character atlas
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p snapshot/assets
+          curl -fLSs --retry 5 --retry-delay 4 --connect-timeout 20 --max-time 120 \
+            -H 'Accept: image/png' -A 'Mozilla/5.0 (compatible; DEADZONE-GameAssetImporter/1.0)' \
+            'https://f262cbe6-6fb3-4669-83ed-af951baa8680.sandbox.floot.app/_cdn/static/602edc13-bb6c-40ea-acd8-f2b7bbc77b2c-deadzone-hermano-atlas-32x44.png' \
+            -o snapshot/assets/hermano_playable_48c.png
+          echo 'a57006d8c57edbe7740aa298abc657da31c402579699f6db5c337edfd7a62535  snapshot/assets/hermano_playable_48c.png' | sha256sum -c -
+          python - <<'PY'
+          import struct
+          p='snapshot/assets/hermano_playable_48c.png'
+          with open(p,'rb') as f: data=f.read(24)
+          assert data[:8]==b'\x89PNG\r\n\x1a\n'
+          assert struct.unpack('>II',data[16:24])==(768,396)
+          print('VERIFIED: 24 columns, 9 rows, transparent pixel art')
+          PY
+      - name: Commit persistent game asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add snapshot/assets/hermano_playable_48c.png
+          if git diff --cached --quiet; then echo 'Asset already committed'; exit 0; fi
+          git commit -m "asset: save brother playable sprite permanently in game repo"
+          git pull --rebase origin recovery-gateway
+          git push origin HEAD:recovery-gateway
