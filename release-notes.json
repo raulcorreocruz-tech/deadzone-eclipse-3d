@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.25",
+      "date": "27 nov 2026",
+      "title": "RUBO · TU PERSONAJE JUGABLE PERSONALIZADO",
+      "detail": "Se incorpora Rubo al selector de skins del menú. El personaje se ha adaptado de tu fotografía y usa una hoja optimizada para móviles con 216 fotogramas organizados en 8 orientaciones y 9 animaciones: quieto, caminar, correr, disparar, recargar, cuerpo a cuerpo, usar, daño y caída. El personaje conserva las mismas estadísticas, armas y controles del resto; cambia la representación visual. Se oculta el modelo 3D del soldado y se transmite la skin a los compañeros del cooperativo. Nueva versión web 5.25.25."
+    },
+    {
       "version": "5.25.24",
       "date": "27 nov 2026",
       "title": "COOPERATIVO: EFECTOS SINCRONIZADOS · SKINS REALES · 3 RANURAS · PUNTOS COMPARTIDOS",

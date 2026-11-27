@@ -5,6 +5,8 @@ on:
     branches: [recovery-gateway]
     paths:
       - 'rescue-gateway.cjs'
+      - 'rubo-client-runtime.js'
+      - 'snapshot/assets/rubo_playable_48c.png'
       - 'tests/qa-recovery-live.mjs'
       - '.github/workflows/qa-recovery-live.yml'
 permissions:

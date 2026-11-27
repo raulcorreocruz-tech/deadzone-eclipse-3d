@@ -14,12 +14,12 @@ const crypto=require('node:crypto');
 const {WebSocketServer,WebSocket}=require('ws');
 
 const HOST=String(process.env.UPSTREAM_URL||'https://deadzone-eclipse-coop.onrender.com').replace(/\/$/,'');
-const VERSION='5.25.24';
+const VERSION='5.25.25';
 const PORT=Number(process.env.PORT||10000);
 const SNAPSHOT=path.join(__dirname,'snapshot');
 const ENGINE_SNAPSHOT=path.join(SNAPSHOT,'index.html');
 const ASSET_MIME={'.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.glb':'model/gltf-binary','.ogg':'audio/ogg','.mp3':'audio/mpeg','.wav':'audio/wav','.css':'text/css; charset=utf-8'};
-const VALID_SKINS=new Set(['soldado','panda','rapero','vaquero','boxeador','infectado','doraemon','kimeramon','peter_griffin','mewtwo','timmy_turner','raphael_tmnt','agunimon','cleft','shin_chan','palmera']);
+const VALID_SKINS=new Set(['soldado','panda','rapero','vaquero','boxeador','infectado','doraemon','kimeramon','peter_griffin','mewtwo','timmy_turner','raphael_tmnt','agunimon','cleft','shin_chan','palmera','rubo_personal']);
 const FX_TYPES=new Set(['shot','turret','blast','storm','grenade','chicken','beam','explosion','special']);
 const ARMORY={cross:5500,chicken:5400,omni:7200,football:4200,whip:3900,slippers:2600,fumaweed:4500,rickportal:3700,ghoul:4100,pokeballs:3100};
 const clients=new Set();
@@ -29,6 +29,7 @@ const baseSource=fs.readFileSync(path.join(__dirname,'gameplay-v544.cjs'),'utf8'
 const start=baseSource.indexOf(' const runtime='),end=baseSource.indexOf(';\n h=h.replace(anchor,',start);
 if(start<0||end<=start)throw Error('Missing 5.25.24 client patch runtime');
 const v544=JSON.parse(baseSource.slice(start+' const runtime='.length,end));
+const v545=fs.readFileSync(path.join(__dirname,'rubo-client-runtime.js'),'utf8');
 const safeJson=(s)=>{try{return JSON.parse(s)}catch{return null}};
 const goodCoord=n=>typeof n==='number'&&Number.isFinite(n)&&n>=-100&&n<=100;
 function patchClient(html){
@@ -38,9 +39,14 @@ function patchClient(html){
   const index=html.indexOf('function dzGun(){');
   html=html.slice(0,index)+v544+'\n'+html.slice(index);
  }
- const notes={version:VERSION,date:'27 nov 2026',title:'COOPERATIVO RECUPERADO: SKINS, DISPAROS, TORRETAS Y PUNTOS',detail:'Vuelve a funcionar el motor en PC y móvil, con skins pixel-art sin soldados superpuestos, tres huecos de armas, efectos de disparos y torretas para ambos jugadores, Rayo de pollos con quemadura y transferencia de puntos entre compañeros. Conexión con cuentas y cooperativo del servidor original.'};
+ const notes={version:VERSION,date:'27 nov 2026',title:'RUBO YA ES UN PERSONAJE JUGABLE · 8 DIRECCIONES Y 9 ANIMACIONES',detail:'Nuevo personaje Rubo creado a partir de tu fotografía, con rostro y bigote reconocibles y un atlas de 216 poses pixel-art: reposo, andar, correr, disparar, recargar, cuerpo a cuerpo, interactuar, daño y caída. Se mantiene la física, los controles de PC/móvil, el cooperativo y la ocultación del soldado bajo la skin.'};
  if(html.includes('const DZ538_RELEASES=[')&&!html.includes('"version":"'+VERSION+'","date":"27 nov 2026"')){
   html=html.replace('const DZ538_RELEASES=[','const DZ538_RELEASES=['+JSON.stringify(notes)+',');
+ }
+ if(!html.includes('DEAD_ZONE_PATCH_545')){
+  const target=html.indexOf('function dzGun(){');
+  if(target<0)throw Error('Missing sprite extension anchor');
+  html=html.slice(0,target)+v545+'\n'+html.slice(target);
  }
  html=html.replace(/(<meta name="deadzone-build" content=")[^"]+(")/,'$1'+VERSION+'-recovered$2');
  html=html.replace('</head>','<meta name="deadzone-recovery" content="relay-v2"><!-- DEAD_ZONE_RECOVERY_GATEWAY_544 --></head>');
@@ -228,7 +234,7 @@ const server=http.createServer(async(req,res)=>{
  try{
   const pathname=new URL(req.url,'http://local.invalid').pathname;
   if(pathname==='/health'){json(res,200,{ok:!!clientHtml,mode:'recovered-live-relay',version:VERSION,upstream:lastBaseStatus,connectedPlayers:clients.size});return}
-  if(pathname==='/api/release-info'){json(res,200,{version:VERSION,title:'RECUPERACIÓN COOPERATIVA: SKINS, 3 RANURAS Y EFECTOS',date:'27 nov 2026'});return}
+  if(pathname==='/api/release-info'){json(res,200,{version:VERSION,title:'NUEVO PERSONAJE RUBO · MOVIMIENTO Y ANIMACIONES COMPLETAS',date:'27 nov 2026'});return}
   if(pathname==='/release-notes.json'){res.writeHead(200,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(fs.readFileSync(path.join(__dirname,'release-notes.json')));return}
   if(pathname==='/sw.js'){
    res.writeHead(200,{'content-type':'application/javascript; charset=utf-8','cache-control':'no-store'});
