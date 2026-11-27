@@ -5,7 +5,7 @@ const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/goog
 const errors=[];const results=[];
 for(const mobile of [false,true]){
  const ctx=await browser.newContext({viewport:mobile?{width:915,height:412}:{width:1280,height:720},hasTouch:mobile,isMobile:mobile,deviceScaleFactor:mobile?2:1,ignoreHTTPSErrors:true});
- await ctx.addInitScript(()=>{try{localStorage.setItem('deadzone_skin_v43',mobile?'hermano_personal':'rubo_personal')}catch{}});
+ await ctx.addInitScript(isMobile=>{try{localStorage.setItem('deadzone_skin_v43',isMobile?'hermano_personal':'rubo_personal')}catch{}},mobile);
  const page=await ctx.newPage(),fatal=[],network=[],consoles=[];
  page.on('console',msg=>{if(msg.type()==='error')consoles.push(msg.text().slice(0,360))});
  page.on('requestfailed',req=>network.push(req.url()+' '+req.failure()?.errorText));
