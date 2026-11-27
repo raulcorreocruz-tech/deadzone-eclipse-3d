@@ -1,0 +1,32 @@
+name: Check recovered Dead Zone live engine and multiplayer UI
+on:
+  workflow_dispatch:
+  push:
+    branches: [recovery-gateway]
+    paths:
+      - 'rescue-gateway.cjs'
+      - 'tests/qa-recovery-live.mjs'
+      - '.github/workflows/qa-recovery-live.yml'
+permissions:
+  contents: read
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - name: Test live PC and Android landscape
+        env:
+          DZ_URL: https://deadzone-eclipse-coop-recovery.onrender.com/
+        run: node tests/qa-recovery-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dead-zone-recovery-screenshots
+          path: recovery-qa/
+          if-no-files-found: ignore
