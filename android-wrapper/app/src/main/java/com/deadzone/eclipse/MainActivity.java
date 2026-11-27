@@ -15,7 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public final class MainActivity extends Activity {
-    private static final String GAME_HOST = "deadzone-eclipse-coop.onrender.com";
+    private static final String GAME_HOST = "deadzone-eclipse-coop-recovery.onrender.com";
     private static final String GAME_URL = "https://" + GAME_HOST + "/?android=1";
     private WebView game;
 
