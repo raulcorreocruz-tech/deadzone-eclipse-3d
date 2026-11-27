@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.26",
+      "date": "27 nov 2026",
+      "title": "RUBO Y SU HERMANO: PERSONAJES PERSONALIZADOS + MOVIMIENTO Y DISPARO",
+      "detail": "Se incorpora la skin Hermano (gorra, barba, piercing y tatuajes) como personaje jugable, con atlas original pixel-art transparente de 216 poses: 8 orientaciones con vista frontal, trasera, perfiles y diagonales, y 9 animaciones (quieto, andar, correr, disparar, recargar, cuerpo a cuerpo, interactuar, daño y caída). Rubo recibe las mismas reglas de orientación por movimiento y corrección de animación de carrera. Se desacopla el disparo real de los efectos opcionales, manteniendo balas, munición, físicas y FX de ambos jugadores. La representación de los demás jugadores se sincroniza vía Skin para cooperativo. Incluye nueva prueba de disparo y arranque en PC/móvil."
+    },
+    {
       "version": "5.25.25",
       "date": "27 nov 2026",
       "title": "RUBO · TU PERSONAJE JUGABLE PERSONALIZADO",

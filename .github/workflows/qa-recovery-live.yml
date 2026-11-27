@@ -6,6 +6,8 @@ on:
     paths:
       - 'rescue-gateway.cjs'
       - 'rubo-client-runtime.js'
+      - 'playable-family-v546.js'
+      - 'snapshot/assets/hermano_playable_48c.png'
       - 'snapshot/assets/rubo_playable_48c.png'
       - 'tests/qa-recovery-live.mjs'
       - '.github/workflows/qa-recovery-live.yml'
