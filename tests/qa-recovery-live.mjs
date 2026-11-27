@@ -1,6 +1,6 @@
 import {chromium} from 'playwright';
 import fs from 'node:fs/promises';
-const BASE=process.env.DZ_URL||'https://deadzone-eclipse-coop-recovery.onrender.com/';
+const BASE=process.env.DZ_URL||'https://deadzone-rubo-eclipse-3d.onrender.com/';
 const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 const errors=[];const results=[];
 for(const mobile of [false,true]){
@@ -17,7 +17,7 @@ for(const mobile of [false,true]){
   if(!vars.menu)throw Error('Game main menu missing');
   await page.locator('#start').click({timeout:15000});
   await page.waitForFunction(()=>window.__DZ544_STATUS?.version==='5.25.24',{timeout:30000});
-  await page.waitForFunction(()=>window.__DZ545_STATUS?.atlas===true&&window.__DZ545_STATUS?.localVisible===true,{timeout:20000});
+  await page.waitForFunction(()=>window.__DZ545_STATUS?.atlas===true&&window.__DZ545_STATUS?.localVisible===true,null,{timeout:17000}).catch(async e=>{const diagnostics=await page.evaluate(()=>({status:window.__DZ545_STATUS,ready:document.readyState,build:document.querySelector('meta[name=deadzone-build]')?.content}));throw Error('Rubo sprite not ready: '+JSON.stringify(diagnostics)+' '+e.message)});
   const selectedCard=page.locator('#dz43SkinsPanel [data-playable-character="rubo"]');
   if(await selectedCard.count()!==1)throw Error('Rubo is not in the selectable skin menu');
   await page.waitForTimeout(900);
