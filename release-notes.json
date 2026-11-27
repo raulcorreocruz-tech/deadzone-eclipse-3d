@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "5.25.24",
+      "date": "27 nov 2026",
+      "title": "COOPERATIVO: EFECTOS SINCRONIZADOS · SKINS REALES · 3 RANURAS · PUNTOS COMPARTIDOS",
+      "detail": "Revisión del juego cooperativo para anfitrión e invitados: disparos y trazadoras luminosas para quien dispara y para los compañeros, efectos visuales de algunas armas especiales y granadas, réplicas de torretas con animación de disparo y visualización inicial de torretas al entrar en una partida avanzada. El servidor permite las skins pixel-art de Mewtwo, Timmy, Raphael, Agunimon, Cleft, Shin Chan, Kimeramon, Peter Griffin y Palmera; se ocultan los modelos 3D del soldado bajo dichas skins al renderizar. La armería muestra los puntos actuales y deja elegir uno de tres huecos para equipar o sustituir armas, conservando las otras ranuras. Se puede compartir entre 100 y 5.000 puntos con compañeros: saldo y destinatario verificados por el servidor, con confirmación. El Rayo de pollos añade quemadura ligera periódica a zombis convertidos y un efecto visual de llama. Se incorporan pruebas de protocolo y validación de transferencias. PENDIENTE: la publicación web requiere resolver el acceso 403 al ZIP original de compilación; no asumir que estos cambios están activos hasta que Render confirme despliegue."
+    },
+    {
       "version": "5.25.23",
       "date": "27 nov 2026",
       "title": "RECUPERACIÓN DE SERVIDOR Y PROTECCIÓN ANTE PAUSAS DE SUPABASE",

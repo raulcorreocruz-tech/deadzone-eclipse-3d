@@ -13,6 +13,8 @@ on:
       - 'gameplay-v530.cjs'
       - 'gameplay-v531.cjs'
       - 'gameplay-v532.cjs'
+      - 'gameplay-v544.cjs'
+      - 'server-v544.cjs'
       - 'assets/rayquaza_boss_atlas.png'
       - 'assets/deadzone_playables_6x4.png'
       - 'assets/peter_griffin_atlas.png'

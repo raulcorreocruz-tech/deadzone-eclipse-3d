@@ -1,0 +1,28 @@
+name: Test DEAD ZONE cooperative gameplay source
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'gameplay-v544.cjs'
+      - 'server-v544.cjs'
+      - 'tests/qa-coop-v544.cjs'
+      - 'setup.cjs'
+      - '.github/workflows/qa-coop-v544.yml'
+permissions:
+  contents: read
+jobs:
+  coop-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse new game and server modules
+        run: |
+          node --check gameplay-v544.cjs
+          node --check server-v544.cjs
+          node --check setup.cjs
+      - name: Verify the cooperative event protocol and money transfers
+        run: node tests/qa-coop-v544.cjs
