@@ -35,6 +35,10 @@ function patchClient(html){
   const index=html.indexOf('function dzGun(){');
   html=html.slice(0,index)+v544+'\n'+html.slice(index);
  }
+ const notes={version:VERSION,date:'27 nov 2026',title:'COOPERATIVO RECUPERADO: SKINS, DISPAROS, TORRETAS Y PUNTOS',detail:'Vuelve a funcionar el motor en PC y móvil, con skins pixel-art sin soldados superpuestos, tres huecos de armas, efectos de disparos y torretas para ambos jugadores, Rayo de pollos con quemadura y transferencia de puntos entre compañeros. Conexión con cuentas y cooperativo del servidor original.'};
+ if(html.includes('const DZ538_RELEASES=[')&&!html.includes('"version":"'+VERSION+'","date":"27 nov 2026"')){
+  html=html.replace('const DZ538_RELEASES=[','const DZ538_RELEASES=['+JSON.stringify(notes)+',');
+ }
  html=html.replace(/(<meta name="deadzone-build" content=")[^"]+(")/,'$1'+VERSION+'-recovered$2');
  html=html.replace('</head>','<meta name="deadzone-recovery" content="relay-v2"><!-- DEAD_ZONE_RECOVERY_GATEWAY_544 --></head>');
  return html;
@@ -201,6 +205,7 @@ const server=http.createServer(async(req,res)=>{
   const pathname=new URL(req.url,'http://local.invalid').pathname;
   if(pathname==='/health'){json(res,200,{ok:!!clientHtml,mode:'recovered-live-relay',version:VERSION,upstream:lastBaseStatus,connectedPlayers:clients.size});return}
   if(pathname==='/api/release-info'){json(res,200,{version:VERSION,title:'RECUPERACIÓN COOPERATIVA: SKINS, 3 RANURAS Y EFECTOS',date:'27 nov 2026'});return}
+  if(pathname==='/release-notes.json'){res.writeHead(200,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(fs.readFileSync(path.join(__dirname,'release-notes.json')));return}
   if(pathname==='/sw.js'){
    res.writeHead(200,{'content-type':'application/javascript; charset=utf-8','cache-control':'no-store'});
    res.end('self.addEventListener("install",e=>self.skipWaiting());self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));');return;
