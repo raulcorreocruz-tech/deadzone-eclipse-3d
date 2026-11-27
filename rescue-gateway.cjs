@@ -122,7 +122,7 @@ function receiveFromBrowser(p,raw){
    return;
   }
  }
- if(p.upstream?.readyState===WebSocket.OPEN)p.upstream.send(raw);
+ if(p.upstream?.readyState===WebSocket.OPEN)p.upstream.send(String(raw));
  else if(p.pendingPackets.length<25)p.pendingPackets.push(String(raw));
 }
 function receiveFromUpstream(p,raw){
@@ -164,15 +164,15 @@ function receiveFromUpstream(p,raw){
 }
 function sendRaw(ws,raw){if(ws.readyState===WebSocket.OPEN){try{ws.send(raw)}catch{}}}
 const wss=new WebSocketServer({noServer:true,maxPayload:64*1024,perMessageDeflate:false});
-wss.on('connection',ws=>{
+wss.on('connection',ws=>{console.log('GATEWAY WS connected to bridge');
  const p={browser:ws,upstream:null,id:null,room:'',pendingRoom:'',skin:'soldado',name:'SURVIVIENTE',
   running:false,isHost:false,backendBalance:750,upstreamBalance:750,walletDelta:0,
   lastCash:0,fxWindowAt:0,fxCount:0,pendingPackets:[]};
  clients.add(p);
  const upstream=new WebSocket(HOST.replace(/^https:/,'wss:').replace(/^http:/,'ws:')+'/ws',{perMessageDeflate:false,handshakeTimeout:60000});
  p.upstream=upstream;
- upstream.on('open',()=>{for(const pending of p.pendingPackets)upstream.send(pending);p.pendingPackets=[]});
- upstream.on('message',raw=>receiveFromUpstream(p,raw));
+ upstream.on('open',()=>{console.log('GATEWAY upstream WS ready, pending packets:',p.pendingPackets.length);for(const pending of p.pendingPackets)upstream.send(pending);p.pendingPackets=[]});
+ upstream.on('message',raw=>{const m=safeJson(String(raw));if(m?.type==='welcome'||m?.type==='error')console.log('GATEWAY upstream WS event',m.type);receiveFromUpstream(p,raw)});
  ws.on('message',raw=>receiveFromBrowser(p,raw));
  upstream.on('close',(code,reason)=>{if(ws.readyState===WebSocket.OPEN)ws.close(1011,'Servidor original desconectado')});
  upstream.on('error',e=>{console.warn('Upstream WS error',e.message);if(ws.readyState===WebSocket.OPEN)ws.close(1011,'No disponible')});
