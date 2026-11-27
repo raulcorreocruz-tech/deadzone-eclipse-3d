@@ -215,6 +215,20 @@ async function proxyHttp(req,res){
    return;
   }
  }
+ // Serve all official Three.js support modules from the installed pinned package.
+ // Without this, SkeletonUtils.js falls back to the old origin and receives HTTP 429,
+ // stopping the entire <script type="module"> before the game engine initializes.
+ if(['GET','HEAD'].includes(req.method) && u.pathname.startsWith('/vendor/three/')){
+  const threeRoot=path.resolve(__dirname,'node_modules','three');
+  const relative=decodeURIComponent(u.pathname.slice('/vendor/three/'.length));
+  const local=path.resolve(threeRoot,relative);
+  if(local.startsWith(threeRoot+path.sep)&&/\.js$/i.test(local)&&fs.existsSync(local)&&fs.statSync(local).isFile()){
+   const stat=fs.statSync(local);
+   res.writeHead(200,{'content-type':'text/javascript; charset=utf-8','content-length':stat.size,'cache-control':'public, max-age=300','x-deadzone-static':'local-three'});
+   if(req.method==='HEAD')res.end();else fs.createReadStream(local).pipe(res);
+   return;
+  }
+ }
  const headers={};
  for(const h of ['content-type','authorization','cookie','accept','range','user-agent'])if(req.headers[h])headers[h]=req.headers[h];
  let payload;
