@@ -1,0 +1,664 @@
+{
+  "version": 2,
+  "pack": "https://3dassets.dev/api/v1/packs/mega-weapon-pack",
+  "license": "CC0 1.0 Universal",
+  "attributionRequired": false,
+  "models": {
+    "Tirachinas": null,
+    "Invocación de perros": null,
+    "Helicóptero artillado": null,
+    "Crucifijos explosivos": null,
+    "Omnitrix": null,
+    "Latigazos de Cristo": null,
+    "Motosierra": null,
+    "Garras de Wolverine": null,
+    "M1911": {
+      "path": "./assets/arsenal/models/model-33296.glb",
+      "file": "model-33296.glb",
+      "title": "Service Pistol (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33296/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-service-pistol-f84987cb",
+      "size": 670728,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "MP7": {
+      "path": "./assets/arsenal/models/model-33307.glb",
+      "file": "model-33307.glb",
+      "title": "PDW With Brace (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33307/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-pdw-brace-a6eeb9b3",
+      "size": 991356,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "PDW-57": {
+      "path": "./assets/arsenal/models/model-33305.glb",
+      "file": "model-33305.glb",
+      "title": "Bullpup SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33305/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-bullpup-smg-b2a1f487",
+      "size": 940708,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Vector K10": {
+      "path": "./assets/arsenal/models/model-33303.glb",
+      "file": "model-33303.glb",
+      "title": "Folding Stock SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33303/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-folding-stock-smg-cbcb9a4c",
+      "size": 818236,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "MSMC": {
+      "path": "./assets/arsenal/models/model-33304.glb",
+      "file": "model-33304.glb",
+      "title": "Side Magazine SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33304/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-side-mag-smg-cb0ad7a8",
+      "size": 874940,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Chicom CQB": {
+      "path": "./assets/arsenal/models/model-33306.glb",
+      "file": "model-33306.glb",
+      "title": "Classic Straight Magazine SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33306/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-classic-smg-9f5fb7f9",
+      "size": 1196812,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Skorpion EVO": {
+      "path": "./assets/arsenal/models/model-33302.glb",
+      "file": "model-33302.glb",
+      "title": "Integrally Suppressed SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33302/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-suppressed-smg-25822b95",
+      "size": 1057236,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Peacekeeper": {
+      "path": "./assets/arsenal/models/model-33308.glb",
+      "file": "model-33308.glb",
+      "title": "Carbine Length SMG (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33308/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-carbine-smg-e837c3c6",
+      "size": 1108204,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "MTAR": {
+      "path": "./assets/arsenal/models/model-33321.glb",
+      "file": "model-33321.glb",
+      "title": "Bullpup Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33321/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-bullpup-rifle-4e3f0af6",
+      "size": 1186404,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Type 25": {
+      "path": "./assets/arsenal/models/model-33316.glb",
+      "file": "model-33316.glb",
+      "title": "Short Carbine (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33316/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-short-carbine-9bc39c76",
+      "size": 1097904,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "SWAT-556": {
+      "path": "./assets/arsenal/models/model-33318.glb",
+      "file": "model-33318.glb",
+      "title": "Standard Assault Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33318/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-standard-rifle-94762172",
+      "size": 1082372,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "M27": {
+      "path": "./assets/arsenal/models/model-33320.glb",
+      "file": "model-33320.glb",
+      "title": "Long Barrel Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33320/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-long-barrel-rifle-7f6e9995",
+      "size": 1640232,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "SCAR-H": {
+      "path": "./assets/arsenal/models/model-33324.glb",
+      "file": "model-33324.glb",
+      "title": "Battle Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33324/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-battle-rifle-266ee44d",
+      "size": 1336952,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "SMR": {
+      "path": "./assets/arsenal/models/model-33331.glb",
+      "file": "model-33331.glb",
+      "title": "Semi Auto Marksman Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33331/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-dmr-semi-auto-870a4809",
+      "size": 1389248,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "M8A1": {
+      "path": "./assets/arsenal/models/model-33319.glb",
+      "file": "model-33319.glb",
+      "title": "Piston Carbine (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33319/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-piston-carbine-94f18964",
+      "size": 1167424,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "AN-94": {
+      "path": "./assets/arsenal/models/model-33323.glb",
+      "file": "model-33323.glb",
+      "title": "Folding Stock Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33323/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-folding-stock-rifle-0d758f97",
+      "size": 885292,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "FAL OSW": {
+      "path": "./assets/arsenal/models/model-33322.glb",
+      "file": "model-33322.glb",
+      "title": "Wood Stock Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33322/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-wood-stock-rifle-17611779",
+      "size": 1287600,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "R-870 MCS": {
+      "path": "./assets/arsenal/models/model-33311.glb",
+      "file": "model-33311.glb",
+      "title": "Pump Shotgun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33311/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-pump-shotgun-2c9708bd",
+      "size": 1102680,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "S12": {
+      "path": "./assets/arsenal/models/model-33312.glb",
+      "file": "model-33312.glb",
+      "title": "Magazine Fed Shotgun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33312/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-tactical-shotgun-2a74f173",
+      "size": 1307204,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "KSG": {
+      "path": "./assets/arsenal/models/model-33313.glb",
+      "file": "model-33313.glb",
+      "title": "Bullpup Shotgun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33313/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-bullpup-shotgun-988b9170",
+      "size": 988984,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "M1216": {
+      "path": "./assets/arsenal/models/model-33310.glb",
+      "file": "model-33310.glb",
+      "title": "Semi Automatic Shotgun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33310/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-semi-auto-shotgun-2503aab1",
+      "size": 1067868,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "MK 48": {
+      "path": "./assets/arsenal/models/model-33343.glb",
+      "file": "model-33343.glb",
+      "title": "General Purpose Machine Gun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33343/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-general-purpose-mg-4f11f2e1",
+      "size": 1298464,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "LSAT": {
+      "path": "./assets/arsenal/models/model-33345.glb",
+      "file": "model-33345.glb",
+      "title": "Drum Fed Squad Gun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33345/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-squad-drum-gun-2a90a8db",
+      "size": 1479400,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "QBB LSW": {
+      "path": "./assets/arsenal/models/model-33344.glb",
+      "file": "model-33344.glb",
+      "title": "Top Fed Light Machine Gun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33344/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-light-machine-gun-47b42f6a",
+      "size": 1156096,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "HAMR": {
+      "path": "./assets/arsenal/models/model-33330.glb",
+      "file": "model-33330.glb",
+      "title": "Heavy Tri Rail Carbine (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33330/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-heavy-tri-rail-carbine-5d193506",
+      "size": 1172496,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Rayos eléctricos": {
+      "path": "./assets/arsenal/models/model-33301.glb",
+      "file": "model-33301.glb",
+      "title": "Flare Pistol (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33301/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-flare-pistol-290c62bd",
+      "size": 542224,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Lanzallamas": {
+      "path": "./assets/arsenal/models/model-33349.glb",
+      "file": "model-33349.glb",
+      "title": "Shoulder Rocket Launcher (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33349/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-rocket-launcher-5bbb1aae",
+      "size": 1269792,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Arma de hielo": {
+      "path": "./assets/arsenal/models/model-33291.glb",
+      "file": "model-33291.glb",
+      "title": "Target Pistol (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33291/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-target-pistol-67cfb6b8",
+      "size": 699200,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Cañón de gravedad": {
+      "path": "./assets/arsenal/models/model-33352.glb",
+      "file": "model-33352.glb",
+      "title": "Revolving Grenade Launcher (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33352/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-revolving-grenade-launcher-40fccdbc",
+      "size": 999600,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Lanzaperiódicos": {
+      "path": "./assets/arsenal/models/model-33353.glb",
+      "file": "model-33353.glb",
+      "title": "Break Grenade Launcher (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33353/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-break-grenade-launcher-d5af610d",
+      "size": 927796,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Huracán Eléctrico": {
+      "path": "./assets/arsenal/models/model-33350.glb",
+      "file": "model-33350.glb",
+      "title": "Disposable Launcher Tube (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33350/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-disposable-launcher-d7ea5880",
+      "size": 980556,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Transmutador de Gallinas": {
+      "path": "./assets/arsenal/models/model-33351.glb",
+      "file": "model-33351.glb",
+      "title": "Compact Anti Tank Tube (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33351/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-compact-at-tube-a1a94277",
+      "size": 1014624,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Rayo de pollos": {
+      "path": "./assets/arsenal/models/model-33354.glb",
+      "file": "model-33354.glb",
+      "title": "Underbarrel Grenade Launcher (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33354/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-underbarrel-grenade-launcher-89280ba6",
+      "size": 304584,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Balonazos de fútbol": {
+      "path": "./assets/arsenal/models/model-33317.glb",
+      "file": "model-33317.glb",
+      "title": "Sawn Off Shotgun (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33317/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-sawn-off-shotgun-431c9190",
+      "size": 782636,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Katana": {
+      "path": "./assets/arsenal/models/model-33402.glb",
+      "file": "model-33402.glb",
+      "title": "Curved Sword (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33402/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-curved-sword-7cfb1c19",
+      "size": 251240,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Bate eléctrico": {
+      "path": "./assets/arsenal/models/model-33408.glb",
+      "file": "model-33408.glb",
+      "title": "Baseball Bat (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33408/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-baseball-bat-63fad90c",
+      "size": 277980,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Cuchillo mejorable": {
+      "path": "./assets/arsenal/models/model-33395.glb",
+      "file": "model-33395.glb",
+      "title": "Combat Knife (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33395/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-combat-knife-be1b3598",
+      "size": 326924,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Tres espadas de Zoro": {
+      "path": "./assets/arsenal/models/model-33401.glb",
+      "file": "model-33401.glb",
+      "title": "Straight Sword (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33401/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-straight-sword-4a665a3b",
+      "size": 240332,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Espadas del Caos de Kratos": {
+      "path": "./assets/arsenal/models/model-33402.glb",
+      "file": "model-33402.glb",
+      "title": "Curved Sword (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33402/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-curved-sword-7cfb1c19",
+      "size": 251240,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Cuchillo jamonero": {
+      "path": "./assets/arsenal/models/model-33398.glb",
+      "file": "model-33398.glb",
+      "title": "Bowie Knife (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33398/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-bowie-knife-74f1a652",
+      "size": 308380,
+      "license": "CC0-1.0",
+      "exact": false
+    },
+    "Reliquia del Eclipse": {
+      "path": "./assets/arsenal/models/model-33339.glb",
+      "file": "model-33339.glb",
+      "title": "Anti Materiel Rifle (Mega Weapon Pack)",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33339/v1/model.glb",
+      "source": "https://3dassets.dev/assets/mega-weapon-pack-anti-materiel-rifle-8de9e4c8",
+      "size": 2742092,
+      "license": "CC0-1.0",
+      "exact": false
+    }
+  },
+  "sounds": {
+    "pistol": {
+      "key": "pistol",
+      "path": "./assets/arsenal/sfx/pistol.wav",
+      "file": "pistol.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/1911/A_34P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "smg": {
+      "key": "smg",
+      "path": "./assets/arsenal/sfx/smg.wav",
+      "file": "smg.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/PPSh/P_16P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "smg2": {
+      "key": "smg2",
+      "path": "./assets/arsenal/sfx/smg2.wav",
+      "file": "smg2.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/PPSh/P_22P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "rifle": {
+      "key": "rifle",
+      "path": "./assets/arsenal/sfx/rifle.wav",
+      "file": "rifle.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/AK-47/C_27P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "rifle2": {
+      "key": "rifle2",
+      "path": "./assets/arsenal/sfx/rifle2.wav",
+      "file": "rifle2.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/AR-15/D_24P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "shotgun": {
+      "key": "shotgun",
+      "path": "./assets/arsenal/sfx/shotgun.wav",
+      "file": "shotgun.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/Model%2012/K_17P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "shotgun2": {
+      "key": "shotgun2",
+      "path": "./assets/arsenal/sfx/shotgun2.wav",
+      "file": "shotgun2.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/Mossberg/N_26P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "lmg": {
+      "key": "lmg",
+      "path": "./assets/arsenal/sfx/lmg.wav",
+      "file": "lmg.wav",
+      "source": "https://raw.githubusercontent.com/petroulacl/fps-asset-kit/a19b7458a593598211c95ec46ef4eb4b6d1f94d7/sfx/firearm_sfx/Prepared%20SFX%20Library/AK-47/C_29P.wav",
+      "size": 46348,
+      "license": "CC0-1.0"
+    },
+    "melee": {
+      "key": "melee",
+      "path": "./assets/arsenal/sfx/melee.ogg",
+      "file": "melee.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/impactMetal_000.ogg",
+      "size": 15491,
+      "license": "CC0-1.0"
+    },
+    "electric": {
+      "key": "electric",
+      "path": "./assets/arsenal/sfx/electric.ogg",
+      "file": "electric.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserLarge_000.ogg",
+      "size": 25566,
+      "license": "CC0-1.0"
+    },
+    "flame": {
+      "key": "flame",
+      "path": "./assets/arsenal/sfx/flame.ogg",
+      "file": "flame.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/thrusterFire_000.ogg",
+      "size": 201216,
+      "license": "CC0-1.0"
+    },
+    "ice": {
+      "key": "ice",
+      "path": "./assets/arsenal/sfx/ice.ogg",
+      "file": "ice.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/forceField_000.ogg",
+      "size": 25672,
+      "license": "CC0-1.0"
+    },
+    "gravity": {
+      "key": "gravity",
+      "path": "./assets/arsenal/sfx/gravity.ogg",
+      "file": "gravity.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+      "size": 14317,
+      "license": "CC0-1.0"
+    },
+    "special": {
+      "key": "special",
+      "path": "./assets/arsenal/sfx/special.ogg",
+      "file": "special.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserSmall_000.ogg",
+      "size": 7286,
+      "license": "CC0-1.0"
+    },
+    "magic": {
+      "key": "magic",
+      "path": "./assets/arsenal/sfx/magic.ogg",
+      "file": "magic.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserRetro_000.ogg",
+      "size": 12588,
+      "license": "CC0-1.0"
+    },
+    "explosion": {
+      "key": "explosion",
+      "path": "./assets/arsenal/sfx/explosion.ogg",
+      "file": "explosion.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+      "size": 28274,
+      "license": "CC0-1.0"
+    },
+    "laser": {
+      "key": "laser",
+      "path": "./assets/arsenal/sfx/laser.ogg",
+      "file": "laser.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserSmall_002.ogg",
+      "size": 8973,
+      "license": "CC0-1.0"
+    },
+    "blade": {
+      "key": "blade",
+      "path": "./assets/arsenal/sfx/blade.ogg",
+      "file": "blade.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/knifeSlice.ogg",
+      "size": 15532,
+      "license": "CC0-1.0"
+    },
+    "saw": {
+      "key": "saw",
+      "path": "./assets/arsenal/sfx/saw.ogg",
+      "file": "saw.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/engineCircular_000.ogg",
+      "size": 177470,
+      "license": "CC0-1.0"
+    },
+    "reloadStart": {
+      "key": "reloadStart",
+      "path": "./assets/arsenal/sfx/reloadStart.ogg",
+      "file": "reloadStart.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/metalClick.ogg",
+      "size": 13615,
+      "license": "CC0-1.0"
+    },
+    "reloadEnd": {
+      "key": "reloadEnd",
+      "path": "./assets/arsenal/sfx/reloadEnd.ogg",
+      "file": "reloadEnd.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/metalLatch.ogg",
+      "size": 10208,
+      "license": "CC0-1.0"
+    },
+    "equip": {
+      "key": "equip",
+      "path": "./assets/arsenal/sfx/equip.ogg",
+      "file": "equip.ogg",
+      "source": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/drawKnife1.ogg",
+      "size": 11134,
+      "license": "CC0-1.0"
+    }
+  },
+  "soundProfiles": {
+    "M1911": "pistol",
+    "MP7": "smg",
+    "PDW-57": "smg2",
+    "Vector K10": "smg",
+    "MSMC": "smg2",
+    "Chicom CQB": "smg",
+    "Skorpion EVO": "smg2",
+    "Peacekeeper": "smg",
+    "MTAR": "rifle",
+    "Type 25": "rifle2",
+    "SWAT-556": "rifle",
+    "M27": "rifle2",
+    "SCAR-H": "rifle",
+    "SMR": "rifle2",
+    "M8A1": "rifle",
+    "AN-94": "rifle2",
+    "FAL OSW": "rifle",
+    "R-870 MCS": "shotgun",
+    "S12": "shotgun2",
+    "KSG": "shotgun",
+    "M1216": "shotgun2",
+    "MK 48": "lmg",
+    "LSAT": "lmg",
+    "QBB LSW": "lmg",
+    "HAMR": "lmg",
+    "Tirachinas": "melee",
+    "Rayos eléctricos": "electric",
+    "Lanzallamas": "flame",
+    "Arma de hielo": "ice",
+    "Cañón de gravedad": "gravity",
+    "Lanzaperiódicos": "special",
+    "Invocación de perros": "magic",
+    "Helicóptero artillado": "lmg",
+    "Huracán Eléctrico": "electric",
+    "Transmutador de Gallinas": "magic",
+    "Crucifijos explosivos": "explosion",
+    "Rayo de pollos": "laser",
+    "Omnitrix": "magic",
+    "Balonazos de fútbol": "melee",
+    "Latigazos de Cristo": "melee",
+    "Katana": "blade",
+    "Bate eléctrico": "electric",
+    "Motosierra": "saw",
+    "Cuchillo mejorable": "blade",
+    "Garras de Wolverine": "blade",
+    "Tres espadas de Zoro": "blade",
+    "Espadas del Caos de Kratos": "blade",
+    "Cuchillo jamonero": "blade",
+    "Reliquia del Eclipse": "electric"
+  },
+  "failures": [],
+  "generatedAt": "2026-11-18T23:55:07.679Z",
+  "stats": {
+    "intendedWeapons": 49,
+    "mappedGLB": 41,
+    "uniqueGLB": 40,
+    "realAudioSamples": 22,
+    "errors": 0
+  }
+}

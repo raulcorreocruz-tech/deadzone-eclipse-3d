@@ -1,0 +1,62 @@
+{
+  "createdAt": "2026-11-27T18:09:50.034Z",
+  "source": "https://deadzone-eclipse-coop.onrender.com",
+  "files": {
+    "/": {
+      "sha256": "649b40d7976b347d8b1f40cc656f14d7b7828a2ffdc9206a1b7c0675c32db88f",
+      "bytes": 550932
+    },
+    "/vendor/three/build/three.module.js": {
+      "sha256": "76dea8151bc9352aef3528b4262e249b2604f62543828328db978d060d61a495",
+      "bytes": 1272972
+    },
+    "/vendor/three/examples/jsm/loaders/GLTFLoader.js": {
+      "sha256": "d073b438e6a07e1359741dd5d6c76c953420cc0d4fd84eb1bdde94315540e6a3",
+      "bytes": 108522
+    },
+    "/vendor/three/examples/jsm/utils/BufferGeometryUtils.js": {
+      "sha256": "9be041e96308775d00e2695cc607645b9a9b64fd7c0e759dd8f7c00a8d92becb",
+      "bytes": 31906
+    },
+    "/assets/deadzone_playables_6x4.png": {
+      "sha256": "7a5bb665d2b33997a6357cde273fe1b0b476052010d65c213cd4851a280be8b7",
+      "bytes": 2904
+    },
+    "/assets/kimeramon_sprite_atlas.png": {
+      "sha256": "e36efc37a933c366fc13abea26cab9f865339186d1584c69b350cc92e1a996f9",
+      "bytes": 118248
+    },
+    "/assets/peter_griffin_atlas.png": {
+      "sha256": "5256a21ebc58111b105e99fee7e4bbbb364959fefdf86b8464218745d25ee181",
+      "bytes": 1975
+    },
+    "/assets/rayquaza_boss_atlas.png": {
+      "sha256": "dfe166f192daf57c0268399b6bfef36c2077a34ea6ea33104cb5ec1551fd6364",
+      "bytes": 3860
+    },
+    "/assets/war_elephant.png": {
+      "sha256": "969a3fa246c4cdfa583fc0db2fd002e49c957cebbe611a0a2304468b34fb31ef",
+      "bytes": 4761
+    },
+    "/assets/tropical_palm.png": {
+      "sha256": "22a04e6f9a0e7c920f9b65bbee974eb798288fd88fcae512731ddd2be3314108",
+      "bytes": 2013
+    },
+    "/assets/arsenal/manifest.json": {
+      "sha256": "a19dbee1d8f612309407df6facdbaf1a023124dffaf9320e28520061f0a59090",
+      "bytes": 26205
+    },
+    "/assets/zombie_realista.glb": {
+      "sha256": "54b0117e999009316db97848a8a9569fbdfc497981ca9c2e081385ca525993b1",
+      "bytes": 2735028
+    },
+    "/assets/doraemon_custom.glb": {
+      "sha256": "19dd696e7670a0c03a32f7ca54ccd013e68415dde211dc471b32fd026788e3f9",
+      "bytes": 2590648
+    },
+    "/assets/arsenal/models/model-33296.glb": {
+      "sha256": "ac04f2bbc30591fde6c4e621e6541db5ddd093ebe16be6b6feff120e19681d96",
+      "bytes": 670728
+    }
+  }
+}
