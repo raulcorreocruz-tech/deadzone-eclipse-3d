@@ -14,6 +14,14 @@ for(const mobile of [false,true]){
  try{
   await page.goto(BASE+'?smoke='+Date.now(),{waitUntil:'domcontentloaded',timeout:85000});
   await page.locator('#start').waitFor({timeout:20000});
+  // Select the actual skin from the in-game UI, as players do. A browser's
+  // initial localStorage can be overwritten by site bootstrap/login.
+  await page.locator('#dz43SkinsButton').click();
+  const requestedSkin=mobile?'hermano':'rubo';
+  await page.locator('#dz43SkinsPanel [data-playable-character="'+requestedSkin+'"]').click({timeout:15000});
+  await page.locator('#dz43SkinsPanel button').filter({hasText:'CERRAR'}).click();
+  const selected=await page.evaluate(()=>localStorage.getItem('deadzone_skin_v43'));
+  if(selected!==(mobile?'hermano_personal':'rubo_personal'))throw Error('Skin selection not saved '+selected);
   const meta=await page.locator('meta[name="deadzone-build"]').getAttribute('content');
   if(!meta?.startsWith('5.25.26-'))throw Error('Incorrect build '+meta);
   const vars=await page.evaluate(()=>({status:typeof window.__DZ544_STATUS,canvas:!!document.querySelector('#game canvas'),menu:!!document.querySelector('#mainMenu')}));
