@@ -49,13 +49,15 @@ for(const mobile of [false,true]){
   if(report.mask?.renderedPixelSkins>0&&report.mask.localLegacyVisible!==0)throw Error('3D soldier visible with sprite '+JSON.stringify(report.mask));
   if(mobile){if(!report.brother?.atlas||!report.brother?.visible||report.brother?.skin!=='hermano_personal')throw Error('Brother sprite not visible '+JSON.stringify(report.brother));}
   else if(!report.rubo?.atlas||!report.rubo?.localVisible||report.rubo?.selected!==true)throw Error('Rubo sprite not visible '+JSON.stringify(report.rubo));
+  // Verify movement BEFORE firing; otherwise a valid shoot animation (action=3)
+  // can still be active during the movement assertion.
+  await page.keyboard.down('KeyW');await page.waitForTimeout(650);
+  const action=await page.evaluate(isMobile=>isMobile?window.__DZ546_STATUS?.action:window.__DZ545_STATUS?.localAction,mobile);
+  await page.keyboard.up('KeyW');
+  if(action!==1&&action!==2)throw Error('Directional character movement failed: '+JSON.stringify({action,mobile}));
   await page.evaluate(()=>window.dispatchEvent(new Event('dz546-test-fire')));
   const fired=await page.evaluate(()=>window.__DZ546_TEST_SHOT);
   if(!fired?.fired||!(fired.after.bullets>fired.before.bullets||fired.after.mag<fired.before.mag))throw Error('Weapon did not fire a real projectile '+JSON.stringify(fired));
-  await page.keyboard.down('KeyW');await page.waitForTimeout(350);
-  const action=await page.evaluate(isMobile=>isMobile?window.__DZ546_STATUS?.action:window.__DZ545_STATUS?.localAction,mobile);
-  await page.keyboard.up('KeyW');
-  if(action!==1&&action!==2)throw Error('Rubo movement animation failed: '+action);
   await page.keyboard.press('KeyB');
   await page.waitForTimeout(700);
   const armory=await page.evaluate(()=>({
